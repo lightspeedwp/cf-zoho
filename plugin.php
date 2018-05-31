@@ -88,7 +88,7 @@ function cf_zoho_get_api_details(){
 function cf_zoho_activate_plugin() {
     $instance = get_option('lsx_api_instance',false);
     if(false === $instance){
-    	update_option('lsx_api_instance',LSX_API_Manager::generatePassword());
+    	update_option('lsx_api_instance',LSX_CF_API_Manager::generatePassword());
     }
 }
 register_activation_hook( __FILE__, 'cf_zoho_activate_plugin' );
