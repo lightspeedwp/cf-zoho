@@ -65,7 +65,7 @@ $ignore_fields = array(
 );
 
 $force_text_input = array( );
-if( !empty( $config_object['fields']['contacts_fields'] ) ){
+if( !empty( $config_object['fields']['tasks_fields'] ) ){
 	$force_text_input = explode( "\n", $config_object['fields']['tasks_fields'] );
 }
 
