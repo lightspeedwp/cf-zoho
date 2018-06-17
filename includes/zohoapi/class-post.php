@@ -20,16 +20,12 @@ class Post extends Connect {
      * @param  boolean      $new_token Whether this is a second attempt with a new token.
      * @return object|array            WP_Error|Zoho response.
      */
-    public function request( $path, $data, $new_token = false ) {
+    public function request( $path, $body, $new_token = false ) {
         
         $this->tokens->load_token_data();
 
         $base_url = $this->tokens->get_api_domain();
         $url      = $base_url . $path;
-        $body     = [
-            'data'      => [ $data ],
-            'trigger'   => [ 'approval' ],
-        ];
 
         $response = wp_remote_post( $url, [
             'timeout'   => 45,

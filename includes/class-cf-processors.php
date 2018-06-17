@@ -14,6 +14,27 @@ use cf_zoho\includes\zohoapi;
 class CF_Processors {
 
     /**
+     * Processor config.
+     *
+     * @var array.
+     */
+    private $config = [];
+
+    /**
+     * Form config.
+     *
+     * @var array.
+     */
+    private $form = [];
+
+    /**
+     * Module name.
+     *
+     * @var string.
+     */
+    private $module = '';
+
+    /**
      * Registers our processors with Caldera Forms.
      *
      * @param  array    $processors Array of current processors.
@@ -46,7 +67,7 @@ class CF_Processors {
                 'id' => [ 'text', 'zoho_task' ],
             ],
         ];	
-/*
+
         $processors['zoho_task'] = [
             'name'              =>  __( 'Zoho CRM - Create Task', 'cf-zoho-2' ),
             'description'       =>  __( 'Create or Update a task on form submission', 'cf-zoho-2' ),
@@ -57,19 +78,223 @@ class CF_Processors {
             'icon'				=>	CFZ_URL . 'assets/images/icon.png',
             'magic_tags'		=> [ 'id' ],
         ];
-*/
+
         return $processors;
     }
-
-    public function get_form_value( $config, $field ) {
+    
+    /**
+     * Callback for Lead form submissions.
+     *
+     * @param  array $config Form config.
+     * @param  array $form   Form data.
+     * @return null|array    Array containining id if successfull|null response on fail.
+     */
+    public function process_lead_submission( $config, $form ) {
         
-        $key = sanitize_key( $field['field_label'] );
+        $this->config = $config;
+        $this->form   = $form;
+        $this->module = 'leads';
 
-        if( ! isset( $config[ $key ] ) ) {
+        return $this->do_submission();
+    }
+    
+    /**
+     * Callback for Contact form submissions.
+     *
+     * @param  array $config Form config.
+     * @param  array $form   Form data.
+     * @return null|array    Array containining id if successfull|null response on fail.
+     */
+    public function process_contact_submission( $config, $form ){
+        
+        $this->config = $config;
+        $this->form   = $form;
+        $this->module = 'contacts';
+
+        return $this->do_submission();
+    }
+    
+    /**
+     * Callback for Task form submissions.
+     *
+     * @param  array $config Form config.
+     * @param  array $form   Form data.
+     * @return null|array    Array containining id if successfull|null response on fail.
+     */
+    public function process_task_submission( $config, $form ){
+        
+        $this->config = $config;
+        $this->form   = $form;
+        $this->module = 'tasks';
+
+        return $this->do_submission();
+    }
+    
+    /**
+     * Process form submissions.
+     *
+     * @return null|array Array containining id if successfull|null response on fail.
+     */
+    public function do_submission() {
+
+        $object = $this->build_object();
+
+        // Remove SMOWNERID if not set.
+        if ( empty( $object['SMOWNERID'] ) ) {
+            unset( $object['SMOWNERID'] );
+        }
+
+        // @todo Duplicates?
+
+        $trigger = [];
+
+        if ( ! empty( $this->config['_approval_mode'] ) ) {
+            $trigger[] = 'approval';
+        }
+
+        if ( ! empty( $this->config['_workflow_mode'] ) ) {
+            $trigger[] = 'workflow';
+        }
+
+        $body     = [
+            'data'      => [ $object ],
+            'trigger'   => $trigger,
+        ];
+
+        // Filter hook.
+        $object = apply_filters( 'process_zoho_submission', $body, $this->config, $this->form );
+
+        $post = new zohoapi\Post();
+        $path = '/crm/v2/' . ucfirst( $this->module );
+
+        $response = $post->request( $path, $body );
+
+        // @todo can we indicate something went wrong to end user?
+
+        if ( is_wp_error( $response ) ) {
             return;
         }
 
-        $value = \Caldera_Forms::do_magic_tags( $config[ $key ] );
+        if ( ! isset( $response['data'][0]['code'] ) || 'SUCCESS' !== $response['data'][0]['code'] ) {
+            return;
+        }
+
+        $object_id = $response['data'][0]['details']['id'];
+
+        do_action( 'cf_zoho_create_entry_complete', $object_id, $this->config, $this->form );
+
+        return [
+            'id'    => $object_id,
+        ];
+    }
+
+    /**
+     * Build object for the module.
+     *
+     * @return array Object for the module.
+     */
+    public function build_object() {
+
+        $object = $this->get_default_object( $this->module, $this->config );
+
+        $cache  = new Cache();
+        $fields = $cache->get_plugin_cache_item( $this->module ); // @todo need fallback if empty.
+
+        foreach ( $fields as $section ) {
+
+            foreach ( $section['fields'] as $field ) {
+
+                $label = str_replace( ' ', '_', $field['field_label'] );
+                $object[ $label ] = $this->get_form_value( $field );
+            }
+        }
+
+        return $object;
+    }
+
+    /**
+     * Default object for the module.
+     *
+     * @return array Default object for the module.
+     */
+    public function get_default_object() {
+
+        switch ( $this->module ) {
+
+            case 'leads' :
+            case 'contacts' :
+
+                $object = [
+                    'Email_Opt_Out' => ! empty( $this->config['_email_opt_out'] ) ? 'true' : 'false',
+                    'Description'   => '',
+                    'Lead_Source'   => $this->config['leadsource'],
+                    'SMOWNERID'     => $this->config[ 'leadowner' ],
+                ];
+
+                if ( ! empty( $this->config['leadstatus'] ) ) {
+                    $object['Lead_Status'] = $this->config['leadstatus'];
+                }
+
+                if ( ! empty( $this->config['rating'] ) ) {
+                    $object['Rating'] = $this->config['rating'];
+                }
+                
+                return $object;
+
+            case 'tasks':
+
+                $object = [
+                    'Due_Date'  => '',
+                    'Subject'   => '',
+                    'Status'    => '',
+                    'SMOWNERID' => '',
+                ];
+
+                // No parent? Then return.
+                if( empty( $this->config['parent'] ) ) {
+                    return $object;
+                }
+
+                // Otherwise, get parent.                    
+                $parent = explode( ':', trim( $this->config['parent'], '{}' ) );
+                
+                if ( empty( $this->form['processors'][ $parent[0] ] ) ) {
+                    $this->config['whoid'] = '%' . $this->form['fields'][ $this->config['parent'] ]['slug']. '%';
+                    return $object;
+                }
+
+                $parent_value = \Caldera_Forms::do_magic_tags( $this->config['parent'] );
+                
+                /* Add lead or contact ID. */
+                if ( 'zoho_contact' === $this->form['processors'][ $parent[0] ]['type'] ) {
+                    $object['CONTACTID'] = $parent_value;
+                    return $object;
+                }
+                
+                if ( 'zoho_lead' === $this->form['processors'][ $parent[0] ]['type'] ) {
+                    $object['SEID']     = $parent_value;
+                    $object['SEMODULE'] = 'Leads';
+                }
+
+                return $object;
+        }
+    }
+    
+    /**
+     * Get the submitted value for a form element.
+     *
+     * @param  array  $field Form field data.
+     * @return string        Form field value.
+     */
+    public function get_form_value( $field ) {
+        
+        $key = sanitize_key( $field['field_label'] );
+
+        if( ! isset( $this->config[ $key ] ) ) {
+            return;
+        }
+
+        $value = \Caldera_Forms::do_magic_tags( $this->config[ $key ] );
 
         if ( 'boolean' !== strtolower( $field['data_type'] ) ) {
             return $value;
@@ -88,49 +313,6 @@ class CF_Processors {
         }
 
         return $value;
-    }
-
-    public function process_lead_submission( $config, $form ) {
-
-        $cache  = new Cache();
-        $fields = $cache->get_plugin_cache_item( 'leads' ); // @todo need fallback if empty.
-
-        $object = [
-            'Email Opt Out' => ! empty( $config['_email_opt_out'] ) ? 'true' : 'false',
-            'Description'   => '',
-            'Lead Source'   => $config['leadsource'],
-            'Lead Status'   => '',
-            'Rating'        => '',		
-            'SMOWNERID'     => $config[ 'leadowner' ],
-            'options'       => [
-                'isApproval'     => ! empty( $config['_approval_mode'] ) ? 'true' : 'false',
-                'wfTrigger'      => ! empty( $config['_workflow_mode'] ) ? 'true' : 'false',
-            ],
-        ];
-
-        foreach ( $fields as $section ) {
-
-            foreach ( $section['fields'] as $field ) {
-
-                $label = str_replace( ' ', '_', $field['field_label'] );
-                $object[ $label ] = $this->get_form_value( $config, $field );
-            }
-        }
-
-        $post = new zohoapi\Post();
-        $path = '/crm/v2/Leads';
-
-        $response = $post->request( $path, $object );
-error_log(print_r($response,true));
-        return;
-    }
-    
-    public function process_contact_submission( $config, $form ){
-        return;
-    }
-    
-    public function process_task_submission( $config, $form ){
-        return;
     }
     
 }

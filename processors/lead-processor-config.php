@@ -12,6 +12,6 @@ $module = new includes\CF_Processor_Render( 'leads' );
 
 $errors = $module->get_errors();
 
-$template = ( ! empty( $errors ) ) ? 'zoho-errors.php' : 'contact-based-processor.php';
+$template = ( ! empty( $errors ) ) ? 'zoho-errors.php' : 'processor.php';
 
 include CFZ_TEMPLATE_PATH . $template;

@@ -277,6 +277,15 @@ class CF_Processor_Render {
     }
 
     /**
+     * Whether the module requires the approval mode checkboxes.
+     *
+     * @return boolean.
+     */
+    public function has_approval_mode() {
+        return in_array( $this->module, [ 'leads', 'contacts' ], true );
+    }
+
+    /**
      * Build the label name for a field.
      * Indicate if the field is required.
      *
