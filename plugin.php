@@ -44,7 +44,6 @@ require CFZ_ABSPATH . 'lib/autoloader.php';
 
 // Register settings.
 register_setting( 'cfzoho', CFZ_OPTION_SLUG );
-register_setting( 'cfzoho', CFZ_OPTION_SLUG . '_refresh_token' );
 
 /**
  * CF Zoho Options page URL.
