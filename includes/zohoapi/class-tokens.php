@@ -94,7 +94,7 @@ class Tokens {
         $this->access_token = $token_response['access_token'];
 
         // No refresh token included, exit.
-        if ( ! isset( $token_response['refresh_token'] ) ) {
+        if ( empty( $token_response['refresh_token'] ) ) {
             return;
         }
 

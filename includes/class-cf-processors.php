@@ -47,7 +47,7 @@ class CF_Processors {
             'description'       =>  __( 'Create or Update a lead on form submission', 'cf-zoho-2' ),
             'author'            =>  'Matt Bush',
             'author_url'        =>  'https://haycroftmedia.com/',
-            'processor'			=>  [ $this, 'process_lead_submission' ],
+            'pre_processor'		=>  [ $this, 'process_lead_submission' ],
             'template'          =>  CFZ_PROCESSORS_PATH . 'lead-processor-config.php',
             'icon'				=>	CFZ_URL . 'assets/images/icon.png',
             'magic_tags'		=> [
@@ -60,7 +60,7 @@ class CF_Processors {
             'description'       =>  __( 'Create or Update a contact on form submission', 'cf-zoho-2' ),
             'author'            =>  'Matt Bush',
             'author_url'        =>  'https://haycroftmedia.com/',
-            'processor'			=>  [ $this, 'process_contact_submission' ],
+            'pre_processor'		=>  [ $this, 'process_contact_submission' ],
             'template'          =>  CFZ_PROCESSORS_PATH . 'contact-processor-config.php',
             'icon'				=>	CFZ_URL . 'assets/images/icon.png',
              'magic_tags'		=> [
@@ -73,7 +73,7 @@ class CF_Processors {
             'description'       =>  __( 'Create or Update a task on form submission', 'cf-zoho-2' ),
             'author'            =>  'Matt Bush',
             'author_url'        =>  'https://haycroftmedia.com/',
-            'processor'			=>  [ $this, 'process_task_submission' ],
+            'pre_processor'		=>  [ $this, 'process_task_submission' ],
             'template'          =>  CFZ_PROCESSORS_PATH . 'task-processor-config.php',
             'icon'				=>	CFZ_URL . 'assets/images/icon.png',
             'magic_tags'		=> [ 'id' ],
@@ -85,11 +85,12 @@ class CF_Processors {
     /**
      * Callback for Lead form submissions.
      *
-     * @param  array $config Form config.
-     * @param  array $form   Form data.
-     * @return null|array    Array containining id if successfull|null response on fail.
+     * @param  array  $config Processor config
+     * @param  array  $form Form config
+     * @param  string $process_id Unique process ID for this submission
+     * @return void|array.
      */
-    public function process_lead_submission( $config, $form ) {
+    public function process_lead_submission( $config, $form, $process_id ) {
         
         $this->config = $config;
         $this->form   = $form;
@@ -101,11 +102,12 @@ class CF_Processors {
     /**
      * Callback for Contact form submissions.
      *
-     * @param  array $config Form config.
-     * @param  array $form   Form data.
-     * @return null|array    Array containining id if successfull|null response on fail.
+     * @param  array  $config Processor config
+     * @param  array  $form Form config
+     * @param  string $process_id Unique process ID for this submission
+     * @return void|array.
      */
-    public function process_contact_submission( $config, $form ){
+    public function process_contact_submission( $config, $form, $process_id ){
         
         $this->config = $config;
         $this->form   = $form;
@@ -117,11 +119,12 @@ class CF_Processors {
     /**
      * Callback for Task form submissions.
      *
-     * @param  array $config Form config.
-     * @param  array $form   Form data.
-     * @return null|array    Array containining id if successfull|null response on fail.
+     * @param  array  $config Processor config
+     * @param  array  $form Form config
+     * @param  string $process_id Unique process ID for this submission
+     * @return void|array.
      */
-    public function process_task_submission( $config, $form ){
+    public function process_task_submission( $config, $form, $process_id ){
         
         $this->config = $config;
         $this->form   = $form;
@@ -138,11 +141,6 @@ class CF_Processors {
     public function do_submission() {
 
         $object = $this->build_object();
-
-        // Remove SMOWNERID if not set.
-        if ( empty( $object['SMOWNERID'] ) ) {
-            unset( $object['SMOWNERID'] );
-        }
 
         // @todo Duplicates?
 
@@ -169,23 +167,25 @@ class CF_Processors {
 
         $response = $post->request( $path, $body );
 
-        // @todo can we indicate something went wrong to end user?
-
         if ( is_wp_error( $response ) ) {
-            return;
+            
+            return [
+                'note'  => $response->get_error_message(),
+                'type'  => 'error',
+            ];
         }
 
         if ( ! isset( $response['data'][0]['code'] ) || 'SUCCESS' !== $response['data'][0]['code'] ) {
-            return;
+            
+            return [
+                'note'  => $response['message'],
+                'type'  => 'error',
+            ];
         }
 
         $object_id = $response['data'][0]['details']['id'];
 
         do_action( 'cf_zoho_create_entry_complete', $object_id, $this->config, $this->form );
-
-        return [
-            'id'    => $object_id,
-        ];
     }
 
     /**
@@ -232,11 +232,11 @@ class CF_Processors {
                 $object = [
                     'Email_Opt_Out' => ! empty( $this->config['_email_opt_out'] ) ? 'true' : 'false',
                     'Description'   => '',
-                    'Lead_Source'   => $this->config['leadsource'],
-                    'SMOWNERID'     => $this->config[ 'leadowner' ],
                 ];
 
                 $unset_if_empty = [
+                    'leadowner'      => 'SMOWNERID',
+                    'leadsource'    => 'Lead_Source',
                     'leadstatus'    => 'Lead_Status',
                     'rating'        => 'Rating',
                 ];
@@ -245,6 +245,10 @@ class CF_Processors {
 
                     if ( ! empty( $this->config[ $key ] ) ) {
                         $object[ $label] = $this->config[ $key ];
+                        continue;
+                    }
+
+                    if ( ! isset( $this->config[ $key ] ) ) {
                         continue;
                     }
 
