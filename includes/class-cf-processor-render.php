@@ -21,11 +21,29 @@ class CF_Processor_Render {
     private $cache;
 
     /**
+     * Getter for $cache.
+     *
+     * @return object Cache class.
+     */
+    public function get_cache() {
+        return $this->cache;
+    }
+
+    /**
      * Get class.
      *
      * @var object.
      */
     public $get;
+
+    /**
+     * Getter for $get.
+     *
+     * @return object Get class.
+     */
+    public function get_get() {
+        return $this->get;
+    }
 
     /**
      * Module we are rendering.
@@ -58,7 +76,7 @@ class CF_Processor_Render {
     public function set_module_data() {
 
         $module = $this->get_module();
-        $cache  = $this->cache->get_plugin_cache_item( $module );
+        $cache  = $this->get_cache()->get_plugin_cache_item( $module );
 
         if ( false !== $cache ) {
             $this->module_data = $cache;
@@ -66,7 +84,7 @@ class CF_Processor_Render {
         }
 
         $path = '/crm/v2/settings/layouts?module=' . $module;
-        $data = $this->get->request( $path );
+        $data = $this->get_get()->request( $path );
 
         if ( is_wp_error( $data ) ) {
             $this->errors[] = $data->get_error_message();
@@ -123,11 +141,14 @@ class CF_Processor_Render {
                     // Otherwise set val to users array.
                     $value['fields'][ $field_key ]['val'] = $this->get_users();
                 }
+
+                // Reset array keys.
+                $value['fields'] = array_values( $value['fields'] );
             }
-        );
+        );        
 
         $this->module_data =  $no_empty_fields;
-        $this->cache->set_plugin_cache_item( $module, $no_empty_fields );
+        $this->get_cache()->set_plugin_cache_item( $module, $no_empty_fields );
     }
 
     /**

@@ -27,7 +27,7 @@ class Cache {
      */
     public function set_plugin_cache_item( $item, $value ) {
         $this->plugin_cache[ $item ] = $value;
-        set_transient( CFZ_TRANSIENT_SLUG, $this->plugin_cache );
+        set_transient( CFZ_TRANSIENT_SLUG, $this->plugin_cache, MONTH_IN_SECONDS );
     }
 
     /**

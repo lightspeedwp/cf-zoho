@@ -45,7 +45,7 @@ class Connect {
         $token = $this->tokens->get_access_token();
 
         if ( false !== $token ) {
-        
+
             return [
                 'Authorization' => "Zoho-oauthtoken {$token}",
                 'Content-Type'  => 'application/json',
@@ -83,15 +83,18 @@ class Connect {
         $url = $this->options->get_option( 'cfzoho_url' ) . '/token';
 
         $body = [
-            'code'          => filter_input( INPUT_GET, 'code', FILTER_SANITIZE_STRING ),
             'client_id'     => $this->options->get_option( 'cfzoho_client_id' ),
             'client_secret' => $this->options->get_option( 'cfzoho_client_secret' ),
             'redirect_uri'  => menu_page_url( 'cfzoho', false ),
             'grant_type'    => $grant_type,
         ];
 
+        if ( 'authorization_code' === $grant_type ) {
+            $body['code'] = filter_input( INPUT_GET, 'code', FILTER_SANITIZE_STRING );
+        }
+
         if ( 'refresh_token' === $grant_type ) {
-            $body['refresh_token'] = $this->options->get_option( 'refresh_token' );
+            $body['refresh_token'] = $this->tokens->get_refresh_token();
         }
 
         $response = wp_remote_post( $url, [
@@ -115,7 +118,7 @@ class Connect {
         $this->tokens->save_tokens( $decoded );
 
         // If we are generating a new auth code, flush transients.
-        if ( 'authorization_code' ) {
+        if ( 'authorization_code' === $grant_type ) {
             $cache = new includes\Cache( false );
             $cache->flush_plugin_cache();
         }
