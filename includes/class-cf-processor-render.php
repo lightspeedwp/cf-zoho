@@ -14,6 +14,13 @@ use cf_zoho\includes\zohoapi;
 class CF_Processor_Render {
 
     /**
+     * Options class.
+     *
+     * @var object.
+     */
+    private $options;
+
+    /**
      * Cache class.
      *
      * @var object.
@@ -132,7 +139,7 @@ class CF_Processor_Render {
                     }
 
                     $key = sanitize_key( $fields['field_label'] );
-
+error_log($key);
                     // If we are forcing text input, carry on.
                     if ( in_array( $key, $force_text_input, true ) ) {
                         continue;
@@ -265,13 +272,15 @@ class CF_Processor_Render {
      */
     public function set_force_text_input() {
 
-        $config_object = get_option( '_uix_cf-zoho', [] );
+        $config_object = $this->options->get_option( 'fields' );
 
-        if( empty( $config_object['fields']['leads_fields'] ) ) {
+        $key = $this->module . '_fields';
+
+        if( empty( $config_object[ $key ] ) ) {
             return;
         }
-        
-        $this->force_text_input = explode( "\n", $config_object['fields']['leads_fields'] );
+        error_log(print_r($config_object[$key],true));
+        $this->force_text_input = explode( "\n", $config_object[ $key ] );
     }
 
     /**
@@ -286,11 +295,12 @@ class CF_Processor_Render {
     /**
      * Class constructor.
      */
-    public function __construct( $module ) {
-        
-        $this->cache  = new Cache();
-        $this->get    = new zohoapi\Get();
-        $this->module = $module;
+    public function __construct( $module ) {        
+
+        $this->options = new Options();
+        $this->cache   = new Cache();
+        $this->get     = new zohoapi\Get();
+        $this->module  = $module;
 
         $this->set_force_text_input();
         $this->set_users();
