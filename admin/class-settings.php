@@ -165,6 +165,14 @@ class Settings {
             [ $this, 'cfzoho_settings_field_cb' ],
             'cfzoho'
         );
+
+        // Lightspeed API fields.
+        add_settings_section(
+            'main',
+            __( 'LightSpeed API.', 'cfzoho' ),
+            [ $this, 'cfzoho_settings_field_cb' ],
+            'cfzoho'
+        );
     }
 
     /**
@@ -177,7 +185,8 @@ class Settings {
         'cfzoho_client_id'          => 'settings-client-id.php',
         'cfzoho_client_secret'      => 'settings-client-secret.php',
         'fields'                    => 'settings-client-fields.php',
-        'flush_transients'          => 'settings-flush-transients.php'
+        'flush_transients'          => 'settings-flush-transients.php',
+        'main'                      => 'settings-lightspeed-api.php',
     ];
 
     /**
