@@ -231,12 +231,19 @@ class CF_Processors {
                     'SMOWNERID'     => $this->config[ 'leadowner' ],
                 ];
 
-                if ( ! empty( $this->config['leadstatus'] ) ) {
-                    $object['Lead_Status'] = $this->config['leadstatus'];
-                }
+                $unset_if_empty = [
+                    'leadstatus'    => 'Lead_Status',
+                    'rating'        => 'Rating',
+                ];
 
-                if ( ! empty( $this->config['rating'] ) ) {
-                    $object['Rating'] = $this->config['rating'];
+                foreach ( $unset_if_empty as $key => $label ) {
+
+                    if ( ! empty( $this->config[ $key ] ) ) {
+                        $object[ $label] = $this->config[ $key ];
+                        continue;
+                    }
+
+                    unset( $this->config[ $key ] );
                 }
                 
                 return $object;
