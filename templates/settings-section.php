@@ -14,7 +14,7 @@
         </tr>
         <tr>
             <th>Authorized redirect URIs</th>
-            <td><input type="text" value="<?php menu_page_url( 'cfzoho' );?>" readonly="readonly" class="regular-text" onClick="this.select();" size="100" /></td>
+            <td><input type="text" value="<?php echo cf_zoho\cf_zoho_redirect_url();?>" readonly="readonly" class="regular-text" onClick="this.select();" size="100" /></td>
         </tr>
         <tr>
             <th>Client Type</th>

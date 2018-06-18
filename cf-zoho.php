@@ -49,6 +49,17 @@ register_setting( 'cfzoho', CFZ_TRANSIENT_SLUG  );
 register_setting( 'cfzoho', CFZ_TRANSIENT_SLUG . '_access_token' );
 
 /**
+ * CF Zoho Options page URL.
+ * Used to populate redirect_uri field in Zoho requests.
+ * Can't use menu_page_url in Zoho requests so built this instead.
+ *
+ * @return string CF Zoho Options page URL.
+ */ 
+function cf_zoho_redirect_url() {
+	return admin_url( add_query_arg( 'page', 'cfzoho', 'options-general.php' ) );
+}
+
+/**
  * Begins execution of the plugin.
  */
 function run_plugin() {

@@ -6,6 +6,7 @@
  */
 
 namespace cf_zoho\admin;
+use cf_zoho;
 use cf_zoho\includes;
 use cf_zoho\includes\zohoapi;
 
@@ -214,7 +215,7 @@ class Settings {
             'client_id'     => $this->options->get_option( 'cfzoho_client_id' ),
             'state'         =>  wp_create_nonce(  'zohotoken' ),
             'response_type' => 'code',
-            'redirect_uri'  => menu_page_url( 'cfzoho', false ),
+            'redirect_uri'  => cf_zoho\cf_zoho_redirect_url(),
             'access_type'   => 'offline',
         ];
 
