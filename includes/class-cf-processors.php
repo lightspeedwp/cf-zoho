@@ -142,8 +142,6 @@ class CF_Processors {
 
         $object = $this->build_object();
 
-        // @todo Duplicates?
-
         $trigger = [];
 
         if ( ! empty( $this->config['_approval_mode'] ) ) {
@@ -296,6 +294,12 @@ class CF_Processors {
         }
     }
 
+    /**
+     * Fetches module fields.
+     * Called when cached fields have expired.
+     *
+     * @return array Module fields.
+     */
     public function get_module_fields() {
         $cf_processor_render = new CF_Processor_Render( $this->module );
         return $cf_processor_render->get_module_data();
