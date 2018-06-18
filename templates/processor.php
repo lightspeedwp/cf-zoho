@@ -15,7 +15,7 @@
 		</label>
 
 	</div>
-
+<!--
 	<div class="caldera-config-field">
 
 		<label>
@@ -31,7 +31,7 @@
 		</label>
 
 	</div>
-
+-->
 </div>
 
 <?php endif; ?>
