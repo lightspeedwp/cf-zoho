@@ -47,10 +47,8 @@ class Cache {
 
     /**
      * Deletes plugin transients.
-     * 
-     * @param boolean $reset_options Whether to remove the flush_transients option and save options.
      */
-    public function flush_plugin_cache( $reset_options = false ) {        
+    public function flush_plugin_cache() {        
         delete_transient( CFZ_TRANSIENT_SLUG );
     }
 
