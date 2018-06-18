@@ -261,10 +261,13 @@ class Settings {
         header( "Location: {$url}" );
     }
 
+    /**
+     * Flushes any stored module data.
+     */
     public function flush_transients() {
 
         $cache = new includes\Cache();
-        $cache->flush_plugin_cache( true );
+        $cache->flush_plugin_cache();
 
         $this->options->reset_cache_option();
 
