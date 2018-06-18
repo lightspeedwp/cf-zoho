@@ -198,7 +198,12 @@ class CF_Processors {
         $object = $this->get_default_object( $this->module, $this->config );
 
         $cache  = new Cache();
-        $fields = $cache->get_plugin_cache_item( $this->module ); // @todo need fallback if empty.
+        $fields = $cache->get_plugin_cache_item( $this->module );
+
+        // If fields aren't cached, fetch them.
+        if ( false === $fields ) {
+            $fields = $this->get_module_fields();
+        }
 
         foreach ( $fields as $section ) {
 
@@ -285,6 +290,11 @@ class CF_Processors {
 
                 return $object;
         }
+    }
+
+    public function get_module_fields() {
+        $cf_processor_render = new CF_Processor_Render( $this->module );
+        return $cf_processor_render->get_module_data();
     }
     
     /**
