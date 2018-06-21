@@ -186,7 +186,6 @@ class Settings {
         'cfzoho_client_secret'      => 'settings-client-secret.php',
         'fields'                    => 'settings-client-fields.php',
         'flush_transients'          => 'settings-flush-transients.php',
-        'main'                      => 'settings-lightspeed-api.php',
     ];
 
     /**
