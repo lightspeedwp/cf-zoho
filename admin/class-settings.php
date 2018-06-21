@@ -165,14 +165,6 @@ class Settings {
             [ $this, 'cfzoho_settings_field_cb' ],
             'cfzoho'
         );
-
-        // Lightspeed API fields.
-        add_settings_section(
-            'main',
-            __( 'LightSpeed API.', 'cfzoho' ),
-            [ $this, 'cfzoho_settings_field_cb' ],
-            'cfzoho'
-        );
     }
 
     /**
