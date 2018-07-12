@@ -6,15 +6,15 @@
     <tbody>
         <tr>
             <th scope="row">Client Name</th>
-            <td><input type="text" value="Caldera Forms App" readonly="readonly" class="regular-text" onClick="this.select();" /></td>
+            <td>Caldera Forms App</td>
         </tr>
         <tr>
             <th>Client domain</th>
-            <td><input type="text" value="<?php echo get_site_url();?>" readonly="readonly" class="regular-text" onClick="this.select();" size="30" /></td>
+            <td><?php echo get_site_url();?></td>
         </tr>
         <tr>
             <th>Authorized redirect URIs</th>
-            <td><input type="text" value="<?php echo cf_zoho\cf_zoho_redirect_url();?>" readonly="readonly" class="regular-text" onClick="this.select();" size="100" /></td>
+            <td><?php echo cf_zoho\cf_zoho_redirect_url();?></td>
         </tr>
         <tr>
             <th>Client Type</th>
