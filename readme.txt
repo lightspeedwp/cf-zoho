@@ -12,6 +12,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 * Changed all calls to old Zoho API to new REST API.
 * Switched to using Caldera pre_processor rather than processor in caldera_forms_get_form_processors to allow for feedback to end user
 * Renamed 'cf_zoho_create_entry' hook to 'process_zoho_submission' as the old hook passes a different $object array which will probably break any code hooking this.
+* Added in the Travis Integration
 
 = 1.1.2 =
 * Dev - Added in a filter to replace any checkbox values with a set "true" or "false"
