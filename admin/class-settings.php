@@ -151,12 +151,12 @@ class Settings {
         );
 
         // Force text input.
-        add_settings_section(
+        /*add_settings_section(
             'fields',
             __( 'Dropdown / Pick List Fields to be Forced as Text Inputs.', 'cfzoho' ),
             [ $this, 'cfzoho_settings_field_cb' ],
             'cfzoho'
-        );
+        );*/
 
         // Flush transients.
         add_settings_section(
