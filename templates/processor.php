@@ -37,27 +37,27 @@
 <?php endif; ?>
 
 <div id="{{_id}}_lead">
-	
+
 	<?php foreach ( $module->get_module_data() as $section ) : ?>
 
 		<h4><?php echo $section['name']; ?></h4>
 
 		<?php foreach ( $section['fields'] as $field_num => $field ) : ?>
-			
+
 			<?php $key = sanitize_key( $field['field_label'] ); ?>
 
 			<?php if ( ! empty( $field['val'] ) ) : ?>
-				
+
 				<?php include CFZ_TEMPLATE_PATH . 'zoho-user-select.php'; ?>
 
 			<?php else : ?>
-				
+
 				<div class="caldera-config-group">
 
 					<label for="{{_id}}<?php echo $field_num; ?>">
-						<?php echo $module->label( $field );?>
+						<?php echo $module->label( $field ); ?>
 					</label>
-					
+
 					<div class="caldera-config-field">
 						<?php include CFZ_TEMPLATE_PATH . $module->template( $field ); ?>
 					</div>

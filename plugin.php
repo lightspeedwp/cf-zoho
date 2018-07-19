@@ -22,6 +22,7 @@
  */
 
 namespace cf_zoho;
+
 use cf_zoho\includes;
 
 // If this file is called directly, abort.
@@ -35,7 +36,7 @@ define( 'CFZ_VERSION', '2.0.0' );
 define( 'CFZ_ABSPATH', dirname( __FILE__ ) . '/' );
 define( 'CFZ_TEMPLATE_PATH', CFZ_ABSPATH . 'templates/' );
 define( 'CFZ_PROCESSORS_PATH', CFZ_ABSPATH . 'processors/' );
-define( 'CFZ_URL',  plugin_dir_url( __FILE__ ) . '/' );
+define( 'CFZ_URL', plugin_dir_url( __FILE__ ) . '/' );
 define( 'CFZ_OPTION_SLUG', '_uix_cf-zoho' );
 define( 'CFZ_TRANSIENT_SLUG', '_uix_cf-zoho_transient' );
 
@@ -51,7 +52,7 @@ register_setting( 'cfzoho', CFZ_OPTION_SLUG );
  * Can't use menu_page_url in Zoho requests so built this instead.
  *
  * @return string CF Zoho Options page URL.
- */ 
+ */
 function cf_zoho_redirect_url() {
 	return admin_url( add_query_arg( 'page', 'cfzoho', 'options-general.php' ) );
 }
