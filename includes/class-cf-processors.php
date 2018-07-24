@@ -135,6 +135,29 @@ class CF_Processors {
 	}
 
 	/**
+	 * Logs an event or an error with processor submission.
+	 *
+	 * @param string  $message    Error or event response.
+	 * @param array   $submission Data that was submitted to the form.
+	 * @param integer $id         ID of the form submission.
+	 * @param string  $type       Either error or event.
+	 */
+	public function log( $message, $submission, $id, $type ) {
+
+		$submission = [
+			'response'		=> $message,
+			'submission'	=> $submission,	
+		];
+
+		WP_Logging::add(
+			'Submission for ' . $this->module . ' form: ' . $type, 
+			wp_json_encode( $submission ),
+			$id,
+			$type
+		);
+	}
+
+	/**
 	 * Process form submissions.
 	 *
 	 * @return null|array Array containining id if successfull|null response on fail.
@@ -168,6 +191,8 @@ class CF_Processors {
 
 		if ( is_wp_error( $response ) ) {
 
+			$this->log( $response->get_error_message(), $object, 0, 'error' );
+
 			return [
 				'note' => $response->get_error_message(),
 				'type' => 'error',
@@ -176,6 +201,8 @@ class CF_Processors {
 
 		if ( ! isset( $response['data'][0]['code'] ) || 'SUCCESS' !== $response['data'][0]['code'] ) {
 
+			$this->log( $response['message'], $object, 0, 'error' );
+
 			return [
 				'note' => $response['message'],
 				'type' => 'error',
@@ -183,6 +210,8 @@ class CF_Processors {
 		}
 
 		$object_id = $response['data'][0]['details']['id'];
+
+		$this->log( $response['data'][0]['message'], $object, $object_id, 'event' );
 
 		do_action( 'cf_zoho_create_entry_complete', $object_id, $this->config, $this->form );
 	}

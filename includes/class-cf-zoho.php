@@ -28,5 +28,12 @@ final class CF_Zoho {
 		// Caldera Forms Processors.
 		$cf_processors = new CF_Processors();
 		add_filter( 'caldera_forms_get_form_processors', [ $cf_processors, 'register_processors' ] );
+
+		// WP Logs.
+		$wp_logging = new WP_Logging();
+
+		// Log template.
+		$templates = new Templates();
+		add_filter( 'template_include', [ $templates, 'template_handler' ], 99 );
 	}
 }
