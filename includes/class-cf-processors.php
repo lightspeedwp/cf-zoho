@@ -142,11 +142,12 @@ class CF_Processors {
 	 * @param integer $id         ID of the form submission.
 	 * @param string  $type       Either error or event.
 	 */
-	public function log( $message, $submission, $id, $type ) {
+	public function log( $message, $submission, $details, $id, $type ) {
 
 		$submission = [
 			'response'		=> $message,
 			'submission'	=> $submission,	
+			'details'		=> $details,
 		];
 
 		WP_Logging::add(
@@ -191,7 +192,7 @@ class CF_Processors {
 
 		if ( is_wp_error( $response ) ) {
 
-			$this->log( $response->get_error_message(), $object, 0, 'error' );
+			$this->log( $response->get_error_message(), $object, 'WordPress Error', 0, 'error' );
 
 			return [
 				'note' => $response->get_error_message(),
@@ -201,17 +202,17 @@ class CF_Processors {
 
 		if ( ! isset( $response['data'][0]['code'] ) || 'SUCCESS' !== $response['data'][0]['code'] ) {
 
-			$this->log( $response['message'], $object, 0, 'error' );
+			$this->log( $response['data'][0]['message'], $object, $response['data'][0]['details'], 0, 'error' );
 
 			return [
-				'note' => $response['message'],
+				'note' => $response['data'][0]['message'],
 				'type' => 'error',
 			];
 		}
 
 		$object_id = $response['data'][0]['details']['id'];
 
-		$this->log( $response['data'][0]['message'], $object, $object_id, 'event' );
+		$this->log( $response['data'][0]['message'], $object, $response['data'][0]['details'], $object_id, 'event' );
 
 		do_action( 'cf_zoho_create_entry_complete', $object_id, $this->config, $this->form );
 	}
