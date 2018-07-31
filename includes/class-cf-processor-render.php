@@ -6,6 +6,7 @@
  */
 
 namespace cf_zoho\includes;
+
 use cf_zoho\includes\zohoapi;
 
 /**
@@ -13,344 +14,344 @@ use cf_zoho\includes\zohoapi;
  */
 class CF_Processor_Render {
 
-    /**
-     * Options class.
-     *
-     * @var object.
-     */
-    private $options;
+	/**
+	 * Options class.
+	 *
+	 * @var object.
+	 */
+	private $options;
 
-    /**
-     * Cache class.
-     *
-     * @var object.
-     */
-    private $cache;
+	/**
+	 * Cache class.
+	 *
+	 * @var object.
+	 */
+	private $cache;
 
-    /**
-     * Getter for $cache.
-     *
-     * @return object Cache class.
-     */
-    public function get_cache() {
-        return $this->cache;
-    }
+	/**
+	 * Getter for $cache.
+	 *
+	 * @return object Cache class.
+	 */
+	public function get_cache() {
+		return $this->cache;
+	}
 
-    /**
-     * Get class.
-     *
-     * @var object.
-     */
-    public $get;
+	/**
+	 * Get class.
+	 *
+	 * @var object.
+	 */
+	public $get;
 
-    /**
-     * Getter for $get.
-     *
-     * @return object Get class.
-     */
-    public function get_get() {
-        return $this->get;
-    }
+	/**
+	 * Getter for $get.
+	 *
+	 * @return object Get class.
+	 */
+	public function get_get() {
+		return $this->get;
+	}
 
-    /**
-     * Module we are rendering.
-     *
-     * @var string.
-     */
-    private $module = '';
+	/**
+	 * Module we are rendering.
+	 *
+	 * @var string.
+	 */
+	private $module = '';
 
-    /**
-     * Getter for $module.
-     *
-     * @return string Module we are rendering.
-     */
-    public function get_module() {
-        return $this->module;
-    }
-    
-    /**
-     * Module data.
-     *
-     * @var array.
-     */
-    private $module_data = [];
+	/**
+	 * Getter for $module.
+	 *
+	 * @return string Module we are rendering.
+	 */
+	public function get_module() {
+		return $this->module;
+	}
 
-    /**
-     * Setter for $module_data.
-     * 
-     * @internal test_that_module_data_is_correctly_built.
-     */
-    public function set_module_data() {
+	/**
+	 * Module data.
+	 *
+	 * @var array.
+	 */
+	private $module_data = [];
 
-        $module = $this->get_module();
-        $cache  = $this->get_cache()->get_plugin_cache_item( $module );
+	/**
+	 * Setter for $module_data.
+	 *
+	 * @internal test_that_module_data_is_correctly_built.
+	 */
+	public function set_module_data() {
 
-        if ( false !== $cache ) {
-            $this->module_data = $cache;
-            return;
-        }
+		$module = $this->get_module();
+		$cache  = $this->get_cache()->get_plugin_cache_item( $module );
 
-        $path = '/crm/v2/settings/layouts?module=' . $module;
-        $data = $this->get_get()->request( $path );
+		if ( false !== $cache ) {
+			$this->module_data = $cache;
+			return;
+		}
 
-        if ( is_wp_error( $data ) ) {
-            $this->errors[] = $data->get_error_message();
-            return;
-        }
+		$path = '/crm/v2/settings/layouts?module=' . $module;
+		$data = $this->get_get()->request( $path );
 
-        if ( isset( $data['status'] ) && 'error' === $data['status'] ) {
-            $this->errors[] = $data['message'];
-            return;
-        }
+		if ( is_wp_error( $data ) ) {
+			$this->errors[] = $data->get_error_message();
+			return;
+		}
 
-        $module_data = $data['layouts'][0]['sections'];
+		if ( isset( $data['status'] ) && 'error' === $data['status'] ) {
+			$this->errors[] = $data['message'];
+			return;
+		}
 
-        // Remove any section without fields.
-        $no_empty_fields = array_filter(
-            $module_data,
-            function( $section ) {
-                return ! empty( $section['fields'] );
-            }
-        );
+		$module_data = $data['layouts'][0]['sections'];
 
-        $ignore_fields    = $this->get_ignore_fields();
-        $force_text_input = $this->get_force_text_input();
+		// Remove any section without fields.
+		$no_empty_fields = array_filter(
+			$module_data,
+			function( $section ) {
+				return ! empty( $section['fields'] );
+			}
+		);
 
-        array_walk(
-            $no_empty_fields,
-            function( &$value, $key ) use ( $ignore_fields, $force_text_input ) {
-                
-                foreach ( $value['fields'] as $field_key => $fields ) {
+		$ignore_fields    = $this->get_ignore_fields();
+		$force_text_input = $this->get_force_text_input();
 
-                    // Remove ignored fields.
-                    if( in_array( $fields['field_label'], $ignore_fields, true ) ) {
-                        unset( $value['fields'][ $field_key ] );
-                        continue;
-                    }
+		array_walk(
+			$no_empty_fields,
+			function( &$value, $key ) use ( $ignore_fields, $force_text_input ) {
 
-                    // No data type, carry on.
-                    if ( empty( $fields['data_type'] ) ) {
-                        continue;
-                    }
+				foreach ( $value['fields'] as $field_key => $fields ) {
 
-                    // Some other data type, carry on.
-                    if ( 'ownerlookup' !== $fields['data_type'] ) {
-                        continue;
-                    }
+					// Remove ignored fields.
+					if ( in_array( $fields['field_label'], $ignore_fields, true ) ) {
+						unset( $value['fields'][ $field_key ] );
+						continue;
+					}
 
-                    $key = sanitize_key( $fields['field_label'] );
-error_log($key);
-                    // If we are forcing text input, carry on.
-                    if ( in_array( $key, $force_text_input, true ) ) {
-                        continue;
-                    }
+					// No data type, carry on.
+					if ( empty( $fields['data_type'] ) ) {
+						continue;
+					}
 
-                    // Otherwise set val to users array.
-                    $value['fields'][ $field_key ]['val'] = $this->get_users();
-                }
+					// Some other data type, carry on.
+					if ( 'ownerlookup' !== $fields['data_type'] ) {
+						continue;
+					}
 
-                // Reset array keys.
-                $value['fields'] = array_values( $value['fields'] );
-            }
-        );        
+					$key = sanitize_key( $fields['field_label'] );
+					error_log( $key );
+					// If we are forcing text input, carry on.
+					if ( in_array( $key, $force_text_input, true ) ) {
+						continue;
+					}
 
-        $this->module_data =  $no_empty_fields;
-        $this->get_cache()->set_plugin_cache_item( $module, $no_empty_fields );
-    }
+					// Otherwise set val to users array.
+					$value['fields'][ $field_key ]['val'] = $this->get_users();
+				}
 
-    /**
-     * Getter for $module_data.
-     *
-     * @return array Module data.
-     */
-    public function get_module_data() {
-        return $this->module_data;
-    }
-    
-    /**
-     * Users IDs and Names as stored on Zoho CRM.
-     *
-     * @var array.
-     */
-    private $users = [];
+				// Reset array keys.
+				$value['fields'] = array_values( $value['fields'] );
+			}
+		);
 
-    /**
-     * Setter for $users.
-     */
-    public function set_users() {
+		$this->module_data = $no_empty_fields;
+		$this->get_cache()->set_plugin_cache_item( $module, $no_empty_fields );
+	}
 
-        $cache  = $this->cache->get_plugin_cache_item( 'users' );
+	/**
+	 * Getter for $module_data.
+	 *
+	 * @return array Module data.
+	 */
+	public function get_module_data() {
+		return $this->module_data;
+	}
 
-        if ( false !== $cache ) {
-            $this->users = $cache;
-            return;
-        }
+	/**
+	 * Users IDs and Names as stored on Zoho CRM.
+	 *
+	 * @var array.
+	 */
+	private $users = [];
 
-        $path = '/crm/v2/users';
-        $data = $this->get->request( $path );
+	/**
+	 * Setter for $users.
+	 */
+	public function set_users() {
 
-        if ( is_wp_error( $data ) ) {
-            $this->errors[] = $data->get_error_message();
-            return;
-        }
+		$cache = $this->cache->get_plugin_cache_item( 'users' );
 
-        foreach ( $data['users'] as $user ) {
+		if ( false !== $cache ) {
+			$this->users = $cache;
+			return;
+		}
 
-            $this->users[] = [
-                'label' => $user['full_name'],
-                'value' => $user['id']	
-            ];
-        }
-        $this->cache->set_plugin_cache_item( 'users', $this->users );
-    }
+		$path = '/crm/v2/users';
+		$data = $this->get->request( $path );
 
-    /**
-     * Getter for $users.
-     *
-     * @return array Users IDs and Names as stored on Zoho CRM.
-     */
-    public function get_users() {
-        return $this->users;
-    }
+		if ( is_wp_error( $data ) ) {
+			$this->errors[] = $data->get_error_message();
+			return;
+		}
 
-    /**
-     * Errors encountered by the processor.
-     *
-     * @var array.
-     */
-    private $errors = [];
+		foreach ( $data['users'] as $user ) {
 
-    /**
-     * Getter for $errors.
-     *
-     * @return array Errors encountered by the processor.
-     */
-    public function get_errors() {
-        return $this->errors;
-    }
+			$this->users[] = [
+				'label' => $user['full_name'],
+				'value' => $user['id'],
+			];
+		}
+		$this->cache->set_plugin_cache_item( 'users', $this->users );
+	}
 
-    /**
-     * Zoho fields to ignore when rendering fields to processor.
-     *
-     * @var array.
-     */
-    private $ignore_fields = [
-        'Account Name',
-        'Closed Time',
-        'Created By',
-        'Created Time',
-        'Industry',
-        'Modified By',
-        'Modified Time',
-        'Recurring Activity',
-        'Remind At',
-        'Send Notification Email',
-        'Vendor Name',
-        'What Id',
-        'Who Id',
-    ];
+	/**
+	 * Getter for $users.
+	 *
+	 * @return array Users IDs and Names as stored on Zoho CRM.
+	 */
+	public function get_users() {
+		return $this->users;
+	}
 
-    /**
-     * Getter for $ignore_fields.
-     *
-     * @return array Zoho fields to ignore when rendering fields to processor.
-     */
-    public function get_ignore_fields() {
-        return $this->ignore_fields;
-    }
+	/**
+	 * Errors encountered by the processor.
+	 *
+	 * @var array.
+	 */
+	private $errors = [];
 
-    /**
-     * Fields that should be forced to be text input.
-     * E.g. Any select that would normally display users.
-     *
-     * @var array.
-     */
-    private $force_text_input = [];
+	/**
+	 * Getter for $errors.
+	 *
+	 * @return array Errors encountered by the processor.
+	 */
+	public function get_errors() {
+		return $this->errors;
+	}
 
-    /**
-     * Sets $force_text_input to an array containing any fields specified in options.
-     */
-    public function set_force_text_input() {
+	/**
+	 * Zoho fields to ignore when rendering fields to processor.
+	 *
+	 * @var array.
+	 */
+	private $ignore_fields = [
+		'Account Name',
+		'Closed Time',
+		'Created By',
+		'Created Time',
+		'Industry',
+		'Modified By',
+		'Modified Time',
+		'Recurring Activity',
+		'Remind At',
+		'Send Notification Email',
+		'Vendor Name',
+		'What Id',
+		'Who Id',
+	];
 
-        $config_object = $this->options->get_option( 'fields' );
+	/**
+	 * Getter for $ignore_fields.
+	 *
+	 * @return array Zoho fields to ignore when rendering fields to processor.
+	 */
+	public function get_ignore_fields() {
+		return $this->ignore_fields;
+	}
 
-        $key = $this->module . '_fields';
+	/**
+	 * Fields that should be forced to be text input.
+	 * E.g. Any select that would normally display users.
+	 *
+	 * @var array.
+	 */
+	private $force_text_input = [];
 
-        if( empty( $config_object[ $key ] ) ) {
-            return;
-        }
-        error_log(print_r($config_object[$key],true));
-        $this->force_text_input = explode( "\n", $config_object[ $key ] );
-    }
+	/**
+	 * Sets $force_text_input to an array containing any fields specified in options.
+	 */
+	public function set_force_text_input() {
 
-    /**
-     * Getter for $force_text_input.
-     *
-     * @return array Fields that should be forced to be text input.
-     */
-    public function get_force_text_input() {
-        return $this->force_text_input;
-    }
+		$config_object = $this->options->get_option( 'fields' );
 
-    /**
-     * Class constructor.
-     */
-    public function __construct( $module ) {        
+		$key = $this->module . '_fields';
 
-        $this->options = new Options();
-        $this->cache   = new Cache();
-        $this->get     = new zohoapi\Get();
-        $this->module  = $module;
+		if ( empty( $config_object[ $key ] ) ) {
+			return;
+		}
+		error_log( print_r( $config_object[ $key ], true ) );
+		$this->force_text_input = explode( "\n", $config_object[ $key ] );
+	}
 
-        $this->set_force_text_input();
-        $this->set_users();
-        $this->set_module_data();
-    }
+	/**
+	 * Getter for $force_text_input.
+	 *
+	 * @return array Fields that should be forced to be text input.
+	 */
+	public function get_force_text_input() {
+		return $this->force_text_input;
+	}
 
-    /**
-     * Whether the module requires the approval mode checkboxes.
-     *
-     * @return boolean.
-     */
-    public function has_approval_mode() {
-        return in_array( $this->module, [ 'leads', 'contacts' ], true );
-    }
+	/**
+	 * Class constructor.
+	 */
+	public function __construct( $module ) {
 
-    /**
-     * Build the label name for a field.
-     * Indicate if the field is required.
-     *
-     * @param  array  $field Field array.
-     * @return string        Field label.
-     */
-    public function label( $field ) {
+		$this->options = new Options();
+		$this->cache   = new Cache();
+		$this->get     = new zohoapi\Get();
+		$this->module  = $module;
 
-        $label = $field['field_label'];
+		$this->set_force_text_input();
+		$this->set_users();
+		$this->set_module_data();
+	}
 
-        if( false === (bool) $field['required'] ) {
-            return $label;
-        }
-        
-        $label .= ' <span style="color:#ff0000;">*</span> ';
+	/**
+	 * Whether the module requires the approval mode checkboxes.
+	 *
+	 * @return boolean.
+	 */
+	public function has_approval_mode() {
+		return in_array( $this->module, [ 'leads', 'contacts' ], true );
+	}
 
-        return $label;
-    }
+	/**
+	 * Build the label name for a field.
+	 * Indicate if the field is required.
+	 *
+	 * @param  array $field Field array.
+	 * @return string        Field label.
+	 */
+	public function label( $field ) {
 
-    /**
-     * Return the template for the field type..
-     *
-     * @param  array  $field Field array.
-     * @return string        Field template.
-     */
-    public function template( $field ) {
+		$label = $field['field_label'];
 
-        switch ( $field['data_type'] ) {
+		if ( false === (bool) $field['required'] ) {
+			return $label;
+		}
 
-            case 'textarea' :
-                return 'zoho-textarea.php';
+		$label .= ' <span style="color:#ff0000;">*</span> ';
 
-            default :
-                return 'zoho-input.php';
-        }
-    }
+		return $label;
+	}
+
+	/**
+	 * Return the template for the field type..
+	 *
+	 * @param  array $field Field array.
+	 * @return string        Field template.
+	 */
+	public function template( $field ) {
+
+		switch ( $field['data_type'] ) {
+
+			case 'textarea':
+				return 'zoho-textarea.php';
+
+			default:
+				return 'zoho-input.php';
+		}
+	}
 }
