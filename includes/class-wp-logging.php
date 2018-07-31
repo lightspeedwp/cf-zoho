@@ -448,4 +448,6 @@ class WP_Logging {
 	}
 
 }
-$GLOBALS['wp_logs'] = new WP_Logging();
+if ( ! class_exists( 'WP_Logging' ) ) {
+	$GLOBALS['wp_logs'] = new WP_Logging();
+}

@@ -30,7 +30,9 @@ final class CF_Zoho {
 		add_filter( 'caldera_forms_get_form_processors', [ $cf_processors, 'register_processors' ] );
 
 		// WP Logs.
-		$wp_logging = new WP_Logging();
+		if ( ! class_exists( 'WP_Logging' ) ) {
+			$wp_logging = new WP_Logging();
+		}
 
 		// Log template.
 		$templates = new Templates();
