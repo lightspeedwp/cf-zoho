@@ -238,6 +238,11 @@ class CF_Processors {
 
 			foreach ( $section['fields'] as $field ) {
 
+				$value            = $this->get_form_value( $field );
+
+				if ( '' === $value ) {
+					continue;
+				}
 				$label            = str_replace( ' ', '_', $field['field_label'] );
 				$object[ $label ] = $this->get_form_value( $field );
 			}
@@ -258,7 +263,7 @@ class CF_Processors {
 			case 'leads':
 			case 'contacts':
 				$object = [
-					'Email_Opt_Out' => ! empty( $this->config['_email_opt_out'] ) ? 'true' : 'false',
+					'Email_Opt_Out' => ! empty( $this->config['_email_opt_out'] ) ? (bool) true : (bool) false,
 					'Description'   => '',
 				];
 
@@ -356,17 +361,10 @@ class CF_Processors {
 
 		$true_options = [ 'Yes', 'yes', 'True', '1' ];
 
-		foreach ( $true_options as $true_option ) {
-			$value = str_replace( $true_option, 'true', $value );
+		if ( in_array( $value, $true_options, true ) ) {
+			return (bool) true;
 		}
-
-		$false_options = [ 'No', 'no', 'False', '0' ];
-
-		foreach ( $false_options as $false_option ) {
-			$value = str_replace( $false_option, 'false', $value );
-		}
-
-		return $value;
+		
+		return (bool) false;
 	}
-
 }

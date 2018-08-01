@@ -26,7 +26,8 @@ class Post extends Connect {
 
 		$base_url = $this->tokens->get_api_domain();
 		$url      = $base_url . $path;
-
+		error_log(print_r($body,true));
+error_log(wp_json_encode( $body ));
 		$response = wp_remote_post(
 			$url, [
 				'timeout' => 45,
