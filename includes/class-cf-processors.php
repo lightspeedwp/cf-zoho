@@ -48,7 +48,7 @@ class CF_Processors {
 			'description'   => __( 'Create or Update a lead on form submission', 'cf-zoho-2' ),
 			'author'        => 'Matt Bush',
 			'author_url'    => 'https://haycroftmedia.com/',
-			'pre_processor' => [ $this, 'process_lead_submission' ],
+			'processor' 	=> [ $this, 'process_lead_submission' ],
 			'template'      => CFZ_PROCESSORS_PATH . 'lead-processor-config.php',
 			'icon'          => CFZ_URL . 'assets/images/icon.png',
 			'magic_tags'    => [
@@ -61,7 +61,7 @@ class CF_Processors {
 			'description'   => __( 'Create or Update a contact on form submission', 'cf-zoho-2' ),
 			'author'        => 'Matt Bush',
 			'author_url'    => 'https://haycroftmedia.com/',
-			'pre_processor' => [ $this, 'process_contact_submission' ],
+			'processor' 	=> [ $this, 'process_contact_submission' ],
 			'template'      => CFZ_PROCESSORS_PATH . 'contact-processor-config.php',
 			'icon'          => CFZ_URL . 'assets/images/icon.png',
 			'magic_tags'    => [
@@ -74,7 +74,7 @@ class CF_Processors {
 			'description'   => __( 'Create or Update a task on form submission', 'cf-zoho-2' ),
 			'author'        => 'Matt Bush',
 			'author_url'    => 'https://haycroftmedia.com/',
-			'pre_processor' => [ $this, 'process_task_submission' ],
+			'processor' 	=> [ $this, 'process_task_submission' ],
 			'template'      => CFZ_PROCESSORS_PATH . 'task-processor-config.php',
 			'icon'          => CFZ_URL . 'assets/images/icon.png',
 			'magic_tags'    => [ 'id' ],
@@ -215,6 +215,8 @@ class CF_Processors {
 		$this->log( $response['data'][0]['message'], $object, $response['data'][0]['details'], $object_id, 'event' );
 
 		do_action( 'cf_zoho_create_entry_complete', $object_id, $this->config, $this->form );
+		
+		return [ 'id' => $object_id ];
 	}
 
 	/**
