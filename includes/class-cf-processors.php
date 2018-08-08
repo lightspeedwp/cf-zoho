@@ -188,6 +188,10 @@ class CF_Processors {
 		$post = new zohoapi\Post();
 		$path = '/crm/v2/' . ucfirst( $this->module );
 
+		if ( isset( $this->config['_allow_duplicates'] ) && 'update' === $this->config['_allow_duplicates'] ) {
+			$path .= '/upsert';
+		}
+
 		$response = $post->request( $path, $body );
 
 		if ( is_wp_error( $response ) ) {

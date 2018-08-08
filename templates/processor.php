@@ -14,10 +14,14 @@
 			<input type="checkbox" id="{{_id}}_workflow_mode" class="field-config" name="{{_name}}[_workflow_mode]" {{#if _workflow_mode}}checked="checked"{{/if}}> <?php esc_html_e( 'Workflow Mode', 'cf-zoho' ); ?>
 		</label>
 
-	</div>
-<!--
-	<div class="caldera-config-field">
+		<label>
+			<input type="checkbox" id="{{_id}}_update_existing" class="field-config" value="update" name="{{_name}}[_allow_duplicates]" {{#is _allow_duplicates value="update"}}checked="checked"{{/is}}> <?php esc_html_e( 'Update existing records', 'cf-zoho' ); ?>
+		</label>
 
+	</div>
+
+	<div class="caldera-config-field">
+<!--
 		<label>
 			<input type="radio" id="{{_id}}_allow_duplicates" class="field-config" value="allow" name="{{_name}}[_allow_duplicates]" {{#is _allow_duplicates value=""}}checked="checked"{{/is}} {{#is _allow_duplicates value="allow"}}selected="selected"{{/is}}> <?php esc_html_e( 'Allow duplicate records', 'cf-zoho' ); ?>
 		</label>
@@ -29,9 +33,9 @@
 		<label>
 			<input type="radio" id="{{_id}}_no_updates" class="field-config" value="none" name="{{_name}}[_allow_duplicates]" {{#is _allow_duplicates value="none"}}checked="checked"{{/is}}> <?php esc_html_e( 'No duplicates, no updates', 'cf-zoho' ); ?>
 		</label>
-
-	</div>
 -->
+	</div>
+
 </div>
 
 <?php endif; ?>
