@@ -165,7 +165,13 @@ class CF_Processors {
 	 */
 	public function do_submission() {
 
+		$path   = '/crm/v2/' . ucfirst( $this->module );
 		$object = $this->build_object();
+
+		if ( isset( $this->config['_allow_duplicates'] ) && 'update' === $this->config['_allow_duplicates'] ) {
+			$path .= '/upsert';
+			$object['duplicate_check_fields'] = 'Email';
+		}
 
 		$trigger = [];
 
@@ -183,15 +189,8 @@ class CF_Processors {
 		];
 
 		// Filter hook.
-		$object = apply_filters( 'process_zoho_submission', $body, $this->config, $this->form );
-
-		$post = new zohoapi\Post();
-		$path = '/crm/v2/' . ucfirst( $this->module );
-
-		if ( isset( $this->config['_allow_duplicates'] ) && 'update' === $this->config['_allow_duplicates'] ) {
-			$path .= '/upsert';
-		}
-
+		$body     = apply_filters( 'process_zoho_submission', $body, $this->config, $this->form );
+		$post     = new zohoapi\Post();
 		$response = $post->request( $path, $body );
 
 		if ( is_wp_error( $response ) ) {
@@ -365,12 +364,6 @@ class CF_Processors {
 			return $value;
 		}
 
-		$true_options = [ 'Yes', 'yes', 'True', '1' ];
-
-		if ( in_array( $value, $true_options, true ) ) {
-			return (bool) true;
-		}
-		
-		return (bool) false;
+		return empty( $value ) ? (bool) false : (bool) true;
 	}
 }
