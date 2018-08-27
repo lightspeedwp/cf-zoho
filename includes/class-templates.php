@@ -12,12 +12,12 @@ namespace cf_zoho\includes;
  */
 class Templates {
 
-    public function template_handler( $template ) {
+	public function template_handler( $template ) {
 
-        if ( ! is_singular( 'wp_log' ) ) {
-            return $template;
-        }
-        
-        return CFZ_TEMPLATE_PATH . '/single-wp-log.php';
-    }
+		if ( ! is_singular( 'wp_log' ) ) {
+			return $template;
+		}
+
+		return CFZ_TEMPLATE_PATH . '/single-wp-log.php';
+	}
 }

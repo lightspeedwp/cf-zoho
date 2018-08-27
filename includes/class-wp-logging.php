@@ -47,17 +47,17 @@ class WP_Logging {
 	 * @uses $this->get_logs_to_prune()     Returns array of posts via get_posts of logs to prune
 	 * @uses $this->prune_old_logs()        Deletes the logs that we don't want anymore
 	 */
-	public function prune_logs(){
+	public function prune_logs() {
 
 		$should_we_prune = apply_filters( 'wp_logging_should_we_prune', false );
 
-		if ( $should_we_prune === false ){
+		if ( false === $should_we_prune ) {
 			return;
 		}
 
 		$logs_to_prune = $this->get_logs_to_prune();
 
-		if ( isset( $logs_to_prune ) && ! empty( $logs_to_prune ) ){
+		if ( isset( $logs_to_prune ) && ! empty( $logs_to_prune ) ) {
 			$this->prune_old_logs( $logs_to_prune );
 		}
 
@@ -75,11 +75,11 @@ class WP_Logging {
 	 *
 	 * @filter wp_logging_force_delete_log         Allows user to override the force delete setting which bypasses the trash
 	 */
-	private function prune_old_logs( $logs ){
+	private function prune_old_logs( $logs ) {
 
 		$force = apply_filters( 'wp_logging_force_delete_log', true );
 
-		foreach( $logs as $l ){
+		foreach ( $logs as $l ) {
 			$id = is_int( $l ) ? $l : $l->ID;
 			wp_delete_post( $id, $force );
 		}
@@ -100,7 +100,7 @@ class WP_Logging {
 	 * @filter wp_logging_prune_when           Users can change how long ago we are looking for logs to prune
 	 * @filter wp_logging_prune_query_args     Gives users access to change any query args for pruning
 	 */
-	private function get_logs_to_prune(){
+	private function get_logs_to_prune() {
 
 		$how_old = apply_filters( 'wp_logging_prune_when', '2 weeks ago' );
 
@@ -111,8 +111,8 @@ class WP_Logging {
 				array(
 					'column' => 'post_date_gmt',
 					'before' => (string) $how_old,
-				)
-			)
+				),
+			),
 		);
 
 		$old_logs = get_posts( apply_filters( 'wp_logging_prune_query_args', $args ) );
@@ -134,7 +134,8 @@ class WP_Logging {
 
 	private static function log_types() {
 		$terms = array(
-			'error', 'event'
+			'error',
+			'event',
 		);
 
 		return apply_filters( 'wp_log_types', $terms );
@@ -147,7 +148,7 @@ class WP_Logging {
 	 * @access      public
 	 * @since       1.0
 	 *
-	 * @uses 		register_post_type()
+	 * @uses        register_post_type()
 	 *
 	 * @return     void
 	*/
@@ -163,7 +164,7 @@ class WP_Logging {
 			'rewrite'         => false,
 			'capability_type' => 'post',
 			'supports'        => array( 'title', 'editor' ),
-			'can_export'      => false
+			'can_export'      => false,
 		);
 		register_post_type( 'wp_log', apply_filters( 'wp_logging_post_type_args', $log_args ) );
 
@@ -178,9 +179,9 @@ class WP_Logging {
 	 * @access      public
 	 * @since       1.0
 	 *
-	 * @uses 		register_taxonomy()
-	 * @uses 		term_exists()
-	 * @uses 		wp_insert_term()
+	 * @uses        register_taxonomy()
+	 * @uses        term_exists()
+	 * @uses        wp_insert_term()
 	 *
 	 * @return     void
 	*/
@@ -192,7 +193,7 @@ class WP_Logging {
 		$types = self::log_types();
 
 		foreach ( $types as $type ) {
-			if( ! term_exists( $type, 'wp_log_type' ) ) {
+			if ( ! term_exists( $type, 'wp_log_type' ) ) {
 				wp_insert_term( $type, 'wp_log_type' );
 			}
 		}
@@ -225,7 +226,7 @@ class WP_Logging {
 	 * @access      private
 	 * @since       1.0
 	 *
-	 * @uses 		self::insert_log()
+	 * @uses        self::insert_log()
 	 *
 	 * @return      int The ID of the new log entry
 	*/
@@ -236,7 +237,7 @@ class WP_Logging {
 			'post_title'   => $title,
 			'post_content' => $message,
 			'post_parent'  => $parent,
-			'log_type'     => $type
+			'log_type'     => $type,
 		);
 
 		return self::insert_log( $log_data );
@@ -250,11 +251,11 @@ class WP_Logging {
 	 * @access      private
 	 * @since       1.0
 	 *
-	 * @uses 		wp_parse_args()
-	 * @uses 		wp_insert_post()
-	 * @uses 		update_post_meta()
-	 * @uses 		wp_set_object_terms()
-	 * @uses 		sanitize_key()
+	 * @uses        wp_parse_args()
+	 * @uses        wp_insert_post()
+	 * @uses        update_post_meta()
+	 * @uses        wp_set_object_terms()
+	 * @uses        sanitize_key()
 	 *
 	 * @return      int The ID of the newly created log item
 	*/
@@ -266,7 +267,7 @@ class WP_Logging {
 			'post_status'  => 'publish',
 			'post_parent'  => 0,
 			'post_content' => '',
-			'log_type'     => false
+			'log_type'     => false,
 		);
 
 		$args = wp_parse_args( $log_data, $defaults );
@@ -277,14 +278,13 @@ class WP_Logging {
 		$log_id = wp_insert_post( $args );
 
 		// set the log type, if any
-		if( $log_data['log_type'] && self::valid_type( $log_data['log_type'] ) ) {
+		if ( $log_data['log_type'] && self::valid_type( $log_data['log_type'] ) ) {
 			wp_set_object_terms( $log_id, $log_data['log_type'], 'wp_log_type', false );
 		}
 
-
 		// set log meta, if any
-		if( $log_id && ! empty( $log_meta ) ) {
-			foreach( (array) $log_meta as $key => $meta ) {
+		if ( $log_id && ! empty( $log_meta ) ) {
+			foreach ( (array) $log_meta as $key => $meta ) {
 				update_post_meta( $log_id, '_wp_log_' . sanitize_key( $key ), $meta );
 			}
 		}
@@ -302,9 +302,9 @@ class WP_Logging {
 	 * @access      private
 	 * @since       1.0
 	 *
-	 * @uses 		wp_parse_args()
-	 * @uses 		wp_update_post()
-	 * @uses 		update_post_meta()
+	 * @uses        wp_parse_args()
+	 * @uses        wp_update_post()
+	 * @uses        update_post_meta()
 	 *
 	 * @return      bool True if successful, false otherwise
 	*/
@@ -315,7 +315,7 @@ class WP_Logging {
 		$defaults = array(
 			'post_type'   => 'wp_log',
 			'post_status' => 'publish',
-			'post_parent' => 0
+			'post_parent' => 0,
 		);
 
 		$args = wp_parse_args( $log_data, $defaults );
@@ -323,10 +323,11 @@ class WP_Logging {
 		// store the log entry
 		$log_id = wp_update_post( $args );
 
-		if( $log_id && ! empty( $log_meta ) ) {
-			foreach( (array) $log_meta as $key => $meta ) {
-				if( ! empty( $meta ) )
+		if ( $log_id && ! empty( $log_meta ) ) {
+			foreach ( (array) $log_meta as $key => $meta ) {
+				if ( ! empty( $meta ) ) {
 					update_post_meta( $log_id, '_wp_log_' . sanitize_key( $key ), $meta );
+				}
 			}
 		}
 
@@ -341,13 +342,19 @@ class WP_Logging {
 	 * @access      private
 	 * @since       1.0
 	 *
-	 * @uses 		self::get_connected_logs()
+	 * @uses        self::get_connected_logs()
 	 *
 	 * @return      array
 	*/
 
 	public static function get_logs( $object_id = 0, $type = null, $paged = null ) {
-		return self::get_connected_logs( array( 'post_parent' => $object_id, 'paged' => $paged, 'log_type' => $type ) );
+		return self::get_connected_logs(
+			array(
+				'post_parent' => $object_id,
+				'paged'       => $paged,
+				'log_type'    => $type,
+			)
+		);
 
 	}
 
@@ -358,12 +365,12 @@ class WP_Logging {
 	 * Used for retrieving logs related to particular items, such as a specific purchase.
 	 *
 	 * @access  private
-	 * @since 	1.0
+	 * @since   1.0
 	 *
-	 * @uses 	wp_parse_args()
-	 * @uses 	get_posts()
-	 * @uses 	get_query_var()
-	 * @uses 	self::valid_type()
+	 * @uses    wp_parse_args()
+	 * @uses    get_posts()
+	 * @uses    get_query_var()
+	 * @uses    self::valid_type()
 	 *
 	 * @return  array / false
 	*/
@@ -376,27 +383,28 @@ class WP_Logging {
 			'posts_per_page' => 10,
 			'post_status'    => 'publish',
 			'paged'          => get_query_var( 'paged' ),
-			'log_type'       => false
+			'log_type'       => false,
 		);
 
 		$query_args = wp_parse_args( $args, $defaults );
 
-		if( $query_args['log_type'] && self::valid_type( $query_args['log_type'] ) ) {
+		if ( $query_args['log_type'] && self::valid_type( $query_args['log_type'] ) ) {
 
 			$query_args['tax_query'] = array(
 				array(
 					'taxonomy' => 'wp_log_type',
 					'field'    => 'slug',
-					'terms'    => $query_args['log_type']
-				)
+					'terms'    => $query_args['log_type'],
+				),
 			);
 
 		}
 
 		$logs = get_posts( $query_args );
 
-		if( $logs )
+		if ( $logs ) {
 			return $logs;
+		}
 
 		// no logs found
 		return false;
@@ -408,10 +416,10 @@ class WP_Logging {
 	 * Retrieves number of log entries connected to particular object ID
 	 *
 	 * @access  private
-	 * @since 	1.0
+	 * @since   1.0
 	 *
-	 * @uses 	WP_Query()
-	 * @uses 	self::valid_type()
+	 * @uses    WP_Query()
+	 * @uses    self::valid_type()
 	 *
 	 * @return  int
 	*/
@@ -422,22 +430,22 @@ class WP_Logging {
 			'post_parent'    => $object_id,
 			'post_type'      => 'wp_log',
 			'posts_per_page' => -1,
-			'post_status'    => 'publish'
+			'post_status'    => 'publish',
 		);
 
-		if( ! empty( $type ) && self::valid_type( $type ) ) {
+		if ( ! empty( $type ) && self::valid_type( $type ) ) {
 
 			$query_args['tax_query'] = array(
 				array(
 					'taxonomy' => 'wp_log_type',
 					'field'    => 'slug',
-					'terms'    => $type
-				)
+					'terms'    => $type,
+				),
 			);
 
 		}
 
-		if( ! empty( $meta_query ) ) {
+		if ( ! empty( $meta_query ) ) {
 			$query_args['meta_query'] = $meta_query;
 		}
 

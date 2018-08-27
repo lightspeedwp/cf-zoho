@@ -44,40 +44,40 @@ class CF_Processors {
 	public function register_processors( $processors ) {
 
 		$processors['zoho_lead'] = [
-			'name'          => __( 'Zoho CRM - Create Lead', 'cf-zoho-2' ),
-			'description'   => __( 'Create or Update a lead on form submission', 'cf-zoho-2' ),
-			'author'        => 'Matt Bush',
-			'author_url'    => 'https://haycroftmedia.com/',
-			'processor' 	=> [ $this, 'process_lead_submission' ],
-			'template'      => CFZ_PROCESSORS_PATH . 'lead-processor-config.php',
-			'icon'          => CFZ_URL . 'assets/images/icon.png',
-			'magic_tags'    => [
+			'name'        => __( 'Zoho CRM - Create Lead', 'cf-zoho-2' ),
+			'description' => __( 'Create or Update a lead on form submission', 'cf-zoho-2' ),
+			'author'      => 'Matt Bush',
+			'author_url'  => 'https://haycroftmedia.com/',
+			'processor'   => [ $this, 'process_lead_submission' ],
+			'template'    => CFZ_PROCESSORS_PATH . 'lead-processor-config.php',
+			'icon'        => CFZ_URL . 'assets/images/icon.png',
+			'magic_tags'  => [
 				'id' => [ 'text', 'zoho_task' ],
 			],
 		];
 
 		$processors['zoho_contact'] = [
-			'name'          => __( 'Zoho CRM - Create Contact', 'cf-zoho-2' ),
-			'description'   => __( 'Create or Update a contact on form submission', 'cf-zoho-2' ),
-			'author'        => 'Matt Bush',
-			'author_url'    => 'https://haycroftmedia.com/',
-			'processor' 	=> [ $this, 'process_contact_submission' ],
-			'template'      => CFZ_PROCESSORS_PATH . 'contact-processor-config.php',
-			'icon'          => CFZ_URL . 'assets/images/icon.png',
-			'magic_tags'    => [
+			'name'        => __( 'Zoho CRM - Create Contact', 'cf-zoho-2' ),
+			'description' => __( 'Create or Update a contact on form submission', 'cf-zoho-2' ),
+			'author'      => 'Matt Bush',
+			'author_url'  => 'https://haycroftmedia.com/',
+			'processor'   => [ $this, 'process_contact_submission' ],
+			'template'    => CFZ_PROCESSORS_PATH . 'contact-processor-config.php',
+			'icon'        => CFZ_URL . 'assets/images/icon.png',
+			'magic_tags'  => [
 				'id' => [ 'text', 'zoho_task' ],
 			],
 		];
 
 		$processors['zoho_task'] = [
-			'name'          => __( 'Zoho CRM - Create Task', 'cf-zoho-2' ),
-			'description'   => __( 'Create or Update a task on form submission', 'cf-zoho-2' ),
-			'author'        => 'Matt Bush',
-			'author_url'    => 'https://haycroftmedia.com/',
-			'processor' 	=> [ $this, 'process_task_submission' ],
-			'template'      => CFZ_PROCESSORS_PATH . 'task-processor-config.php',
-			'icon'          => CFZ_URL . 'assets/images/icon.png',
-			'magic_tags'    => [ 'id' ],
+			'name'        => __( 'Zoho CRM - Create Task', 'cf-zoho-2' ),
+			'description' => __( 'Create or Update a task on form submission', 'cf-zoho-2' ),
+			'author'      => 'Matt Bush',
+			'author_url'  => 'https://haycroftmedia.com/',
+			'processor'   => [ $this, 'process_task_submission' ],
+			'template'    => CFZ_PROCESSORS_PATH . 'task-processor-config.php',
+			'icon'        => CFZ_URL . 'assets/images/icon.png',
+			'magic_tags'  => [ 'id' ],
 		];
 
 		return $processors;
@@ -145,13 +145,13 @@ class CF_Processors {
 	public function log( $message, $submission, $details, $id, $type ) {
 
 		$submission = [
-			'response'		=> $message,
-			'submission'	=> $submission,	
-			'details'		=> $details,
+			'response'   => $message,
+			'submission' => $submission,
+			'details'    => $details,
 		];
 
 		WP_Logging::add(
-			'Submission for ' . $this->module . ' form: ' . $type, 
+			'Submission for ' . $this->module . ' form: ' . $type,
 			wp_json_encode( $submission ),
 			$id,
 			$type
@@ -169,7 +169,7 @@ class CF_Processors {
 		$object = $this->build_object();
 
 		if ( isset( $this->config['_allow_duplicates'] ) && 'update' === $this->config['_allow_duplicates'] ) {
-			$path .= '/upsert';
+			$path                            .= '/upsert';
 			$object['duplicate_check_fields'] = 'Email';
 		}
 
@@ -218,7 +218,7 @@ class CF_Processors {
 		$this->log( $response['data'][0]['message'], $object, $response['data'][0]['details'], $object_id, 'event' );
 
 		do_action( 'cf_zoho_create_entry_complete', $object_id, $this->config, $this->form );
-		
+
 		return [ 'id' => $object_id ];
 	}
 
@@ -243,7 +243,7 @@ class CF_Processors {
 
 			foreach ( $section['fields'] as $field ) {
 
-				$value            = $this->get_form_value( $field );
+				$value = $this->get_form_value( $field );
 
 				if ( '' === $value ) {
 					continue;

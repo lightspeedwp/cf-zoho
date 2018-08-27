@@ -140,7 +140,7 @@ class CF_Processor_Render {
 					}
 
 					$key = sanitize_key( $fields['field_label'] );
-					
+
 					// If we are forcing text input, carry on.
 					if ( in_array( $key, $force_text_input, true ) ) {
 						continue;
@@ -280,7 +280,7 @@ class CF_Processor_Render {
 		if ( empty( $config_object[ $key ] ) ) {
 			return;
 		}
-		
+
 		$this->force_text_input = explode( "\n", $config_object[ $key ] );
 	}
 
