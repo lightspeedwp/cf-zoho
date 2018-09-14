@@ -249,6 +249,9 @@ class CF_Processors {
 					continue;
 				}
 				$label            = str_replace( ' ', '_', $field['field_label'] );
+				if ( 'Lead_Owner' === $label || 'Task_Owner' === $label || 'Contact_Owner' === $label ) {
+					$label = 'Owner';
+				}
 				$object[ $label ] = $this->get_form_value( $field );
 			}
 		}
