@@ -37,5 +37,10 @@ final class CF_Zoho {
 		// Log template.
 		$templates = new Templates();
 		add_filter( 'template_include', [ $templates, 'template_handler' ], 99 );
+
+		//Register the new field
+
+		$field = new Field();
+		add_action( 'init', [ $field, 'setup' ] );
 	}
 }
