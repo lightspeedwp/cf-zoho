@@ -1,5 +1,5 @@
 === CF Zoho ===
-Contributors: matttrustmytravel
+Contributors: feedmymedia, matttrustmytravel
 Tags: Caldera Forms, zoho
 Requires at least: 4.3
 Tested up to: 4.5.1
