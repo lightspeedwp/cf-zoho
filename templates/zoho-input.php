@@ -6,6 +6,6 @@
 	if ( true === (bool) $field['required'] ) {
 		?>
 		required<?php } ?>" 
-	name="{{_name}}[<?php echo $key; ?>]" 
-	value="{{<?php echo $key; ?>}}" 
+	name="{{_name}}[<?php echo esc_attr( $key ); ?>]"
+	value="{{<?php echo esc_attr( $key ); ?>}}"
 />

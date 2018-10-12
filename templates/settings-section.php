@@ -10,11 +10,11 @@
 		</tr>
 		<tr>
 			<th>Client domain</th>
-			<td><?php echo get_site_url(); ?></td>
+			<td><?php echo esc_url( get_site_url() ); ?></td>
 		</tr>
 		<tr>
 			<th>Authorized redirect URIs</th>
-			<td><?php echo cf_zoho\cf_zoho_redirect_url(); ?></td>
+			<td><?php echo esc_url( cf_zoho\cf_zoho_redirect_url() ); ?></td>
 		</tr>
 		<tr>
 			<th>Client Type</th>
