@@ -159,7 +159,7 @@ class WP_Logging {
 
 		$log_args = array(
 			'labels'          => array(
-				'name' => __( 'Logs', 'wp-logging' ),
+				'name' => __( 'Logs', 'cf-zoho' ),
 			),
 			'public'          => true,
 			'query_var'       => false,

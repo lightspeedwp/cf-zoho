@@ -6,7 +6,7 @@
 
 	<div class="caldera-config-field">
 
-		<select id="{{_id}}<?php echo $field_num; ?>"
+		<select id="{{_id}}<?php echo esc_attr( $field_num ); ?>"
 				class="field-config block-input"
 				<?php if ( true === (bool) $field['required'] ) { ?>
 					required
@@ -14,7 +14,7 @@
 				name="{{_name}}[<?php echo esc_attr( $key ); ?>]">
 
 			<?php if ( false === $field['required'] && 'ownerlookup' === $field['data_type'] ) { ?>
-				<option value=""><?php _e( '--None--', 'cf-zoho' ); ?></option>
+				<option value=""><?php esc_html_e( '--None--', 'cf-zoho' ); ?></option>
 			<?php } ?>
 
 			<?php foreach ( $field['val'] as $value_key => $value_value ) : ?>

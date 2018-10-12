@@ -9,8 +9,8 @@
 </p>
 <div class="caldera-config-group">
 	<label for="{{_id}}_form_id">
-    <?php esc_html_e( 'Select your form', 'cf-zoho' ); ?>
-    </label>
+		<?php esc_html_e( 'Select your form', 'cf-zoho' ); ?>
+	</label>
 	<div class="caldera-config-field">
 		<select id="{{_id}}_form_id" class="block-input field-config required" name="{{_name}}[form_id]">
 			<option value="0"><?php esc_html_e( 'Select a form', 'cf-zoho' ); ?></option>
