@@ -9,13 +9,13 @@
 </p>
 <div class="caldera-config-group">
 	<label for="{{_id}}_form_id">
-        <?php esc_html_e( 'Select your form', 'cf-zoho' ); ?>
+    <?php esc_html_e( 'Select your form', 'cf-zoho' ); ?>
     </label>
 	<div class="caldera-config-field">
 		<select id="{{_id}}_form_id" class="block-input field-config required" name="{{_name}}[form_id]">
-			<option value="0"><?php esc_html_e('Select a form', 'cf-zoho' ); ?></option>
+			<option value="0"><?php esc_html_e( 'Select a form', 'cf-zoho' ); ?></option>
 			<?php if ( is_array( $options ) ) {
-				foreach( $options as $option_key => $option_value ) {
+				foreach ( $options as $option_key => $option_value ) {
 					echo wp_kses_post( '<option {{#is form_id value="' . $option_key . '"}}selected="selected"{{/is}} value="' . $option_key . '">' . $option_value . '</option>' );
 				}
 			} ?>

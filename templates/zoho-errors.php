@@ -1,6 +1,6 @@
-<h4><?php _e( 'Errors', 'cf-zoho' ); ?></h4>
+<h4><?php esc_html_e( 'Errors', 'cf-zoho' ); ?></h4>
 
-<p><?php _e( 'This processor is causing the following errors:', 'cf-zoho' ); ?></p>
+<p><?php esc_html_e( 'This processor is causing the following errors:', 'cf-zoho' ); ?></p>
 
 <ul>
 <?php foreach ( $errors as $error ) : ?>

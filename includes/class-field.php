@@ -51,8 +51,7 @@ class Field {
 					//'required'
 				),
 			),
-			'scripts' => array()
-
+			'scripts' => array(),
 		);
 
 		/*if(  is_ssl() ) {
@@ -76,14 +75,14 @@ class Field {
 	 *
 	 * @return \WP_Error|boolean
 	 */
-	public function handler( $value, $field, $form ){
+	public function handler( $value, $field, $form ) {
 		if ( ! isset( $_POST['g-recaptcha-response'] ) || empty( $_POST['g-recaptcha-response'] ) ) {
 			return new \WP_Error( 'error' );
 		}
 
 		$args = array(
 			'secret'   => $field['config']['private_key'],
-			'response' => sanitize_text_field( $_POST['g-recaptcha-response'] )
+			'response' => sanitize_text_field( $_POST['g-recaptcha-response'] ),
 		);
 
 		$request = wp_remote_get( add_query_arg( $args, 'https://www.google.com/recaptcha/api/siteverify' ) );
