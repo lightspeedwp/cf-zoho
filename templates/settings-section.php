@@ -5,20 +5,20 @@
 <table class="form-table">
 	<tbody>
 		<tr>
-			<th scope="row">Client Name</th>
-			<td>Caldera Forms App</td>
+			<th scope="row"><?php _e( 'Client Name', 'cf-zoho' ); ?></th>
+			<td><?php _e( 'Caldera Forms App', 'cf-zoho' ); ?></td>
 		</tr>
 		<tr>
-			<th>Client domain</th>
-			<td><?php echo get_site_url(); ?></td>
+			<th><?php _e( 'Client domain', 'cf-zoho' ); ?></th>
+			<td><?php echo esc_url( get_site_url() ); ?></td>
 		</tr>
 		<tr>
-			<th>Authorized redirect URIs</th>
-			<td><?php echo cf_zoho\cf_zoho_redirect_url(); ?></td>
+			<th><?php _e( 'Authorized redirect URIs', 'cf-zoho' ); ?></th>
+			<td><?php echo esc_url( cf_zoho\cf_zoho_redirect_url() ); ?></td>
 		</tr>
 		<tr>
-			<th>Client Type</th>
-			<td>WEB</td>
+			<th><?php _e( 'Client Type', 'cf-zoho' ); ?></th>
+			<td><?php _e( 'WEB', 'cf-zoho' ); ?></td>
 		</tr>
 	</tbody>
 </table>

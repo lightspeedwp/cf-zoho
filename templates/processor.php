@@ -44,7 +44,7 @@
 
 	<?php foreach ( $module->get_module_data() as $section ) : ?>
 
-		<h4><?php echo $section['name']; ?></h4>
+		<h4><?php echo wp_kses_post( $section['name'] ); ?></h4>
 
 		<?php foreach ( $section['fields'] as $field_num => $field ) : ?>
 
@@ -58,8 +58,8 @@
 
 				<div class="caldera-config-group">
 
-					<label for="{{_id}}<?php echo $field_num; ?>">
-						<?php echo $module->label( $field ); ?>
+					<label for="{{_id}}<?php echo esc_attr( $field_num ); ?>">
+						<?php echo wp_kses_post( $module->label( $field ) ); ?>
 					</label>
 
 					<div class="caldera-config-field">

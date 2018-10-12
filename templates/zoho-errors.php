@@ -1,11 +1,11 @@
-<h4>Errors</h4>
+<h4><?php _e( 'Errors', 'cf-zoho' ); ?></h4>
 
-<p>This processor is causing the following errors: </p>
+<p><?php _e( 'This processor is causing the following errors:', 'cf-zoho' ); ?></p>
 
 <ul>
 <?php foreach ( $errors as $error ) : ?>
 
-	<li><?php echo $error; ?></li>
+	<li><?php echo wp_kses_post( $error ); ?></li>
 
 <?php endforeach; ?>
 

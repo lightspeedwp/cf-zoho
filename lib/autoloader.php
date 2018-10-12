@@ -52,8 +52,9 @@ spl_autoload_register(
 		 * the file so we append that at the end.
 		 */
 		$fully_qualified_path = CFZ_ABSPATH;
+		$file_path_count = count( $file_path );
 
-		for ( $i = 1; $i < count( $file_path ) - 1; $i++ ) {
+		for ( $i = 1; $i < $file_path_count - 1; $i++ ) {
 			$dir                   = strtolower( $file_path[ $i ] );
 			$fully_qualified_path .= trailingslashit( $dir );
 		}

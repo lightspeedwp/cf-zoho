@@ -219,7 +219,9 @@ class CF_Processors {
 
 		do_action( 'cf_zoho_create_entry_complete', $object_id, $this->config, $this->form );
 
-		return [ 'id' => $object_id ];
+		return [
+			'id' => $object_id
+		];
 	}
 
 	/**
