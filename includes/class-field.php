@@ -39,13 +39,13 @@ class Field {
 		$fields['zoho_form']      = array(
 			'field'       => __( 'Zoho Form', 'cf-zoho' ),
 			'description' => __( 'Capture a new contact, lead or task and return the ID.', 'cf-zoho' ),
-			'file'        => CFZ_FIELDS_PATH . "zoho-form/field.php",
+			'file'        => CFZ_FIELDS_PATH . 'zoho-form/field.php',
 			'category'    => __( 'Special', 'cf-zoho' ),
 			'handler'     => array( $this, 'handler' ),
 			'capture'     => false,
 			'setup'       => array(
-				'template'      => CFZ_FIELDS_PATH . "zoho-form/config.php",
-				'preview'       => CFZ_FIELDS_PATH . "zoho-form/preview.php",
+				'template'      => CFZ_FIELDS_PATH . 'zoho-form/config.php',
+				'preview'       => CFZ_FIELDS_PATH . 'zoho-form/preview.php',
 				'not_supported' => array(
 					'caption',
 					//'required'
