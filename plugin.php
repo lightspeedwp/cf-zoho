@@ -44,23 +44,25 @@ require CFZ_ABSPATH . 'lib/autoloader.php';
 // Register settings.
 register_setting( 'cfzoho', CFZ_OPTION_SLUG );
 
-/**
- * CF Zoho Options page URL.
- * Used to populate redirect_uri field in Zoho requests.
- * Can't use menu_page_url in Zoho requests so built this instead.
- *
- * @return string CF Zoho Options page URL.
- */
-function cf_zoho_redirect_url() {
-	return admin_url( add_query_arg( 'page', 'cfzoho', 'options-general.php' ) );
-}
+
 
 /**
- * Begins execution of the plugin.
+ * Begins execution of the plugin on plugins loaded.
  */
-function run_plugin() {
-	$cf_zoho = new includes\CF_Zoho();
-	add_action( 'plugins_loaded', [ $cf_zoho, 'init' ], 2 );
+function cf_zoho_run_plugin() {
+	$cf_zoho = \cf_zoho\includes\CF_Zoho::init();
+	add_action( 'plugins_loaded', [ $cf_zoho, 'setup' ], 2 );
+}
+add_action( 'plugins_loaded', __NAMESPACE__ . '\cf_zoho_run_plugin', 1 );
+
+/**
+ * Returns the main instance of the CF Zoho Plugin
+ * @return object \cf_zoho\includes\CF_Zoho()
+ */
+function cf_zoho() {
+	return \cf_zoho\includes\CF_Zoho::init();
 }
 
-add_action( 'plugins_loaded', __NAMESPACE__ . '\run_plugin', 1 );
+
+
+

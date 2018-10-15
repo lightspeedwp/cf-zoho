@@ -13,10 +13,10 @@ namespace cf_zoho\includes;
 class Field {
 
 	/**
-	 * Holds the edit class
+	 * Holds the modals that are outputted in the footer of the page
 	 * @var array
 	 */
-	var $frontend = false;
+	var $modals = array();
 
 	/**
 	 * Holds instance of the class
@@ -47,6 +47,11 @@ class Field {
 
 		//Replace existing recaptcha field
 		add_filter( 'caldera_forms_get_field_types', array( $this, 'add_field' ), 25 );
+
+		add_filter( 'wp_kses_allowed_html', array(
+			$this,
+			'wp_kses_allowed_html',
+		), 10, 2 );
 
 		//Prevent removing recaptcha from DOM from being effective bypass of recpatcha
 		//add_filter( 'caldera_forms_validate_field_recaptcha', array( $this, 'check_for_captcha' ), 10, 3 );
@@ -116,5 +121,39 @@ class Field {
 
 		return true;
 
+	}
+
+	/**
+	 * Adds a caldera form to your list of modals to be outputted.
+	 * @param $caldera_id string
+	 */
+	public function add_modal( $caldera_id = '' ) {
+		if ( '' !== $caldera_id ) {
+			array_push( $this->modals, $caldera_id );
+			add_action( 'wp_footer', array( $this, 'output_modals' ) );
+		}
+	}
+
+	/**
+	 * Outputs the modals in the footer
+	 */
+	public function output_modals() {
+		if ( ! empty( $this->modals ) && is_array( $this->modals ) ) {
+			foreach( $this->modals as $form_id ) {
+				include( CFZ_TEMPLATE_PATH . 'zoho-modal.php' );
+			}
+		}
+	}
+
+	/**
+	 * Allow extra tags and attributes to wp_kses_post()
+	 */
+	public function wp_kses_allowed_html( $allowedtags, $context ) {
+		if ( ! isset( $allowedtags['input'] ) ) {
+			$allowedtags['input'] = array();
+		}
+		$allowedtags['input']['data-target']   = true;
+		$allowedtags['input']['data-toggle'] = true;
+		return $allowedtags;
 	}
 }

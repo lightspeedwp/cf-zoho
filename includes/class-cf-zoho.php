@@ -15,6 +15,11 @@ use cf_zoho\admin;
 final class CF_Zoho {
 
 	/**
+	 * Holds instance of the class
+	 */
+	private static $instance;
+
+	/**
 	 * Holds the Fields class
 	 * @var array cf_zoho\includes\Field()
 	 */
@@ -27,9 +32,24 @@ final class CF_Zoho {
 	var $templates;
 
 	/**
-	 * Init the plugin.
+	 * Return an instance of this class.
+	 *
+	 * @return  object
 	 */
-	public function init() {
+	public static function init() {
+
+		// If the single instance hasn't been set, set it now.
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
+	 * setup the plugin.
+	 */
+	public function setup() {
 
 		// Admin Settings.
 		$settings = new admin\Settings();

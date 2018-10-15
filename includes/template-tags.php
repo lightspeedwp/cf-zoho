@@ -10,6 +10,17 @@
  */
 
 /**
+ * CF Zoho Options page URL.
+ * Used to populate redirect_uri field in Zoho requests.
+ * Can't use menu_page_url in Zoho requests so built this instead.
+ *
+ * @return string CF Zoho Options page URL.
+ */
+function cf_zoho_redirect_url() {
+	return admin_url( add_query_arg( 'page', 'cfzoho', 'options-general.php' ) );
+}
+
+/**
  * Returns the names and ids of the current available caldera forms.
  * @return bool
  */
@@ -24,4 +35,26 @@ function cf_zoho_get_caldera_forms() {
 	}
 
 	return $forms;
+}
+
+/**
+ * Registers a caldera form to output as a modal in the footer
+ */
+function cf_zoho_register_modal( $caldera_id = '' ) {
+	if ( '' !== $caldera_id ) {
+		$cf_zoho = cf_zoho\includes\CF_Zoho::init();
+		$cf_zoho->field->add_modal( $caldera_id );
+	}
+}
+
+
+function cf_zoho_get_form_title( $caldera_id = '' ) {
+	$title = '';
+	if ( '' !== $caldera_id ) {
+		$form = Caldera_Forms_Forms::get_form( $caldera_id );
+		if ( isset( $form['name'] ) ) {
+			$title = $form['name'];
+		}
+	}
+	return $title;
 }
