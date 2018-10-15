@@ -15,6 +15,18 @@ use cf_zoho\admin;
 final class CF_Zoho {
 
 	/**
+	 * Holds the Fields class
+	 * @var array cf_zoho\includes\Field()
+	 */
+	var $field;
+
+	/**
+	 * Holds the Templates class
+	 * @var array cf_zoho\includes\Templates()
+	 */
+	var $templates;
+
+	/**
 	 * Init the plugin.
 	 */
 	public function init() {
@@ -33,14 +45,12 @@ final class CF_Zoho {
 		if ( ! class_exists( 'WP_Logging' ) ) {
 			$wp_logging = new WP_Logging();
 		}
-
-		// Log template.
-		$templates = new Templates();
-		add_filter( 'template_include', [ $templates, 'template_handler' ], 99 );
+		// WP Logs template.
+		$this->templates = Templates::init();
+		add_filter( 'template_include', [ $this->templates, 'template_handler' ], 99 );
 
 		//Register the new field
-
-		$field = new Field();
-		add_action( 'init', [ $field, 'setup' ] );
+		$this->field = Field::init();
+		add_action( 'init', [ $this->field, 'setup' ] );
 	}
 }

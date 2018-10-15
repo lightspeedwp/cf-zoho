@@ -12,6 +12,32 @@ namespace cf_zoho\includes;
  */
 class Field {
 
+	/**
+	 * Holds the edit class
+	 * @var array
+	 */
+	var $frontend = false;
+
+	/**
+	 * Holds instance of the class
+	 */
+	private static $instance;
+
+	/**
+	 * Return an instance of this class.
+	 *
+	 * @return  object
+	 */
+	public static function init() {
+
+		// If the single instance hasn't been set, set it now.
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
 
 	/**
 	 * Add the field actions
@@ -54,12 +80,6 @@ class Field {
 			'scripts' => array(),
 		);
 
-		/*if(  is_ssl() ) {
-			$fields ['recaptcha' ][ 'scripts' ][] = 'https://www.google.com/recaptcha/api.js?onload=cf_recaptcha_is_ready&render=explicit';
-		}else{
-			$fields ['recaptcha' ][ 'scripts' ][] = 'http://www.google.com/recaptcha/api.js?onload=cf_recaptcha_is_ready&render=explicit';
-		}*/
-
 		return $fields;
 
 	}
@@ -76,7 +96,7 @@ class Field {
 	 * @return \WP_Error|boolean
 	 */
 	public function handler( $value, $field, $form ) {
-		/*if ( ! isset( $_POST['g-recaptcha-response'] ) || empty( $_POST['g-recaptcha-response'] ) ) {
+		if ( ! isset( $_POST['g-recaptcha-response'] ) || empty( $_POST['g-recaptcha-response'] ) ) {
 			return new \WP_Error( 'error' );
 		}
 
@@ -94,7 +114,7 @@ class Field {
 			);
 		}
 
-		return true;*/
+		return true;
 
 	}
 }
