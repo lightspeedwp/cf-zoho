@@ -30,10 +30,13 @@ if ( ! defined( 'WPINC' ) ) {
  */
 define( 'CFZ_VERSION', '2.1.0' );
 define( 'CFZ_ABSPATH', dirname( __FILE__ ) . '/' );
+
 define( 'CFZ_TEMPLATE_PATH', CFZ_ABSPATH . 'templates/' );
 define( 'CFZ_PROCESSORS_PATH', CFZ_ABSPATH . 'processors/' );
 define( 'CFZ_FIELDS_PATH', CFZ_ABSPATH . 'fields/' );
 define( 'CFZ_URL', plugin_dir_url( __FILE__ ) . '/' );
+define( 'CFZ_FIELDS_URL', CFZ_URL . 'fields/' );
+
 define( 'CFZ_OPTION_SLUG', '_uix_cf-zoho' );
 define( 'CFZ_TRANSIENT_SLUG', '_uix_cf-zoho_transient' );
 

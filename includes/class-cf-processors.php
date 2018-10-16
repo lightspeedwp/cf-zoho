@@ -209,13 +209,10 @@ class CF_Processors {
 	}
 
 	public function capture_info( $module, $body, $object ) {
-		/*print_r('<pre>');
-		print_r($module);
-		print_r($object);
-		print_r($body);
-		print_r('</pre>');*/
-		//$object_id = set_transient( 'zoho_pre_submission',  );
-		return new \WP_Error( '200', 'Zoho', 'Complete' );
+		/**
+		 * TODO: if the form is capturing entries, then serialize the data and return that for saving.
+		 */
+		return serialize( $body );
 	}
 
 	/**

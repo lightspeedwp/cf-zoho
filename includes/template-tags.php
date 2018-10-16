@@ -39,10 +39,10 @@ function cf_zoho_get_caldera_forms() {
 /**
  * Registers a caldera form to output as a modal in the footer
  */
-function cf_zoho_register_modal( $caldera_id = '' ) {
-	if ( '' !== $caldera_id ) {
+function cf_zoho_register_modal( $caldera_id = '', $field_id = '' ) {
+	if ( '' !== $caldera_id && '' !== $field_id ) {
 		$cf_zoho = cf_zoho\includes\CF_Zoho::init();
-		$cf_zoho->field->add_modal( $caldera_id );
+		$cf_zoho->field->add_modal( $caldera_id, $field_id );
 	}
 }
 

@@ -16,17 +16,14 @@
 <?php echo wp_kses_post( Caldera_Forms_Field_Input::html( $field, $field_structure, $form ) ); ?>
 
 <?php
-/**
- *  TODO: the $value needs to be dynamic
- */
-	$value = 'CF5554591c36d8e';
-	if ( isset( $field_structure['field']['config']['form_id'] ) && ( 0 !== $field_structure['field']['config']['form_id'] || '' !== $field_structure['field']['config']['form_id'] ) ) {
+    $field_structure['field']['config']['form_id'] = 'CF55546c4c7957c';
+	if ( isset( $field_structure['field']['config']['form_id'] ) && ( 0 !== $field_structure['field']['config']['form_id'] && '' !== $field_structure['field']['config']['form_id'] && '0' !== $field_structure['field']['config']['form_id'] )  ) {
 		$value = $field_structure['field']['config']['form_id'];
 		$field_base_id = Caldera_Forms_Field_Util::get_base_id( $field, null, $form );
 
-		echo wp_kses_post( '<input class="btn btn-primary btn-lg" data-toggle="modal" data-target="#zoho-modal-' . $value . '" type="button" name="' . $field_structure['name'] . '" id="' . $field_base_id . '" value="' . $field_structure['field']['label'] . '" data-field="' . $field['ID'] . '">' );
+		echo wp_kses_post( '<input class="btn btn-primary btn-lg hidden" style="display:none; type="button" value="' . $field_structure['field']['label'] . '">' );
 
-		cf_zoho_register_modal( $value );
+		cf_zoho_register_modal( $value, $field_base_id );
 	}
 ?>
 

@@ -87,7 +87,9 @@ class Field {
 					//'required'
 				),
 			),
-			'scripts' => array(),
+			'scripts' => array(
+				CFZ_FIELDS_URL . 'zoho-form/js/zoho-form-field.js'
+			)
 		);
 
 		return $fields;
@@ -132,10 +134,10 @@ class Field {
 	 * Adds a caldera form to your list of modals to be outputted.
 	 * @param $caldera_id string
 	 */
-	public function add_modal( $caldera_id = '' ) {
-		if ( '' !== $caldera_id ) {
-			array_push( $this->modals, $caldera_id );
-			add_action( 'wp_footer', array( $this, 'output_modals' ) );
+	public function add_modal( $caldera_id = '', $field_id = '' ) {
+		if ( '' !== $caldera_id && '' !== $field_id ) {
+			$this->modals[ $caldera_id ] = $field_id;
+			add_action( 'wp_footer', array( $this, 'output_modals' ), 1 );
 		}
 	}
 
@@ -144,7 +146,7 @@ class Field {
 	 */
 	public function output_modals() {
 		if ( ! empty( $this->modals ) && is_array( $this->modals ) ) {
-			foreach( $this->modals as $form_id ) {
+			foreach( $this->modals as $form_id => $field_id ) {
 				include( CFZ_TEMPLATE_PATH . 'zoho-modal.php' );
 			}
 		}
@@ -154,11 +156,11 @@ class Field {
 	 * Allow extra tags and attributes to wp_kses_post()
 	 */
 	public function wp_kses_allowed_html( $allowedtags, $context ) {
-		if ( ! isset( $allowedtags['input'] ) ) {
-			$allowedtags['input'] = array();
+		if ( ! isset( $allowedtags['div'] ) ) {
+			$allowedtags['div'] = array();
 		}
-		$allowedtags['input']['data-target']   = true;
-		$allowedtags['input']['data-toggle'] = true;
+		$allowedtags['div']['data-form-id']   = true;
+		$allowedtags['div']['data-field-id'] = true;
 		return $allowedtags;
 	}
 }
