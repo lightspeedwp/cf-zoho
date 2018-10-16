@@ -44,8 +44,8 @@ class CF_Processors {
 	public function register_processors( $processors ) {
 
 		$processors['zoho_lead'] = [
-			'name'        => __( 'Zoho CRM - Create Lead', 'cf-zoho-2' ),
-			'description' => __( 'Create or Update a lead on form submission', 'cf-zoho-2' ),
+			'name'        => __( 'Zoho CRM - Create Lead', 'cf-zoho' ),
+			'description' => __( 'Create or Update a lead on form submission', 'cf-zoho' ),
 			'author'      => 'LightSpeed',
 			'author_url'  => 'https://lsdev.biz/',
 			'processor'   => [ $this, 'process_lead_submission' ],
@@ -57,8 +57,8 @@ class CF_Processors {
 		];
 
 		$processors['zoho_contact'] = [
-			'name'        => __( 'Zoho CRM - Create Contact', 'cf-zoho-2' ),
-			'description' => __( 'Create or Update a contact on form submission', 'cf-zoho-2' ),
+			'name'        => __( 'Zoho CRM - Create Contact', 'cf-zoho' ),
+			'description' => __( 'Create or Update a contact on form submission', 'cf-zoho' ),
 			'author'      => 'LightSpeed',
 			'author_url'  => 'https://lsdev.biz/',
 			'processor'   => [ $this, 'process_contact_submission' ],
@@ -70,8 +70,8 @@ class CF_Processors {
 		];
 
 		$processors['zoho_task'] = [
-			'name'        => __( 'Zoho CRM - Create Task', 'cf-zoho-2' ),
-			'description' => __( 'Create or Update a task on form submission', 'cf-zoho-2' ),
+			'name'        => __( 'Zoho CRM - Create Task', 'cf-zoho' ),
+			'description' => __( 'Create or Update a task on form submission', 'cf-zoho' ),
 			'author'      => 'LightSpeed',
 			'author_url'  => 'https://lsdev.biz/',
 			'processor'   => [ $this, 'process_task_submission' ],
@@ -209,11 +209,11 @@ class CF_Processors {
 	}
 
 	public function capture_info( $module, $body, $object ) {
-		print_r('<pre>');
+		/*print_r('<pre>');
 		print_r($module);
 		print_r($object);
 		print_r($body);
-		print_r('</pre>');
+		print_r('</pre>');*/
 		//$object_id = set_transient( 'zoho_pre_submission',  );
 		return new \WP_Error( '200', 'Zoho', 'Complete' );
 	}
@@ -263,7 +263,7 @@ class CF_Processors {
 	 */
 	public function build_object() {
 
-		$object = $this->get_default_object( $this->module, $this->config );
+		$object = $this->get_default_object( );
 
 		$cache  = new Cache();
 		$fields = $cache->get_plugin_cache_item( $this->module );

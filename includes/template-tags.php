@@ -33,7 +33,6 @@ function cf_zoho_get_caldera_forms() {
 			$forms[ $form ] = $form_data['name'];
 		}
 	}
-
 	return $forms;
 }
 
