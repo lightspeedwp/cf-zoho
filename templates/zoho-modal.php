@@ -8,7 +8,7 @@
 					$form_title = cf_zoho_get_form_title( $form_id );
 					if ( '' !== $form_title ) {
 						?>
-							<h4 class="modal-title"><?php echo esc_html( $form_title ); ?>"></h4>
+							<h4 class="modal-title"><?php echo esc_html( $form_title ); ?></h4>
 						<?php
 					}
 					?>
@@ -17,7 +17,7 @@
 
 			<!-- Modal body -->
 			<div class="modal-body">
-				<?php echo wp_kses_post( apply_filters( 'the_content', '[caldera_form id="' . $form_id . '"]' ) ); ?>
+				<?php echo wp_kses_post( apply_filters( 'the_content', '[caldera_form ajax="true" id="' . $form_id . '"]' ) ); ?>
 			</div>
 
 			<!-- Modal footer -->

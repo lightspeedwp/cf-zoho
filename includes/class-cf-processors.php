@@ -46,8 +46,8 @@ class CF_Processors {
 		$processors['zoho_lead'] = [
 			'name'        => __( 'Zoho CRM - Create Lead', 'cf-zoho-2' ),
 			'description' => __( 'Create or Update a lead on form submission', 'cf-zoho-2' ),
-			'author'      => 'Matt Bush',
-			'author_url'  => 'https://haycroftmedia.com/',
+			'author'      => 'LightSpeed',
+			'author_url'  => 'https://lsdev.biz/',
 			'processor'   => [ $this, 'process_lead_submission' ],
 			'template'    => CFZ_PROCESSORS_PATH . 'lead-processor-config.php',
 			'icon'        => CFZ_URL . 'assets/images/icon.png',
@@ -59,8 +59,8 @@ class CF_Processors {
 		$processors['zoho_contact'] = [
 			'name'        => __( 'Zoho CRM - Create Contact', 'cf-zoho-2' ),
 			'description' => __( 'Create or Update a contact on form submission', 'cf-zoho-2' ),
-			'author'      => 'Matt Bush',
-			'author_url'  => 'https://haycroftmedia.com/',
+			'author'      => 'LightSpeed',
+			'author_url'  => 'https://lsdev.biz/',
 			'processor'   => [ $this, 'process_contact_submission' ],
 			'template'    => CFZ_PROCESSORS_PATH . 'contact-processor-config.php',
 			'icon'        => CFZ_URL . 'assets/images/icon.png',
@@ -72,8 +72,8 @@ class CF_Processors {
 		$processors['zoho_task'] = [
 			'name'        => __( 'Zoho CRM - Create Task', 'cf-zoho-2' ),
 			'description' => __( 'Create or Update a task on form submission', 'cf-zoho-2' ),
-			'author'      => 'Matt Bush',
-			'author_url'  => 'https://haycroftmedia.com/',
+			'author'      => 'LightSpeed',
+			'author_url'  => 'https://lsdev.biz/',
 			'processor'   => [ $this, 'process_task_submission' ],
 			'template'    => CFZ_PROCESSORS_PATH . 'task-processor-config.php',
 			'icon'        => CFZ_URL . 'assets/images/icon.png',
@@ -89,7 +89,7 @@ class CF_Processors {
 	 * @param  array  $config Processor config
 	 * @param  array  $form Form config
 	 * @param  string $process_id Unique process ID for this submission
-	 * @return void|array.
+	 * @return array.
 	 */
 	public function process_lead_submission( $config, $form, $process_id ) {
 
@@ -106,7 +106,7 @@ class CF_Processors {
 	 * @param  array  $config Processor config
 	 * @param  array  $form Form config
 	 * @param  string $process_id Unique process ID for this submission
-	 * @return void|array.
+	 * @return array.
 	 */
 	public function process_contact_submission( $config, $form, $process_id ) {
 
@@ -123,7 +123,7 @@ class CF_Processors {
 	 * @param  array  $config Processor config
 	 * @param  array  $form Form config
 	 * @param  string $process_id Unique process ID for this submission
-	 * @return void|array.
+	 * @return array.
 	 */
 	public function process_task_submission( $config, $form, $process_id ) {
 
@@ -165,6 +165,10 @@ class CF_Processors {
 	 */
 	public function do_submission() {
 
+		/**
+		 * TODO: This is where we check to see if we should submit this info or not.
+		 */
+
 		$path   = '/crm/v2/' . ucfirst( $this->module );
 		$object = $this->build_object();
 
@@ -190,6 +194,39 @@ class CF_Processors {
 
 		// Filter hook.
 		$body     = apply_filters( 'process_zoho_submission', $body, $this->config, $this->form );
+
+		if ( isset( $this->config['_return_information'] ) && ( true === $this->config['_return_information'] || 'true' === $this->config['_return_information'] || 1 === $this->config['_return_information'] ) ) {
+			$object_id = $this->capture_info( $this->module, $body, $object );
+		} else {
+			$object_id = $this->do_request( $path, $body, $object );
+		}
+
+		do_action( 'cf_zoho_create_entry_complete', $object_id, $this->config, $this->form );
+
+		return [
+			'id' => $object_id,
+		];
+	}
+
+	public function capture_info( $module, $body, $object ) {
+		print_r('<pre>');
+		print_r($module);
+		print_r($object);
+		print_r($body);
+		print_r('</pre>');
+		//$object_id = set_transient( 'zoho_pre_submission',  );
+		return new \WP_Error( '200', 'Zoho', 'Complete' );
+	}
+
+	/**
+	 * The function which send the build info
+	 * @param $path
+	 * @param $body
+	 * @param $object
+	 *
+	 * @return array
+	 */
+	public function do_request( $path, $body, $object ) {
 		$post     = new zohoapi\Post();
 		$response = $post->request( $path, $body );
 
@@ -214,14 +251,9 @@ class CF_Processors {
 		}
 
 		$object_id = $response['data'][0]['details']['id'];
-
 		$this->log( $response['data'][0]['message'], $object, $response['data'][0]['details'], $object_id, 'event' );
 
-		do_action( 'cf_zoho_create_entry_complete', $object_id, $this->config, $this->form );
-
-		return [
-			'id' => $object_id,
-		];
+		return $object_id;
 	}
 
 	/**
@@ -251,6 +283,9 @@ class CF_Processors {
 					continue;
 				}
 				$label            = str_replace( ' ', '_', $field['field_label'] );
+				/**
+				 * TODO: Change this to a preg_match
+				 */
 				if ( 'Lead_Owner' === $label || 'Task_Owner' === $label || 'Contact_Owner' === $label ) {
 					$label = 'Owner';
 				}

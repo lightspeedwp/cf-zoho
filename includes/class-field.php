@@ -48,10 +48,20 @@ class Field {
 		//Replace existing recaptcha field
 		add_filter( 'caldera_forms_get_field_types', array( $this, 'add_field' ), 25 );
 
+		add_filter( 'caldera_forms_get_field_types', array(
+			$this,
+			'add_field',
+		), 25, 1 );
+
 		add_filter( 'wp_kses_allowed_html', array(
 			$this,
 			'wp_kses_allowed_html',
 		), 10, 2 );
+
+		add_filter( 'caldera_forms_render_get_form', array(
+			$this,
+			'maybe_add_modal_flag',
+		), 10, 1 );
 
 		//Prevent removing recaptcha from DOM from being effective bypass of recpatcha
 		//add_filter( 'caldera_forms_validate_field_recaptcha', array( $this, 'check_for_captcha' ), 10, 3 );
