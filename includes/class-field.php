@@ -108,7 +108,7 @@ class Field {
 	 * @return \WP_Error|boolean
 	 */
 	public function handler( $value, $field, $form ) {
-		if ( ! isset( $_POST['g-recaptcha-response'] ) || empty( $_POST['g-recaptcha-response'] ) ) {
+		/*if ( ! isset( $_POST['g-recaptcha-response'] ) || empty( $_POST['g-recaptcha-response'] ) ) {
 			return new \WP_Error( 'error' );
 		}
 
@@ -124,7 +124,7 @@ class Field {
 			return new \WP_Error( 'error',
 				__( "The captcha wasn't entered correctly.", 'cf-zoho' ) . ' <a href="#" class="reset_' . sanitize_text_field( $_POST[ $field['ID'] ] ) . '">' . __( 'Reset', 'cf-zoho' ) . '<a>.'
 			);
-		}
+		}*/
 
 		return true;
 

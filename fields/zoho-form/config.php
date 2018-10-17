@@ -24,3 +24,12 @@
 	</div>
 </div>
 
+<div class="caldera-config-group">
+	<label for="{{_id}}_limit">
+		<?php esc_html_e('Limit', 'cf-zoho' ); ?>
+	</label>
+	<div class="caldera-config-field">
+		<input type="text" id="{{_id}}_limit" class="block-input field-config magic-tag-enabled" name="{{_name}}[limit]" value="{{limit}}">
+	</div>
+</div>
+

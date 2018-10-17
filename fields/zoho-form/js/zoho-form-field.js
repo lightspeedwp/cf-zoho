@@ -5,7 +5,15 @@ var cf_zoho_handle_return = function( obj ) {
         if ( undefined !== obj.data.cf_id ) {
             var form_id = obj.form_id;
             var parent_field = jQuery( '.remodal[data-form-id="' + form_id + '"]').attr('data-parent-field');
-            jQuery( '#' + parent_field ).val( obj.data.cf_id );
+
+            //Check for previous values
+            var current_value = jQuery( '#' + parent_field ).val();
+            var to_save = '';
+            if ( '' !== current_value ) {
+                to_save = current_value + ',';
+            }
+            to_save += obj.data.cf_id;
+            jQuery( '#' + parent_field ).val( to_save );
         }
     }
 };
