@@ -15,18 +15,14 @@
 		</label>
 
 		<label>
-			<input type="checkbox" id="{{_id}}_update_existing" class="field-config" value="update" name="{{_name}}[_allow_duplicates]" {{#is _allow_duplicates value="update"}}checked="checked"{{/is}}> <?php esc_html_e( 'Update existing records', 'cf-zoho' ); ?>
+			<input type="checkbox" id="{{_id}}_update_existing" class="field-config" value="update" name="{{_name}}[_allow_duplicates]" {{#if _allow_duplicates}}checked="checked"{{/if}}> <?php esc_html_e( 'Update existing records', 'cf-zoho' ); ?>
 		</label>
 
-	</div>
-
-	<label for="{{_id}}_return_information"><?php esc_html_e( 'Submission', 'cf-zoho' ); ?></label>
-
-	<div class="caldera-config-field">
 		<label>
-			<input type="checkbox" id="{{_id}}_return_information" class="field-config" value="update" name="{{_name}}[_return_information]" {{#is _return_information}}checked="checked"{{/is}}> <?php esc_html_e( 'Return Information', 'cf-zoho' ); ?>
+			<input type="checkbox" id="{{_id}}_return_information" class="field-config" value="1" name="{{_name}}[_return_information]" {{#if _return_information}}checked="checked"{{/if}}> <?php esc_html_e( 'Return Information', 'cf-zoho' ); ?>
 		</label>
 		<small><?php esc_html_e( 'Enable the option above when attaching one module to another module, (e.g attaching a contact to a task).', 'cf-zoho' ); ?></small>
+
 	</div>
 
 </div>

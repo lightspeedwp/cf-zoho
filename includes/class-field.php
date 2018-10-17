@@ -147,6 +147,12 @@ class Field {
 	public function output_modals() {
 		if ( ! empty( $this->modals ) && is_array( $this->modals ) ) {
 			foreach( $this->modals as $form_id => $field_id ) {
+
+				//add filter to alter the passenger form
+				add_filter( 'caldera_forms_get_form-' . $form_id, array(
+					$this,
+					'register_js_callback',
+				) );
 				include( CFZ_TEMPLATE_PATH . 'zoho-modal.php' );
 			}
 		}
@@ -162,5 +168,20 @@ class Field {
 		$allowedtags['div']['data-form-id']   = true;
 		$allowedtags['div']['data-field-id'] = true;
 		return $allowedtags;
+	}
+
+	/**
+	 * Alter the second form to add the callback for the entry ID
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $form the form config to alter
+	 *
+	 * @return array the altered form object
+	 */
+	public function register_js_callback( $form ) {
+		$form['has_ajax_callback'] = true;
+		$form['custom_callback']   = 'cf_zoho_handle_return';
+		return $form;
 	}
 }

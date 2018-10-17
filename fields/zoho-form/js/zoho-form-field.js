@@ -1,29 +1,35 @@
+
+
+var cf_zoho_handle_return = function( obj ) {
+    if (obj.status === 'complete') {
+        if ( undefined !== obj.data.cf_id ) {
+            var form_id = obj.form_id;
+            var parent_field = jQuery( '.remodal[data-form-id="' + form_id + '"]').attr('data-parent-field');
+            jQuery( '#' + parent_field ).val( obj.data.cf_id );
+        }
+    }
+};
+
+/**
+ * When the form initiates
+ */
 jQuery( document ).on( 'cf.form.init', function () {
     if ( 0 < jQuery( '.cf-zoho-modal' ).length ) {
         jQuery( '.cf-zoho-modal' ).each( function() {
+
+            //move the button
             var field_id = jQuery(this).attr('data-field-id');
+            var target_modal = jQuery(this).find('button').attr('data-remodal-target');
             jQuery( '#' + field_id ).after( jQuery(this).html() );
             jQuery(this).remove();
+            jQuery( '#' + target_modal ).attr( 'data-parent-field', field_id );
         });
     }
 });
 
 jQuery( document ).on( 'cf.form.submit', function (event, data ) {
-    //data.$form is a jQuery object for the form that just submitted.
-
-    //log form id
-    console.log( data );
-
     var $form = data.$form;
-
-    //get the form that is submiting's ID attribute
-    var formId = $form.attr('id');
-    console.log(formId);
-    console.log(window.cfstate.hasOwnProperty( formId ) );
-    if ( window.cfstate.hasOwnProperty( formId ) ) {
-        var state = window.cfstate[formId];
-        //log a field's value
-        console.log(state);
+    if ( 0 < $form.parents('.caldera-modal-body').length ) {
+        var formId = $form.attr('id');
     }
-
 });
