@@ -9,6 +9,12 @@ namespace cf_zoho\includes;
 
 use cf_zoho\includes\zohoapi;
 
+/*
+ * 		if (self::should_send_mail($form, $transdata)) {
+			Caldera_Forms_Save_Final::do_mailer($form, $entryid);
+		}
+ */
+
 /**
  * Processors Class.
  */
@@ -22,7 +28,7 @@ class CF_Processors {
 	private $config = [];
 
 	/**
-	 * Form config.
+	 * The current form being processed.
 	 *
 	 * @var array.
 	 */
@@ -34,6 +40,13 @@ class CF_Processors {
 	 * @var string.
 	 */
 	private $module = '';
+
+	/**
+	 * Contains any additional mails that need to be sent out.
+	 *
+	 * @var array.
+	 */
+	private $additional_mails = '';
 
 	/**
 	 * Registers our processors with Caldera Forms.
@@ -199,7 +212,7 @@ class CF_Processors {
 		if ( isset( $this->config['_return_information'] ) && ( true === $this->config['_return_information'] || 'true' === $this->config['_return_information'] || 1 === $this->config['_return_information'] ) ) {
 			$object_id = $this->capture_info( $this->module, $body, $object );
 		} else {
-			$object_id = $this->do_request( $path, $body, $object );
+			//$object_id = $this->do_request( $path, $body, $object );
 		}
 
 		do_action( 'cf_zoho_create_entry_complete', $object_id, $this->config, $this->form );
@@ -255,48 +268,6 @@ class CF_Processors {
 	}
 
 	/**
-	 * The function which send the build info
-	 * @param $path
-	 * @param $body
-	 * @param $object
-	 *
-	 * @return array
-	 */
-	public function do_side_request( $value ) {
-		$return = $value;
-		$entry = $this->get_entry_meta( $value );
-		$entry = maybe_unserialize( $entry );
-
-		/*print_r('<pre>');
-		print_r( $entry );
-		print_r('</pre>');*/
-
-		if ( is_array( $entry ) ) {
-			foreach( $entry as $module => $data ) {
-				if ( in_array( $module, array( 'task', 'lead', 'contact' ) ) ) {
-
-					$path   = '/crm/v2/' . ucfirst( $module );
-
-					/*print_r('<pre>');
-					print_r( $data );
-					print_r('</pre>');*/
-
-					$object_id = $this->do_request( $path, $data, $data );
-
-					/*print_r('<pre>');
-					print_r( $object_id );
-					print_r('</pre>');*/
-
-					if ( ! is_wp_error( $object_id ) ) {
-						$return = $object_id;
-					}
-				}
-			}
-		}
-		return $return;
-	}
-
-	/**
 	 * Build object for the module.
 	 *
 	 * @return array Object for the module.
@@ -333,10 +304,10 @@ class CF_Processors {
 			}
 		}
 
-		/*print_r('<pre>');
-		print_r( $object );
+		print_r('<pre>');
+		print_r( $this->additional_mails );
 		print_r('</pre>');
-		die();*/
+		die();
 
 		return $object;
 	}
@@ -441,20 +412,13 @@ class CF_Processors {
 		if ( ! isset( $this->config[ $key ] ) ) {
 			return;
 		}
-
-
-		$value = \Caldera_Forms::do_magic_tags( $this->config[ $key ] );
-
-		/*print_r('<pre>');
-		print_r( $value );
-		print_r('</pre>');*/
-
-		/**
-		 * Check if this is a Zoho Form Field
-		 * TODO: Make this check for the field type and not the key
+		/*
+		 * TODO: Check why this is not working.
 		 */
-		if ( 'description' === $this->config[ $key ] || 'related_to' === $this->config[ $key ] || 'Description' === $field['field_label'] ) {
-			$value = $this->do_side_request( $value );
+		$value = \Caldera_Forms::do_magic_tags( $this->config[ $key ], null, $this->form );
+
+		if ( $this->is_zoho_form_field( $this->config[ $key ] ) ) {
+			$value = $this->do_side_request( '38' );
 		}
 
 		if ( 'boolean' !== strtolower( $field['data_type'] ) ) {
@@ -464,16 +428,49 @@ class CF_Processors {
 		return empty( $value ) ? (bool) false : (bool) true;
 	}
 
+	/**
+	 * The function which send the build info
+	 * @param $path
+	 * @param $body
+	 * @param $object
+	 *
+	 * @return array
+	 */
+	public function do_side_request( $value ) {
+		$return = $value;
+		$entry = $this->get_entry_meta( $value );
+		$entry = maybe_unserialize( $entry );
+
+		if ( is_array( $entry ) ) {
+			foreach( $entry as $module => $data ) {
+				if ( in_array( $module, array( 'task', 'lead', 'contact' ) ) ) {
+
+					$path   = '/crm/v2/' . ucfirst( $module );
+					$object_id = $this->do_request( $path, $data, $data );
+
+					if ( ! is_wp_error( $object_id ) ) {
+						$this->maybe_register_mailer( $entry, $object_id );
+						$return = $object_id;
+					}
+				}
+			}
+		}
+		return $return;
+	}
+
 	private function get_entry_meta( $entry_id ) {
 		global $wpdb;
 
 		$entry_meta_data = $wpdb->get_results($wpdb->prepare("SELECT * FROM `" . $wpdb->prefix . "cf_form_entry_meta` WHERE `entry_id` = %d AND `meta_key` = 'id'",
 			$entry_id), ARRAY_A);
 
+		print_r( $wpdb->prepare("SELECT * FROM `" . $wpdb->prefix . "cf_form_entry_meta` WHERE `entry_id` = %d AND `meta_key` = 'id'",
+			$entry_id) );
+
 		$return = '';
 		if ( ! empty( $entry_meta_data ) ) {
-			if ( isset( $entry_meta_data['meta_key'] ) ) {
-				$return = $entry_meta_data['meta_key'];
+			if ( isset( $entry_meta_data[0] ) && isset( $entry_meta_data[0]['meta_value'] ) ) {
+				$return = $entry_meta_data[0]['meta_value'];
 			}
 		}
 		return $return;
@@ -491,5 +488,36 @@ class CF_Processors {
 			$send = false;
 		}
 		return $send;
+	}
+
+
+	/**
+	 * Check to see if the current field is a zoho form field.
+	 * @param string $magic_tag
+	 * @return boolean
+	 */
+	public function is_zoho_form_field( $magic_tag = '' ) {
+		$is_zoho = false;
+		$current_field = false;
+		foreach( $this->form['fields'] as $field ) {
+			if ( '%' . $field['slug'] . '%' === $magic_tag ) {
+				$current_field = $field;
+			}
+		}
+		if ( false !== $current_field && 'zoho_form' === $current_field['type'] ) {
+			$is_zoho = true;
+		}
+		return $is_zoho;
+	}
+
+	/**
+	 * Checks to see if we should register a mailer for this form.
+	 * @param $entryid
+	 * @param $zoho_id
+	 */
+	public function maybe_register_mailer( $entryid, $zoho_id ) {
+		print_r('<pre>');
+		print_r( $entryid );
+		print_r('</pre>');
 	}
 }
