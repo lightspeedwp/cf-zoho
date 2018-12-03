@@ -72,5 +72,9 @@ final class CF_Zoho {
 		//Register the new field
 		$this->field = Field::init();
 		add_action( 'init', [ $this->field, 'setup' ] );
+
+		/**
+		 * TODO: Move this to its own class.
+		 */
 	}
 }

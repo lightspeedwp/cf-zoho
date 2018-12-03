@@ -168,6 +168,7 @@ class CF_Processors {
 		/**
 		 * TODO: This is where we check to see if we should submit this info or not.
 		 */
+		add_filter('caldera_forms_send_email', array( $this, 'stagger_mailer' ), 1, 2);
 
 		$path   = '/crm/v2/' . ucfirst( $this->module );
 		$object = $this->build_object();
@@ -212,7 +213,7 @@ class CF_Processors {
 		/**
 		 * TODO: if the form is capturing entries, then serialize the data and return that for saving.
 		 */
-		return serialize( $body );
+		return serialize( array( $module => $body ) );
 	}
 
 	/**
@@ -254,6 +255,48 @@ class CF_Processors {
 	}
 
 	/**
+	 * The function which send the build info
+	 * @param $path
+	 * @param $body
+	 * @param $object
+	 *
+	 * @return array
+	 */
+	public function do_side_request( $value ) {
+		$return = $value;
+		$entry = $this->get_entry_meta( $value );
+		$entry = maybe_unserialize( $entry );
+
+		/*print_r('<pre>');
+		print_r( $entry );
+		print_r('</pre>');*/
+
+		if ( is_array( $entry ) ) {
+			foreach( $entry as $module => $data ) {
+				if ( in_array( $module, array( 'task', 'lead', 'contact' ) ) ) {
+
+					$path   = '/crm/v2/' . ucfirst( $module );
+
+					/*print_r('<pre>');
+					print_r( $data );
+					print_r('</pre>');*/
+
+					$object_id = $this->do_request( $path, $data, $data );
+
+					/*print_r('<pre>');
+					print_r( $object_id );
+					print_r('</pre>');*/
+
+					if ( ! is_wp_error( $object_id ) ) {
+						$return = $object_id;
+					}
+				}
+			}
+		}
+		return $return;
+	}
+
+	/**
 	 * Build object for the module.
 	 *
 	 * @return array Object for the module.
@@ -289,6 +332,11 @@ class CF_Processors {
 				$object[ $label ] = $this->get_form_value( $field );
 			}
 		}
+
+		/*print_r('<pre>');
+		print_r( $object );
+		print_r('</pre>');
+		die();*/
 
 		return $object;
 	}
@@ -388,19 +436,60 @@ class CF_Processors {
 	 * @return string        Form field value.
 	 */
 	public function get_form_value( $field ) {
-
 		$key = sanitize_key( $field['field_label'] );
 
 		if ( ! isset( $this->config[ $key ] ) ) {
 			return;
 		}
 
+
 		$value = \Caldera_Forms::do_magic_tags( $this->config[ $key ] );
+
+		/*print_r('<pre>');
+		print_r( $value );
+		print_r('</pre>');*/
+
+		/**
+		 * Check if this is a Zoho Form Field
+		 * TODO: Make this check for the field type and not the key
+		 */
+		if ( 'description' === $this->config[ $key ] || 'related_to' === $this->config[ $key ] || 'Description' === $field['field_label'] ) {
+			$value = $this->do_side_request( $value );
+		}
 
 		if ( 'boolean' !== strtolower( $field['data_type'] ) ) {
 			return $value;
 		}
 
 		return empty( $value ) ? (bool) false : (bool) true;
+	}
+
+	private function get_entry_meta( $entry_id ) {
+		global $wpdb;
+
+		$entry_meta_data = $wpdb->get_results($wpdb->prepare("SELECT * FROM `" . $wpdb->prefix . "cf_form_entry_meta` WHERE `entry_id` = %d AND `meta_key` = 'id'",
+			$entry_id), ARRAY_A);
+
+		$return = '';
+		if ( ! empty( $entry_meta_data ) ) {
+			if ( isset( $entry_meta_data['meta_key'] ) ) {
+				$return = $entry_meta_data['meta_key'];
+			}
+		}
+		return $return;
+	}
+
+	/**
+	 *
+	 * @param $send boolean
+	 * @param $form object
+	 *
+	 * @return boolean
+	 */
+	public function stagger_mailer( $send, $form ) {
+		if ( isset( $this->config['_return_information'] ) && ( true === $this->config['_return_information'] || 'true' === $this->config['_return_information'] || 1 === $this->config['_return_information'] ) ) {
+			$send = false;
+		}
+		return $send;
 	}
 }

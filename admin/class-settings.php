@@ -207,7 +207,7 @@ class Settings {
 			'client_id'     => $this->options->get_option( 'cfzoho_client_id' ),
 			'state'         => wp_create_nonce( 'zohotoken' ),
 			'response_type' => 'code',
-			'redirect_uri'  => cf_zoho\cf_zoho_redirect_url(),
+			'redirect_uri'  => cf_zoho_redirect_url(),
 			'access_type'   => 'offline',
 		];
 

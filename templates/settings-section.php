@@ -14,7 +14,7 @@
 		</tr>
 		<tr>
 			<th><?php esc_html_e( 'Authorized redirect URIs', 'cf-zoho' ); ?></th>
-			<td><?php echo esc_url( cf_zoho\cf_zoho_redirect_url() ); ?></td>
+			<td><?php echo esc_url( cf_zoho_redirect_url() ); ?></td>
 		</tr>
 		<tr>
 			<th><?php esc_html_e( 'Client Type', 'cf-zoho' ); ?></th>
