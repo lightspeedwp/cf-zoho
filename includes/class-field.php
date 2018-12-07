@@ -61,7 +61,7 @@ class Field {
 		//Prevent removing recaptcha from DOM from being effective bypass of recpatcha
 		//add_filter( 'caldera_forms_validate_field_recaptcha', array( $this, 'check_for_captcha' ), 10, 3 );
 
-		//add_filter( 'caldera_forms_field_attributes-recaptcha', array( $this, 'field_attrs' ), 10, 2 );
+		add_filter( 'caldera_forms_field_attributes', array( $this, 'field_attrs' ), 10, 3 );
 	}
 
 	/**
@@ -167,6 +167,11 @@ class Field {
 		}
 		$allowedtags['div']['data-form-id']   = true;
 		$allowedtags['div']['data-field-id'] = true;
+
+		if ( ! isset( $allowedtags['input'] ) ) {
+			$allowedtags['input'] = array();
+		}
+		$allowedtags['input']['data-limit'] = true;
 		return $allowedtags;
 	}
 
@@ -183,5 +188,30 @@ class Field {
 		$form['has_ajax_callback'] = true;
 		$form['custom_callback']   = 'cf_zoho_handle_return';
 		return $form;
+	}
+
+	/**
+	 * Modify field attributes so recpatcha field has type "hidden" not "recpatcha"
+	 *
+	 * @since 0.1.0
+	 *
+	 * @uses "caldera_forms_field_attributes-recaptcha" filter
+	 *
+	 * @param $attrs
+	 * @param $form
+	 *
+	 * @return array
+	 */
+	public function field_attrs( $attrs, $field, $form ){
+		if ( 'zoho_form' === $field['type'] ) {
+			//set the limit
+			$limit = 1;
+			if ( ! empty( $field['config']['limit'] ) && '' !== $field['config']['limit'] ) {
+				$limit = $field['config']['limit'];
+			}
+			$attrs[ 'type' ] = 'hidden';
+			$attrs[ 'data-limit' ] = $limit;
+		}
+		return $attrs;
 	}
 }

@@ -212,7 +212,7 @@ class CF_Processors {
 		if ( isset( $this->config['_return_information'] ) && ( true === $this->config['_return_information'] || 'true' === $this->config['_return_information'] || 1 === $this->config['_return_information'] ) ) {
 			$object_id = $this->capture_info( $this->module, $body, $object );
 		} else {
-			//$object_id = $this->do_request( $path, $body, $object );
+			$object_id = $this->do_request( $path, $body, $object );
 		}
 
 		do_action( 'cf_zoho_create_entry_complete', $object_id, $this->config, $this->form );
@@ -240,6 +240,8 @@ class CF_Processors {
 	public function do_request( $path, $body, $object ) {
 		$post     = new zohoapi\Post();
 		$response = $post->request( $path, $body );
+
+		print_r($post);
 
 		if ( is_wp_error( $response ) ) {
 
@@ -303,11 +305,6 @@ class CF_Processors {
 				$object[ $label ] = $this->get_form_value( $field );
 			}
 		}
-
-		print_r('<pre>');
-		print_r( $this->additional_mails );
-		print_r('</pre>');
-		die();
 
 		return $object;
 	}
@@ -443,13 +440,13 @@ class CF_Processors {
 
 		if ( is_array( $entry ) ) {
 			foreach( $entry as $module => $data ) {
-				if ( in_array( $module, array( 'task', 'lead', 'contact' ) ) ) {
+				if ( in_array( $module, array( 'task', 'lead', 'contacts' ) ) ) {
 
 					$path   = '/crm/v2/' . ucfirst( $module );
 					$object_id = $this->do_request( $path, $data, $data );
 
 					if ( ! is_wp_error( $object_id ) ) {
-						$this->maybe_register_mailer( $entry, $object_id );
+						$this->maybe_register_mailer( $return, $object_id, $module );
 						$return = $object_id;
 					}
 				}
@@ -464,13 +461,25 @@ class CF_Processors {
 		$entry_meta_data = $wpdb->get_results($wpdb->prepare("SELECT * FROM `" . $wpdb->prefix . "cf_form_entry_meta` WHERE `entry_id` = %d AND `meta_key` = 'id'",
 			$entry_id), ARRAY_A);
 
-		print_r( $wpdb->prepare("SELECT * FROM `" . $wpdb->prefix . "cf_form_entry_meta` WHERE `entry_id` = %d AND `meta_key` = 'id'",
-			$entry_id) );
-
 		$return = '';
 		if ( ! empty( $entry_meta_data ) ) {
 			if ( isset( $entry_meta_data[0] ) && isset( $entry_meta_data[0]['meta_value'] ) ) {
 				$return = $entry_meta_data[0]['meta_value'];
+			}
+		}
+		return $return;
+	}
+
+	private function get_entry_form_id( $entry_id ) {
+		global $wpdb;
+
+		$entry_data = $wpdb->get_results($wpdb->prepare("SELECT form_id FROM `" . $wpdb->prefix . "cf_form_entries` WHERE `id` = %d",
+			$entry_id), ARRAY_A);
+
+		$return = '';
+		if ( ! empty( $entry_data ) ) {
+			if ( isset( $entry_data[0] ) && isset( $entry_data[0]['form_id'] ) ) {
+				$return = $entry_data[0]['form_id'];
 			}
 		}
 		return $return;
@@ -514,10 +523,14 @@ class CF_Processors {
 	 * Checks to see if we should register a mailer for this form.
 	 * @param $entryid
 	 * @param $zoho_id
+	 * @param $module
 	 */
-	public function maybe_register_mailer( $entryid, $zoho_id ) {
-		print_r('<pre>');
-		print_r( $entryid );
-		print_r('</pre>');
+	public function maybe_register_mailer( $entryid, $zoho_id, $module ) {
+		$form_id = $this->get_entry_form_id( $entryid );
+		$form = \Caldera_Forms::get_form( $form_id );
+
+		if ( ! isset( $form['mailer']['enable_mailer'] ) ) {
+			$this->additional_mails[ $form_id ] = $entryid;
+		}
 	}
 }

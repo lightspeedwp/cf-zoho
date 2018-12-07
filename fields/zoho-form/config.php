@@ -1,12 +1,11 @@
-<?php
-	$options = cf_zoho_get_caldera_forms();
-?>
+
 
 <input type="hidden" value="1" name="config[fields][{{_id}}][required]" class="field-config">
 
 <p class="description" style="text-align:center;">
-	<?php esc_html_e( 'Select a form below which has another Zoho processor enabled.', 'cf-zoho' ); ?>
+	<?php esc_html_e( 'Enter a form ID below which has another Zoho processor enabled.', 'cf-zoho' ); ?>
 </p>
+<?php /*
 <div class="caldera-config-group">
 	<label for="{{_id}}_form_id">
 		<?php esc_html_e( 'Select your form', 'cf-zoho' ); ?>
@@ -21,6 +20,16 @@
 				}
 			} ?>
 		</select>
+	</div>
+</div>
+ */ ?>
+
+<div class="caldera-config-group">
+	<label for="{{_id}}_form_id">
+		<?php esc_html_e('Form ID', 'cf-zoho' ); ?>
+	</label>
+	<div class="caldera-config-field">
+		<input type="text" id="{{_id}}_form_id" class="block-input field-config magic-tag-enabled" name="{{_name}}[form_id]" value="{{form_id}}">
 	</div>
 </div>
 
