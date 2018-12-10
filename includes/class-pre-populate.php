@@ -40,6 +40,12 @@ class Pre_Populate {
 	public $entry = array();
 
 	/**
+	 * Only allow the primary form to be pre populated.
+	 * @var array
+	 */
+	public $has_output = false;
+
+	/**
 	 * Return an instance of this class.
 	 *
 	 * @return  object
@@ -62,12 +68,13 @@ class Pre_Populate {
 	public function pre_populate_form( $entry, $form ) {
 		$this->form = $form;
 		$this->entry = $entry;
-		if ( is_array( $this->entry ) ) {
+		if ( false === $this->has_output && is_array( $this->entry ) ) {
 			$params = array_intersect( array_keys( $_GET ), $this->get_modules() );
 			if ( ! empty( $params ) ) {
 				foreach ( $params as $key ) {
 					$this->get_resource( $key, $_GET[ $key ] );
 				}
+				$this->has_output = true;
 			}
 		}
 		$this->entry = apply_filters( 'cf_zoho_pre_populate_entry', $this->entry );
