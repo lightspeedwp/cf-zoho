@@ -241,8 +241,6 @@ class CF_Processors {
 		$post     = new zohoapi\Post();
 		$response = $post->request( $path, $body );
 
-		print_r($post);
-
 		if ( is_wp_error( $response ) ) {
 
 			$this->log( $response->get_error_message(), $object, 'WordPress Error', 0, 'error' );

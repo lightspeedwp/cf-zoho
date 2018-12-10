@@ -32,6 +32,12 @@ final class CF_Zoho {
 	var $templates;
 
 	/**
+	 * Holds the Pre Populate class
+	 * @var array cf_zoho\includes\Pre_Populate()
+	 */
+	var $pre_populate;
+
+	/**
 	 * Return an instance of this class.
 	 *
 	 * @return  object
@@ -73,8 +79,7 @@ final class CF_Zoho {
 		$this->field = Field::init();
 		add_action( 'init', [ $this->field, 'setup' ] );
 
-		/**
-		 * TODO: Move this to its own class.
-		 */
+		$this->pre_populate = Pre_Populate::init();
+		add_filter( 'caldera_forms_render_pre_get_entry', [ $this->pre_populate, 'pre_populate_form'], 10, 2 );
 	}
 }
