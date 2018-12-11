@@ -133,10 +133,15 @@ class Field {
 	/**
 	 * Adds a caldera form to your list of modals to be outputted.
 	 * @param $caldera_id string
+	 * @param $field_id string
+	 * @param $limit integer
 	 */
-	public function add_modal( $caldera_id = '', $field_id = '' ) {
+	public function add_modal( $caldera_id = '', $field_id = '', $limit = 1 ) {
 		if ( '' !== $caldera_id && '' !== $field_id ) {
-			$this->modals[ $caldera_id ] = $field_id;
+			$this->modals[ $caldera_id ] = array(
+				'field' => $field_id,
+				'limit' => $limit,
+			);
 			add_action( 'wp_footer', array( $this, 'output_modals' ), 1 );
 		}
 	}
@@ -146,14 +151,19 @@ class Field {
 	 */
 	public function output_modals() {
 		if ( ! empty( $this->modals ) && is_array( $this->modals ) ) {
-			foreach( $this->modals as $form_id => $field_id ) {
+			foreach( $this->modals as $form_id => $values ) {
 
 				//add filter to alter the passenger form
 				add_filter( 'caldera_forms_get_form-' . $form_id, array(
 					$this,
 					'register_js_callback',
 				) );
-				include( CFZ_TEMPLATE_PATH . 'zoho-modal.php' );
+
+
+				do {
+					include( CFZ_TEMPLATE_PATH . 'zoho-modal.php' );
+					$values['limit']--;
+				} while ( $values['limit'] > 0 );
 			}
 		}
 	}

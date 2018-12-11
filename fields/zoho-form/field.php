@@ -11,13 +11,19 @@
 <?php echo wp_kses_post( $field_before ); ?>
 
 <?php
-	echo wp_kses_post( Caldera_Forms_Field_Input::html( $field, $field_structure, $form ) ); ?>
+	echo wp_kses_post( Caldera_Forms_Field_Input::html( $field, $field_structure, $form ) );
 
-<?php
+
 	if ( isset( $field_structure['field']['config']['form_id'] ) && ( 0 !== $field_structure['field']['config']['form_id'] && '' !== $field_structure['field']['config']['form_id'] && '0' !== $field_structure['field']['config']['form_id'] )  ) {
 		$value = $field_structure['field']['config']['form_id'];
 		$field_base_id = Caldera_Forms_Field_Util::get_base_id( $field, null, $form );
-		cf_zoho_register_modal( $value, $field_base_id );
+
+		$limit = 1;
+		if ( isset( $field_structure['field']['config']['limit'] ) ) {
+			$limit = $field_structure['field']['config']['limit'];
+		}
+
+		cf_zoho_register_modal( $value, $field_base_id, $limit );
 	}
 ?>
 

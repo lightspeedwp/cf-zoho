@@ -41,7 +41,6 @@ var CF_ZOHO_FIELD = {
         jQuery( document ).on( 'cf.form.init', function () {
             if ( 0 < jQuery( '.cf-zoho-modal' ).length ) {
                 jQuery( '.cf-zoho-modal' ).each( function() {
-
                     //move the button
                     var field_id = jQuery(this).attr('data-field-id');
                     var target_modal = jQuery(this).find('button').attr('data-remodal-target');
