@@ -172,6 +172,7 @@ class Field {
 			$allowedtags['input'] = array();
 		}
 		$allowedtags['input']['data-limit'] = true;
+		$allowedtags['input']['data-count'] = true;
 		return $allowedtags;
 	}
 
@@ -211,6 +212,8 @@ class Field {
 			}
 			$attrs[ 'type' ] = 'hidden';
 			$attrs[ 'data-limit' ] = $limit;
+			$attrs[ 'data-count' ] = 0;
+			$attrs[ 'class' ][] = 'zoho-form-field';
 		}
 		return $attrs;
 	}

@@ -10,7 +10,8 @@
 ?>
 <?php echo wp_kses_post( $field_before ); ?>
 
-<?php echo wp_kses_post( Caldera_Forms_Field_Input::html( $field, $field_structure, $form ) ); ?>
+<?php
+	echo wp_kses_post( Caldera_Forms_Field_Input::html( $field, $field_structure, $form ) ); ?>
 
 <?php
 	if ( isset( $field_structure['field']['config']['form_id'] ) && ( 0 !== $field_structure['field']['config']['form_id'] && '' !== $field_structure['field']['config']['form_id'] && '0' !== $field_structure['field']['config']['form_id'] )  ) {

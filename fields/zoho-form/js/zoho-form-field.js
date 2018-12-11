@@ -2,7 +2,15 @@ var CF_ZOHO_FIELD = {
 
     init: function() {
         this.init_primary_form();
+
+
+        //Set the field Limits
+        this.field = jQuery('input.zoho-form-field');
+        this.limit = this.field.attr('data-limit');
+
+        this.check_limit();
         this.watch_form_submit();
+
     },
 
     handle_form_return: function( obj ) {
@@ -19,6 +27,9 @@ var CF_ZOHO_FIELD = {
                 }
                 to_save += obj.data.cf_id;
                 jQuery( '#' + parent_field ).val( to_save );
+
+                this.increase_limit();
+                this.check_limit();
             }
         }
     },
@@ -49,7 +60,44 @@ var CF_ZOHO_FIELD = {
                 var formId = $form.attr('id');
             }
         });
-    }
+    },
+
+
+    /**
+     * Handles the Limits for the button
+     */
+
+    check_limit: function() {
+        console.log( this.field );
+
+        var current_entries = this.field.val();
+        current_entries = current_entries.split(',');
+        console.log( current_entries );
+    },
+
+    increase_limit: function() {
+        var count = this.field.attr('data-count');
+        if ( '' === count ) {
+            count = 1;
+        } else {
+            count++;
+        }
+        this.field.attr( 'data-count', count );
+    },
+
+    decrease_limit: function() {
+        var count = this.field.attr('data-count');
+        if ( '' === count ) {
+            count = 0;
+        } else {
+            count--;
+        }
+
+        if ( 0 > count ) {
+            count = 0;
+        }
+        this.field.attr( 'data-count', count );
+    },
 
 };
 
