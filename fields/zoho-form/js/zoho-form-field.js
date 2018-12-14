@@ -1,3 +1,4 @@
+console.log(cf_zoho);
 var CF_ZOHO_FIELD = {
 
     init: function() {
