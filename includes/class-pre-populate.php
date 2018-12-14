@@ -90,6 +90,7 @@ class Pre_Populate {
 			'cid',
 			'tid',
 			'lid',
+			'pid',
 		) );
 		return $this->modules;
 	}
@@ -111,6 +112,11 @@ class Pre_Populate {
 			case 'lid':
 				$module_label = esc_html__( 'Leads', 'cf-zoho' );
 				break;
+
+			case 'pid':
+				$module_label = esc_html__( 'Potentials', 'cf-zoho' );
+				break;
+
 
 			default :
 				break;

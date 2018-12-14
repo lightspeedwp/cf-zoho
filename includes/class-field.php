@@ -61,7 +61,10 @@ class Field {
 		//Prevent removing recaptcha from DOM from being effective bypass of recpatcha
 		//add_filter( 'caldera_forms_validate_field_recaptcha', array( $this, 'check_for_captcha' ), 10, 3 );
 
-		add_filter( 'caldera_forms_field_attributes', array( $this, 'field_attrs' ), 10, 3 );
+		add_filter( 'caldera_forms_field_attributes', array(
+			$this,
+			'field_attrs',
+		), 10, 3 );
 	}
 
 	/**

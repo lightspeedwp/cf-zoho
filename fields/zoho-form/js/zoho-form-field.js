@@ -8,9 +8,9 @@ var CF_ZOHO_FIELD = {
         this.field = jQuery('input.zoho-form-field');
         this.limit = this.field.attr('data-limit');
 
-        this.check_limit();
         this.watch_form_submit();
-
+        this.watch_button_click();
+        this.watch_delete_button();
     },
 
     handle_form_return: function( obj ) {
@@ -28,6 +28,13 @@ var CF_ZOHO_FIELD = {
                 to_save += obj.data.cf_id;
                 jQuery( '#' + parent_field ).val( to_save );
 
+                jQuery( '.caldera-forms-modal.modal-open' ).removeClass('modal-open').addClass('hidden').addClass('submitted');
+
+                console.log( obj.return_message );
+                if ( undefined !== obj.return_message && null !== obj.return_message && '' !== obj.return_message ) {
+                    jQuery( '#' + parent_field ).parent('div').find('.alert-wrapper').append( obj.return_message );
+                }
+
                 this.increase_limit();
                 this.check_limit();
             }
@@ -40,10 +47,18 @@ var CF_ZOHO_FIELD = {
     init_primary_form: function( ) {
         jQuery( document ).on( 'cf.form.init', function () {
             if ( 0 < jQuery( '.cf-zoho-modal' ).length ) {
+                var modal_counter = 0;
                 jQuery( '.cf-zoho-modal' ).each( function() {
+                    modal_counter++;
                     //move the button
                     var field_id = jQuery(this).attr('data-field-id');
                     var target_modal = jQuery(this).find('button').attr('data-remodal-target');
+
+                    //Hide all other buttons after the first one.
+                    if ( 1 < modal_counter ) {
+                        jQuery(this).find('button.caldera-forms-modal').addClass('hidden');
+                    }
+
                     jQuery( '#' + field_id ).after( jQuery(this).html() );
                     jQuery(this).remove();
                     jQuery( '#' + target_modal ).attr( 'data-parent-field', field_id );
@@ -52,6 +67,9 @@ var CF_ZOHO_FIELD = {
         });
     },
 
+    /**
+     * Watch the button clicks
+     */
     watch_form_submit: function( ) {
         jQuery( document ).on( 'cf.form.submit', function (event, data ) {
             var $form = data.$form;
@@ -62,16 +80,39 @@ var CF_ZOHO_FIELD = {
     },
 
 
+    watch_button_click: function( ) {
+        this.watch_modal_open();
+        this.watch_modal_close();
+
+    },
+
+    watch_modal_open: function( ) {
+        jQuery( document ).on( 'click', '.caldera-forms-modal', function (event) {
+            jQuery( this ).addClass( 'modal-open' );
+        });
+    },
+    watch_modal_close: function( ) {
+        jQuery( document ).on( 'click', '.remodal-close', function (event) {
+            jQuery( '.caldera-forms-modal.modal-open' ).removeClass( 'modal-open' );
+        });
+    },
+    watch_delete_button: function () {
+        var $this = this;
+        jQuery( document ).on( 'click', '.alert-wrapper .close', function (event) {
+            $this.decrease_limit();
+            $this.reset_modal_button();
+        });
+    },
+
     /**
      * Handles the Limits for the button
      */
-
     check_limit: function() {
-        console.log( this.field );
-
-        var current_entries = this.field.val();
-        current_entries = current_entries.split(',');
-        console.log( current_entries );
+        var count = this.field.attr('data-count');
+        var limit = this.field.attr('data-limit');
+        if ( parseInt( count ) <= parseInt( limit ) ) {
+            jQuery('button.caldera-forms-modal.hidden:not(.submitted)').first().removeClass('hidden');
+        }
     },
 
     increase_limit: function() {
@@ -97,6 +138,20 @@ var CF_ZOHO_FIELD = {
         }
         this.field.attr( 'data-count', count );
     },
+
+    reset_modal_button: function() {
+        //If there are no buttons showing unhide one
+        console.log( jQuery('.caldera-forms-modal:not(.hidden)') );
+
+
+        if ( 0 >= jQuery('.caldera-forms-modal:not(.hidden)') ) {
+            jQuery('.caldera-forms-modal.hidden').first().removeClass('hidden').removeClass('submitted');
+        } else {
+            jQuery('.caldera-forms-modal.hidden').first().removeClass('submitted');
+        }
+        //If there is a button showing leave it.
+
+    }
 
 };
 

@@ -49,6 +49,12 @@ class CF_Processors {
 	private $additional_mails = '';
 
 	/**
+	 * Contains the object built and stored.
+	 * @var array
+	 */
+	private $body = array();
+
+	/**
 	 * Registers our processors with Caldera Forms.
 	 *
 	 * @param  array $processors Array of current processors.
@@ -57,7 +63,7 @@ class CF_Processors {
 	public function register_processors( $processors ) {
 
 		$processors['zoho_lead'] = [
-			'name'        => __( 'Zoho CRM - Create Lead', 'cf-zoho' ),
+			'name'        => __( 'Zoho CRM - Leads', 'cf-zoho' ),
 			'description' => __( 'Create or Update a lead on form submission', 'cf-zoho' ),
 			'author'      => 'LightSpeed',
 			'author_url'  => 'https://lsdev.biz/',
@@ -70,7 +76,7 @@ class CF_Processors {
 		];
 
 		$processors['zoho_contact'] = [
-			'name'        => __( 'Zoho CRM - Create Contact', 'cf-zoho' ),
+			'name'        => __( 'Zoho CRM - Contacts', 'cf-zoho' ),
 			'description' => __( 'Create or Update a contact on form submission', 'cf-zoho' ),
 			'author'      => 'LightSpeed',
 			'author_url'  => 'https://lsdev.biz/',
@@ -83,12 +89,23 @@ class CF_Processors {
 		];
 
 		$processors['zoho_task'] = [
-			'name'        => __( 'Zoho CRM - Create Task', 'cf-zoho' ),
+			'name'        => __( 'Zoho CRM - Tasks', 'cf-zoho' ),
 			'description' => __( 'Create or Update a task on form submission', 'cf-zoho' ),
 			'author'      => 'LightSpeed',
 			'author_url'  => 'https://lsdev.biz/',
 			'processor'   => [ $this, 'process_task_submission' ],
 			'template'    => CFZ_PROCESSORS_PATH . 'task-processor-config.php',
+			'icon'        => CFZ_URL . 'assets/images/icon.png',
+			'magic_tags'  => [ 'id' ],
+		];
+
+		$processors['zoho_potential'] = [
+			'name'        => __( 'Zoho CRM - Potentials', 'cf-zoho' ),
+			'description' => __( 'Create or Update potentials on form submission', 'cf-zoho' ),
+			'author'      => 'LightSpeed',
+			'author_url'  => 'https://lsdev.biz/',
+			'processor'   => [ $this, 'process_potential_submission' ],
+			'template'    => CFZ_PROCESSORS_PATH . 'potential-processor-config.php',
 			'icon'        => CFZ_URL . 'assets/images/icon.png',
 			'magic_tags'  => [ 'id' ],
 		];
@@ -148,6 +165,23 @@ class CF_Processors {
 	}
 
 	/**
+	 * Callback for Potentials form submissions.
+	 *
+	 * @param  array  $config Processor config
+	 * @param  array  $form Form config
+	 * @param  string $process_id Unique process ID for this submission
+	 * @return array.
+	 */
+	public function process_potential_submission( $config, $form, $process_id ) {
+
+		$this->config = $config;
+		$this->form   = $form;
+		$this->module = 'potentials';
+
+		return $this->do_submission();
+	}
+
+	/**
 	 * Logs an event or an error with processor submission.
 	 *
 	 * @param string  $message    Error or event response.
@@ -181,7 +215,14 @@ class CF_Processors {
 		/**
 		 * TODO: This is where we check to see if we should submit this info or not.
 		 */
-		add_filter('caldera_forms_send_email', array( $this, 'stagger_mailer' ), 1, 2);
+		add_filter('caldera_forms_send_email', array(
+			$this,
+			'stagger_mailer',
+		), 1, 2);
+		add_filter( 'caldera_forms_ajax_return', array(
+			$this,
+			'filter_ajax_return',
+		), 10, 2 );
 
 		$path   = '/crm/v2/' . ucfirst( $this->module );
 		$object = $this->build_object();
@@ -208,6 +249,7 @@ class CF_Processors {
 
 		// Filter hook.
 		$body     = apply_filters( 'process_zoho_submission', $body, $this->config, $this->form );
+		$this->body = $body;
 
 		if ( isset( $this->config['_return_information'] ) && ( true === $this->config['_return_information'] || 'true' === $this->config['_return_information'] || 1 === $this->config['_return_information'] ) ) {
 			$object_id = $this->capture_info( $this->module, $body, $object );
@@ -530,5 +572,29 @@ class CF_Processors {
 		if ( ! isset( $form['mailer']['enable_mailer'] ) ) {
 			$this->additional_mails[ $form_id ] = $entryid;
 		}
+	}
+
+
+	/**
+	 * Filter the ajax return and maybe add our output
+	 * @param $out
+	 * @param $form
+	 *
+	 * @return mixed
+	 */
+	public function filter_ajax_return( $out, $form ) {
+		if ( isset( $this->config['_return_information'] ) && ( true === $this->config['_return_information'] || 'true' === $this->config['_return_information'] || 1 === $this->config['_return_information'] ) ) {
+
+			$return_message = $this->config['return_message'];
+
+			if ( isset( $this->body['data'] ) && isset( $this->body['data'][0] ) ) {
+				foreach( $this->body['data'][0] as $field_key => $field_value ){
+					$search = '[' . strtolower( $field_key ) . ']';
+					$return_message = str_replace( $search, $field_value, $return_message );
+				}
+			}
+			$out['return_message'] = '<div class="alert alert-success fade in">' . $return_message . '<a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a></div>';
+		}
+		return $out;
 	}
 }

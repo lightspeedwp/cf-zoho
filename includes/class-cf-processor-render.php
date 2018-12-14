@@ -314,7 +314,7 @@ class CF_Processor_Render {
 	 * @return boolean.
 	 */
 	public function has_approval_mode() {
-		return in_array( $this->module, [ 'leads', 'contacts' ], true );
+		return in_array( $this->module, [ 'leads', 'contacts', 'potentials' ], true );
 	}
 
 	/**

@@ -22,9 +22,19 @@
 			<input type="checkbox" id="{{_id}}_return_information" class="field-config" value="1" name="{{_name}}[_return_information]" {{#if _return_information}}checked="checked"{{/if}}> <?php esc_html_e( 'Return Information', 'cf-zoho' ); ?>
 		</label>
 		<small><?php esc_html_e( 'Enable the option above when attaching one module to another module, (e.g attaching a contact to a task).', 'cf-zoho' ); ?></small>
-
 	</div>
+</div>
 
+<div class="caldera-config-group">
+	<label for="{{_id}}_return_message">
+		<?php esc_html_e('Return Message', 'cf-zoho' ); ?>
+	</label>
+	<div class="caldera-config-field">
+		<input type="text" id="{{_id}}_return_message" class="block-input field-config" name="{{_name}}[return_message]" value="{{return_message}}">
+	</div>
+	<p class="description" style="text-align:center;">
+		<?php esc_html_e( 'Enter the zoho slugs you want from the attached processor. e.g [first_name] [last_name] - [email]', 'cf-zoho' ); ?>
+	</p>
 </div>
 
 <?php endif; ?>
