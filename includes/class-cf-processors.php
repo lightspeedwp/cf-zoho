@@ -176,7 +176,7 @@ class CF_Processors {
 
 		$this->config = $config;
 		$this->form   = $form;
-		$this->module = 'potentials';
+		$this->module = 'deals';
 
 		return $this->do_submission();
 	}

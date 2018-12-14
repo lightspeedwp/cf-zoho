@@ -114,7 +114,7 @@ class Pre_Populate {
 				break;
 
 			case 'pid':
-				$module_label = esc_html__( 'Potentials', 'cf-zoho' );
+				$module_label = esc_html__( 'Deals', 'cf-zoho' );
 				break;
 
 
