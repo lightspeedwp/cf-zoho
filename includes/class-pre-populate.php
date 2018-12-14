@@ -46,6 +46,12 @@ class Pre_Populate {
 	public $has_output = false;
 
 	/**
+	 * The Arguments for the JS
+	 * @var array
+	 */
+	public $args = array();
+
+	/**
 	 * Return an instance of this class.
 	 *
 	 * @return  object
@@ -73,8 +79,10 @@ class Pre_Populate {
 			if ( ! empty( $params ) ) {
 				foreach ( $params as $key ) {
 					$this->get_resource( $key, $_GET[ $key ] );
+					$this->args[ $key ] = $_GET[ $key ];
 				}
 				$this->has_output = true;
+				add_filter( 'caldera_forms_get_form-' . $form['ID'], array( $this, 'enqueue_assets' ) );
 			}
 		}
 		$this->entry = apply_filters( 'cf_zoho_pre_populate_entry', $this->entry, $this );
@@ -179,5 +187,27 @@ class Pre_Populate {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Alter the main form to add the linking of passengers
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $form the form config to alter
+	 *
+	 * @return array the altered form object
+	 */
+	public function enqueue_assets( $form ) {
+
+		if ( false !== $form ) {
+			wp_localize_script(
+				'cf-zoho-form-fieldjs',
+				'cf_zoho',
+				$this->args
+			);
+		}
+
+		return $form;
 	}
 }
