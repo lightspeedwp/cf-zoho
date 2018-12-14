@@ -99,13 +99,13 @@ class CF_Processors {
 			'magic_tags'  => [ 'id' ],
 		];
 
-		$processors['zoho_potential'] = [
-			'name'        => __( 'Zoho CRM - Potentials', 'cf-zoho' ),
-			'description' => __( 'Create or Update potentials on form submission', 'cf-zoho' ),
+		$processors['zoho_deal'] = [
+			'name'        => __( 'Zoho CRM - Deals', 'cf-zoho' ),
+			'description' => __( 'Create or Update deals on form submission', 'cf-zoho' ),
 			'author'      => 'LightSpeed',
 			'author_url'  => 'https://lsdev.biz/',
-			'processor'   => [ $this, 'process_potential_submission' ],
-			'template'    => CFZ_PROCESSORS_PATH . 'potential-processor-config.php',
+			'processor'   => [ $this, 'process_deal_submission' ],
+			'template'    => CFZ_PROCESSORS_PATH . 'deal-processor-config.php',
 			'icon'        => CFZ_URL . 'assets/images/icon.png',
 			'magic_tags'  => [ 'id' ],
 		];
@@ -165,14 +165,14 @@ class CF_Processors {
 	}
 
 	/**
-	 * Callback for Potentials form submissions.
+	 * Callback for Deals form submissions.
 	 *
 	 * @param  array  $config Processor config
 	 * @param  array  $form Form config
 	 * @param  string $process_id Unique process ID for this submission
 	 * @return array.
 	 */
-	public function process_potential_submission( $config, $form, $process_id ) {
+	public function process_deal_submission( $config, $form, $process_id ) {
 
 		$this->config = $config;
 		$this->form   = $form;
