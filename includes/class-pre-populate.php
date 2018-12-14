@@ -77,7 +77,7 @@ class Pre_Populate {
 				$this->has_output = true;
 			}
 		}
-		$this->entry = apply_filters( 'cf_zoho_pre_populate_entry', $this->entry );
+		$this->entry = apply_filters( 'cf_zoho_pre_populate_entry', $this->entry, $this );
 		return $this->entry;
 	}
 
@@ -137,7 +137,8 @@ class Pre_Populate {
 		$this->response = $response;
 
 		if ( ! is_wp_error( $response ) && is_array( $response ) && isset( $response['data'] ) && ! empty( $response['data'] ) && isset( $response['data'][0] ) ) {
-			$this->filter_entry( $response['data'][0] );
+			$this->response = apply_filters( 'cf_zoho_pre_populate_filter_entry' , $this->response['data'][0], $key, $get );
+			$this->filter_entry( $this->response['data'][0] );
 		}
 	}
 
