@@ -111,23 +111,24 @@ class Field {
 	 * @return \WP_Error|boolean
 	 */
 	public function handler( $value, $field, $form ) {
-		/*if ( ! isset( $_POST['g-recaptcha-response'] ) || empty( $_POST['g-recaptcha-response'] ) ) {
-			return new \WP_Error( 'error' );
+
+		if ( '' !== $value ) {
+			return new \WP_Error( 'error',
+				apply_filters( 'cf_zoho_form_field_error_empty_message', __( "This field is required.", 'cf-zoho' ) )
+			);
 		}
 
+		$value = explode( ',', $value );
+		if ( ! is_array( $value ) ) {
+			$value = array( $value );
+		}
 
-		$args = array(
-			'secret'   => $field['config']['private_key'],
-			'response' => sanitize_text_field( $_POST['g-recaptcha-response'] ),
-		);
-
-		$request = wp_remote_get( add_query_arg( $args, 'https://www.google.com/recaptcha/api/siteverify' ) );
-		$result  = json_decode( wp_remote_retrieve_body( $request ) );
-		if ( empty( $result->success ) ) {
+		if ( (int) $value < (int) $field['config']['limit']  ) {
 			return new \WP_Error( 'error',
-				__( "The captcha wasn't entered correctly.", 'cf-zoho' ) . ' <a href="#" class="reset_' . sanitize_text_field( $_POST[ $field['ID'] ] ) . '">' . __( 'Reset', 'cf-zoho' ) . '<a>.'
+				apply_filters( 'cf_zoho_form_field_error_limit_message', __( "Please complete the rest of this field", 'cf-zoho' ) )
 			);
-		}*/
+		}
+
 
 		return true;
 
