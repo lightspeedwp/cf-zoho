@@ -87,7 +87,7 @@ class Field {
 				'preview'       => CFZ_FIELDS_PATH . 'zoho-form/preview.php',
 				'not_supported' => array(
 					'caption',
-					//'required'
+					'required'
 				),
 			),
 			'scripts' => array(
@@ -228,6 +228,7 @@ class Field {
 			$attrs[ 'data-limit' ] = $limit;
 			$attrs[ 'data-count' ] = 0;
 			$attrs[ 'class' ][] = 'zoho-form-field';
+			$attrs[ 'required' ] = true;
 		}
 		return $attrs;
 	}

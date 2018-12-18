@@ -52,7 +52,7 @@ class Post extends Connect {
 			}
 
 			// Call self.
-			return $this->request( $path, $data, true );
+			return $this->request( $path, $body, true );
 		}
 
 		return $decoded_response;

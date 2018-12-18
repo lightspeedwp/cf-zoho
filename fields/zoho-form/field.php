@@ -15,6 +15,7 @@
 </div>
 
 <?php
+	$field_structure['field_required'] = true;
 	echo wp_kses_post( Caldera_Forms_Field_Input::html( $field, $field_structure, $form ) );
 
 

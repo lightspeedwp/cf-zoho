@@ -55,6 +55,12 @@ class CF_Processors {
 	private $body = array();
 
 	/**
+	 * Contains the submitted Zoho ID
+	 * @var string
+	 */
+	private $zoho_id = '';
+
+	/**
 	 * Registers our processors with Caldera Forms.
 	 *
 	 * @param  array $processors Array of current processors.
@@ -224,6 +230,10 @@ class CF_Processors {
 			'filter_ajax_return',
 		), 10, 2 );
 
+		add_filter( 'caldera_forms_mailer', array(
+			$this, 'mail_attachment_check'
+		), 11, 3 );
+
 		$path   = '/crm/v2/' . ucfirst( $this->module );
 		$object = $this->build_object();
 
@@ -255,6 +265,7 @@ class CF_Processors {
 			$object_id = $this->capture_info( $this->module, $body, $object );
 		} else {
 			$object_id = $this->do_request( $path, $body, $object );
+			$this->zoho_id = $object_id;
 		}
 
 		do_action( 'cf_zoho_create_entry_complete', $object_id, $this->config, $this->form );
@@ -295,10 +306,10 @@ class CF_Processors {
 
 		if ( ! isset( $response['data'][0]['code'] ) || 'SUCCESS' !== $response['data'][0]['code'] ) {
 
-			$this->log( $response['data'][0]['message'], $object, $response['data'][0]['details'], 0, 'error' );
+			$this->log( $response['data'][0]['message'], $object, print_r( $response, true ), 0, 'error' );
 
 			return [
-				'note' => $response['data'][0]['message'],
+				'note' => print_r( $response['data'][0]['message'] ),
 				'type' => 'error',
 			];
 		}
@@ -596,5 +607,39 @@ class CF_Processors {
 			$out['return_message'] = '<div class="alert alert-success fade in">' . $return_message . '<a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a></div>';
 		}
 		return $out;
+	}
+
+	/**
+	 * Prepare upload PDF attachments to zoho.
+	 * Attach passports to email
+	 *
+	 * @param array $mail Email data
+	 * @param array $data ?
+	 * @param array $form For config
+	 *
+	 * @return array
+	 */
+	public function mail_attachment_check( $mail, $data, $form ) {
+		global $transdata;
+		if ( '' !== $this->zoho_id ) {
+			//Update the trip and attach the PDF
+			if ( ! empty( $transdata['pdf_attachment'] ) ) {
+				foreach ( $transdata['pdf_attachment'] as $file_path ) {
+					$this->upload_file( $file_path );
+				}
+			}
+			do_action( 'cf_zoho_mail_attachment_check', $this->zoho_id, $mail, $data, $form );
+		}
+		return $mail;
+	}
+
+	/**
+	 * Does the request to upload the file.
+	 * @param $file_path
+	 */
+	public function upload_file( $file_path ) {
+		$path   = '/crm/v2/' . ucfirst( $this->module ) . '/' . $this->zoho_id .'/Attachments';
+		$body = $post = array( 'file'=> $file_path );
+		$object_id = $this->do_request( $path, $body, $body );
 	}
 }
