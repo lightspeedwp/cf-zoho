@@ -58,4 +58,24 @@ class Post extends Connect {
 
 		return $decoded_response;
 	}
+
+	/**
+	 * @param $path
+	 * @param $body
+	 * @return mixed
+	 */
+	public function send_file( $path, $body ) {
+		$ch = curl_init();
+		curl_setopt( $ch, CURLOPT_URL, $path );
+		curl_setopt( $ch, CURLOPT_POST,1 );
+		curl_setopt( $ch, CURLOPT_POSTFIELDS, $body );
+
+		$headers = $this->headers( true );
+
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		$result = curl_exec ($ch);
+		curl_close ($ch);
+
+		return $result;
+	}
 }

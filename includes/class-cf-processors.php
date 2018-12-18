@@ -641,16 +641,43 @@ class CF_Processors {
 	 */
 	public function upload_file( $file_path ) {
 		$path   = '/crm/v2/' . ucfirst( $this->module ) . '/' . $this->zoho_id .'/Attachments';
+		$post     = new zohoapi\Post();
 
-		/*$fileContent   = file_get_contents( $file_path );
+		$fileContent   = file_get_contents( $file_path );
 		$filePathArray = explode( '/', $file_path );
 		$fileName      = $filePathArray[ sizeof( $filePathArray ) - 1 ];
 		if ( function_exists( 'curl_file_create' ) ) { // php 5.6+
 			$cFile = curl_file_create( $file_path );
 		} else { //
 			$cFile = '@' . realpath( $file_path );
-		}*/
-		$body = array( 'file' => $file_path );
-		$object_id = $this->do_request( $path, $body, $body, true );
+		}
+
+		$body = array( 'file' => $cFile );
+		$response = $post->send_file( $path, $body );
+
+		if ( is_wp_error( $response ) ) {
+
+			$this->log( $response->get_error_message(), $body, 'WordPress Error', 0, 'error' );
+
+			return [
+				'note' => $response->get_error_message(),
+				'type' => 'error',
+			];
+		}
+
+		if ( ! isset( $response['data'][0]['code'] ) || 'SUCCESS' !== $response['data'][0]['code'] ) {
+
+			$this->log( $response['data'][0]['message'], $body, print_r( $response, true ), 0, 'error' );
+
+			return [
+				'note' => print_r( $response['data'][0]['message'] ),
+				'type' => 'error',
+			];
+		}
+
+		$object_id = $response['data'][0]['details']['id'];
+		$this->log( $response['data'][0]['message'], $body, $response['data'][0]['details'], $object_id, 'uploaded' );
 	}
+
+
 }
