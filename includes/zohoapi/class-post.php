@@ -18,9 +18,10 @@ class Post extends Connect {
 	 * @param  string  $path      URL path to request from.
 	 * @param  array   $body      Form post data.
 	 * @param  boolean $new_token Whether this is a second attempt with a new token.
+	 * @param  boolean $has_attachments
 	 * @return object|array            WP_Error|Zoho response.
 	 */
-	public function request( $path, $body, $new_token = false ) {
+	public function request( $path, $body, $new_token = false, $has_attachments = false ) {
 
 		$this->tokens->load_token_data();
 
@@ -29,7 +30,7 @@ class Post extends Connect {
 		$response = wp_remote_post(
 			$url, [
 				'timeout' => 45,
-				'headers' => $this->headers(),
+				'headers' => $this->headers( $has_attachments ),
 				'body'    => wp_json_encode( $body ),
 			]
 		);

@@ -287,12 +287,14 @@ class CF_Processors {
 	 * @param $path
 	 * @param $body
 	 * @param $object
+	 * @param $has_attachments
 	 *
 	 * @return array
 	 */
-	public function do_request( $path, $body, $object ) {
+	public function do_request( $path, $body, $object, $has_attachments = false ) {
 		$post     = new zohoapi\Post();
-		$response = $post->request( $path, $body );
+
+		$response = $post->request( $path, $body, false, $has_attachments );
 
 		if ( is_wp_error( $response ) ) {
 
@@ -639,7 +641,16 @@ class CF_Processors {
 	 */
 	public function upload_file( $file_path ) {
 		$path   = '/crm/v2/' . ucfirst( $this->module ) . '/' . $this->zoho_id .'/Attachments';
-		$body = $post = array( 'file'=> $file_path );
-		$object_id = $this->do_request( $path, $body, $body );
+
+		/*$fileContent   = file_get_contents( $file_path );
+		$filePathArray = explode( '/', $file_path );
+		$fileName      = $filePathArray[ sizeof( $filePathArray ) - 1 ];
+		if ( function_exists( 'curl_file_create' ) ) { // php 5.6+
+			$cFile = curl_file_create( $file_path );
+		} else { //
+			$cFile = '@' . realpath( $file_path );
+		}*/
+		$body = array( 'file' => $file_path );
+		$object_id = $this->do_request( $path, $body, $body, true );
 	}
 }
