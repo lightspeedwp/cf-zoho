@@ -642,18 +642,20 @@ class CF_Processors {
 	public function upload_file( $file_path ) {
 		$path   = '/crm/v2/' . ucfirst( $this->module ) . '/' . $this->zoho_id .'/Attachments';
 		$post     = new zohoapi\Post();
+		$attachURL = false;
 
-		/*if ( function_exists( 'curl_file_create' ) ) { // php 5.6+
-			$cFile = curl_file_create( $file_path );
-		} else { //
-			$cFile = '@' . realpath( $file_path );
-		}*/
-
-		$fileURL = str_replace( '/var/www/vhosts/ge-africa-v2.feedmybeta.com/httpdocs', 'https://ge-africa-v2.feedmybeta.com', $file_path );
-		$body = $fileURL;
-		$response = $post->send_file( $path, $body );
-
-		//$response = $this->do_request( $path, $body, $body, true );
+		if ( false === $attachURL ) {
+			if ( function_exists( 'curl_file_create' ) ) { // php 5.6+
+				$body = curl_file_create( $file_path );
+			} else { //
+				$body = '@' . realpath( $file_path );
+			}
+			$response = $post->send_file( $path, $body );
+		} else {
+			$fileURL = str_replace( '/var/www/vhosts/ge-africa-v2.feedmybeta.com/httpdocs', 'https://ge-africa-v2.feedmybeta.com', $file_path );
+			$body = $fileURL;
+			$response = $post->send_file( $path, $body, true );
+		}
 
 		if ( is_wp_error( $response ) ) {
 

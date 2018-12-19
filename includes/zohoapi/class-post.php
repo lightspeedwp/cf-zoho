@@ -62,9 +62,10 @@ class Post extends Connect {
 	/**
 	 * @param $path
 	 * @param $body
+	 * @param $attached_url
 	 * @return mixed
 	 */
-	public function send_file( $path, $body ) {
+	public function send_file( $path, $body, $attached_url = false ) {
 
 		$this->tokens->load_token_data();
 		$base_url = $this->tokens->get_api_domain();
@@ -87,9 +88,15 @@ class Post extends Connect {
 
 
 		// multipart body
-		$body = [
-			'attachmentUrl' => $body,
-		];
+		if ( false === $attached_url ) {
+			$body = [
+				'file' => $body,
+			];
+		} else {
+			$body = [
+				'attachmentUrl' => $body,
+			];
+		}
 
 		// set body
 		curl_setopt($ch, CURLOPT_POST, 1);
