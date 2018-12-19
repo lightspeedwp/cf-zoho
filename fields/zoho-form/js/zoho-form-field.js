@@ -35,6 +35,7 @@ var CF_ZOHO_FIELD = {
                     jQuery( '#' + parent_field ).parent('div').find('.alert-wrapper').append( obj.return_message );
                 }
 
+                this.close_modal();
                 this.increase_limit();
                 this.check_limit();
             }
@@ -185,8 +186,11 @@ var CF_ZOHO_FIELD = {
                 }
             }
         });
-    }
+    },
 
+    close_modal: function () {
+        jQuery( '.remodal-wrapper.remodal-is-opened' ).find('.remodal-close').click();
+    }
 };
 
 jQuery(document).ready(function() {

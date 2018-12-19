@@ -230,7 +230,6 @@ class Field {
 			$attrs[ 'data-limit' ] = $limit;
 			$attrs[ 'data-count' ] = 0;
 			$attrs[ 'class' ][] = 'zoho-form-field';
-			$attrs[ 'required' ] = true;
 		}
 		return $attrs;
 	}

@@ -65,17 +65,42 @@ class Post extends Connect {
 	 * @return mixed
 	 */
 	public function send_file( $path, $body ) {
+
+		$this->tokens->load_token_data();
+		$base_url = $this->tokens->get_api_domain();
+		$url = $base_url . $path;
+
+		$headers_array     = $this->headers( true );
+		$headers_formatted = array();
+		foreach ( $headers_array as $ha_key => $ha ) {
+			$headers_formatted[] = $ha_key . ': ' . $ha;
+		}
+
+		// get cURL resource
 		$ch = curl_init();
-		curl_setopt( $ch, CURLOPT_URL, $path );
-		curl_setopt( $ch, CURLOPT_POST,1 );
-		curl_setopt( $ch, CURLOPT_POSTFIELDS, $body );
+		// set url
+		curl_setopt($ch, CURLOPT_URL, $url );
+		// set method
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+		// return the transfer as a string
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
-		$headers = $this->headers( true );
 
-		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		$result = curl_exec ($ch);
-		curl_close ($ch);
+		// multipart body
+		$body = [
+			'attachmentUrl' => $body,
+		];
 
-		return $result;
+		// set body
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+
+		// set headers
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers_formatted );
+
+		// send the request and save response to $response
+		$response = curl_exec($ch);
+		$decoded_response = json_decode( $response, true );
+		return $decoded_response;
 	}
 }
