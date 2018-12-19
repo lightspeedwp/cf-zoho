@@ -226,7 +226,7 @@ class Field {
 			if ( ! empty( $field['config']['limit'] ) && '' !== $field['config']['limit'] ) {
 				$limit = $field['config']['limit'];
 			}
-			$attrs[ 'type' ] = 'text';
+			$attrs[ 'type' ] = 'hidden';
 			$attrs[ 'data-limit' ] = $limit;
 			$attrs[ 'data-count' ] = 0;
 			$attrs[ 'class' ][] = 'zoho-form-field';
