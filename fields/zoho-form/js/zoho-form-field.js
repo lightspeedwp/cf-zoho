@@ -113,6 +113,13 @@ var CF_ZOHO_FIELD = {
         if ( parseInt( count ) <= parseInt( limit ) ) {
             jQuery('button.caldera-forms-modal.hidden:not(.submitted)').first().removeClass('hidden');
         }
+
+        console.log('triggering the limit');
+        if ( parseInt( count ) < parseInt( limit ) ) {
+            jQuery('.caldera-form-page[data-formpage="1"] .zoho-form-field-validation input').prop('checked', false);
+        } else {
+            jQuery('.caldera-form-page[data-formpage="1"] .zoho-form-field-validation input').prop('checked', 'checked');
+        }
     },
 
     increase_limit: function() {
@@ -151,6 +158,24 @@ var CF_ZOHO_FIELD = {
         }
         //If there is a button showing leave it.
 
+    },
+
+    cf_form_validation: function() {
+
+
+
+        /* Allow the form to update th passenger field on validation*/
+        jQuery( document ).on(  'cf.validate.FormError', function( event, obj ){
+            if ( false == obj.inst.validationResult ) {
+                jQuery('.remodal').unblock();
+            }
+
+            if ( jQuery('.form-group.zoho-form-field-validation').hasClass('has-error') ) {
+                if ( 0 === $('.btn.cf-form-trigger').parent().find('.parsley-required').length ) {
+                    jQuery('.btn.cf-form-trigger').parent().append(passenger_alert);
+                }
+            }
+        });
     }
 
 };

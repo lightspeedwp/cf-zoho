@@ -65,6 +65,8 @@ class Field {
 			$this,
 			'field_attrs',
 		), 10, 3 );
+
+		add_filter( 'caldera_forms_validate_field_zoho_form', array( $this, 'field_validation' ), 25, 3 );
 	}
 
 	/**
@@ -231,5 +233,19 @@ class Field {
 			$attrs[ 'required' ] = true;
 		}
 		return $attrs;
+	}
+
+	/**
+	 * Validates the Zoho Form Field
+	 * @param $value
+	 * @param $field
+	 * @param $form
+	 * @return mixed
+	 */
+	public function field_validation( $value, $field, $form ) {
+		if( '' == $value  ) {
+			return new \WP_Error( $field[ 'ID' ], esc_html__( 'This field cannot be empty', 'cf-zoho' ) );
+		}
+		return $value;
 	}
 }

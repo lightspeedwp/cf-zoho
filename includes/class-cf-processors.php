@@ -311,7 +311,7 @@ class CF_Processors {
 			$this->log( $response['data'][0]['message'], $object, print_r( $response, true ), 0, 'error' );
 
 			return [
-				'note' => print_r( $response['data'][0]['message'] ),
+				'note' => print_r( $response['data'][0]['message'] ) . ' - ' . $path,
 				'type' => 'error',
 			];
 		}
@@ -643,9 +643,6 @@ class CF_Processors {
 		$path   = '/crm/v2/' . ucfirst( $this->module ) . '/' . $this->zoho_id .'/Attachments';
 		$post     = new zohoapi\Post();
 
-		$fileContent   = file_get_contents( $file_path );
-		$filePathArray = explode( '/', $file_path );
-		$fileName      = $filePathArray[ sizeof( $filePathArray ) - 1 ];
 		if ( function_exists( 'curl_file_create' ) ) { // php 5.6+
 			$cFile = curl_file_create( $file_path );
 		} else { //
@@ -670,7 +667,7 @@ class CF_Processors {
 			$this->log( $response['data'][0]['message'], $body, print_r( $response, true ), 0, 'error' );
 
 			return [
-				'note' => print_r( $response['data'][0]['message'] ),
+				'note' => print_r( $response, true ),
 				'type' => 'error',
 			];
 		}
