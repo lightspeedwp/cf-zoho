@@ -99,8 +99,10 @@ var CF_ZOHO_FIELD = {
     watch_delete_button: function () {
         var $this = this;
         jQuery( document ).on( 'click', '.alert-wrapper .close', function (event) {
+            $this.remove_value( jQuery( this ).parents('.alert-wrapper').attr('data-entry-id') );
             $this.decrease_limit();
             $this.reset_modal_button();
+            $this.check_limit();
         });
     },
 
@@ -157,13 +159,19 @@ var CF_ZOHO_FIELD = {
             jQuery('.caldera-forms-modal.hidden').first().removeClass('submitted');
         }
         //If there is a button showing leave it.
+    },
 
+    remove_value :function( entry_id ) {
+
+        console.log( entry_id );
+        var value = this.field.val();
+        console.log( value );
+
+        var arr = value.split(',');
+        console.log( arr );
     },
 
     cf_form_validation: function() {
-
-
-
         /* Allow the form to update th passenger field on validation*/
         jQuery( document ).on(  'cf.validate.FormError', function( event, obj ){
             if ( false == obj.inst.validationResult ) {
