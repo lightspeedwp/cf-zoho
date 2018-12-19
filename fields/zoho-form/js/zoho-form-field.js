@@ -99,7 +99,7 @@ var CF_ZOHO_FIELD = {
     watch_delete_button: function () {
         var $this = this;
         jQuery( document ).on( 'click', '.alert-wrapper .close', function (event) {
-            $this.remove_value( jQuery( this ).parents('.alert-wrapper').attr('data-entry-id') );
+            $this.remove_value( jQuery( this ).parent().attr('data-entry-id') );
             $this.decrease_limit();
             $this.reset_modal_button();
             $this.check_limit();
@@ -162,13 +162,14 @@ var CF_ZOHO_FIELD = {
     },
 
     remove_value :function( entry_id ) {
-
-        console.log( entry_id );
         var value = this.field.val();
-        console.log( value );
 
         var arr = value.split(',');
-        console.log( arr );
+
+        var index = arr.indexOf( entry_id );
+        if (index !== -1) arr.splice(index, 1);
+
+        this.field.val( arr.join(',') );
     },
 
     cf_form_validation: function() {

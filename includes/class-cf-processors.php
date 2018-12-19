@@ -606,7 +606,7 @@ class CF_Processors {
 					$return_message = str_replace( $search, $field_value, $return_message );
 				}
 			}
-			$out['return_message'] = '<div data-entry-id="' . $out['cf_id'] . '" class="alert alert-success fade in">' . $return_message . '<a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a></div>';
+			$out['return_message'] = '<div data-entry-id="' . $out['data']['cf_id'] . '" class="alert alert-success fade in">' . $return_message . '<a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a></div>';
 		}
 		return $out;
 	}
