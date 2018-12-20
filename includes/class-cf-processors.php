@@ -726,6 +726,7 @@ class CF_Processors {
 			foreach( $this->additional_mails as $entry_id => $values ) {
 				\Caldera_Forms_Save_Final::do_mailer( $values['form'], $entry_id );
 				do_action( 'cf_zoho_additional_mail_check', $entry_id, $values );
+				$this->log( $entry_id . ' Email Sent', $values, 'Email Sent', 0, 'email' );
 			}
 		}
 	}
