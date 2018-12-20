@@ -234,6 +234,10 @@ class CF_Processors {
 			$this, 'mail_attachment_check'
 		), 11, 3 );
 
+		add_action( 'caldera_forms_mailer_complete', array(
+			$this, 'additional_mail_check'
+		), 11, 4 );
+
 		$path   = '/crm/v2/' . ucfirst( $this->module );
 		$object = $this->build_object();
 
@@ -501,6 +505,7 @@ class CF_Processors {
 					if ( ! is_wp_error( $object_id ) ) {
 						$this->maybe_register_mailer( $return, $object_id, $module );
 						$return = $object_id;
+						//TODO Update the entry with the ZOHO ID.
 					}
 				}
 			}
@@ -552,7 +557,6 @@ class CF_Processors {
 		return $send;
 	}
 
-
 	/**
 	 * Check to see if the current field is a zoho form field.
 	 * @param string $magic_tag
@@ -583,10 +587,13 @@ class CF_Processors {
 		$form = \Caldera_Forms::get_form( $form_id );
 
 		if ( ! isset( $form['mailer']['enable_mailer'] ) ) {
-			$this->additional_mails[ $form_id ] = $entryid;
+			$this->additional_mails[ $entryid ] = array(
+				'form'    => $form,
+				'zoho_id' => $zoho_id,
+				'module'  => $module
+			);
 		}
 	}
-
 
 	/**
 	 * Filter the ajax return and maybe add our output
@@ -630,7 +637,7 @@ class CF_Processors {
 					$this->upload_file( $file_path );
 				}
 			}
-			do_action( 'cf_zoho_mail_attachment_check', $this->zoho_id, $mail, $data, $form, $this );
+			$mail = apply_filters( 'cf_zoho_mail_attachment_check', $mail, $this->zoho_id, $data, $form, $this );
 		}
 		return $mail;
 	}
@@ -693,5 +700,33 @@ class CF_Processors {
 
 		$object_id = $response['data'][0]['details']['id'];
 		$this->log( $response['data'][0]['message'], $body, $response['data'][0]['details'], $object_id, 'uploaded' );
+	}
+
+	/**
+	 * Checks for any additional mails and sends them
+	 * @param array $mail Email data
+	 * @param array $data Form entry data
+	 * @param array $form The form config
+	 * @param string $method Method for sending email
+	 */
+	public function additional_mail_check( $mail, $data, $form, $method ) {
+		if ( ! empty( $this->additional_mails ) ) {
+
+			remove_filter('caldera_forms_send_email', array(
+				$this,
+				'stagger_mailer',
+			), 1);
+			remove_filter( 'caldera_forms_mailer', array(
+				$this, 'mail_attachment_check'
+			), 11 );
+			remove_action( 'caldera_forms_mailer_complete', array(
+				$this, 'additional_mail_check'
+			), 11 );
+
+			foreach( $this->additional_mails as $entry_id => $values ) {
+				\Caldera_Forms_Save_Final::do_mailer( $values['form'], $entry_id );
+				do_action( 'cf_zoho_additional_mail_check', $entry_id, $values );
+			}
+		}
 	}
 }
