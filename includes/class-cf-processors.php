@@ -298,13 +298,14 @@ class CF_Processors {
 	 * @param $body
 	 * @param $object
 	 * @param $has_attachments
+	 * @param $method
 	 *
 	 * @return array
 	 */
-	public function do_request( $path, $body, $object, $has_attachments = false ) {
+	public function do_request( $path, $body, $object, $has_attachments = false, $method = 'POST' ) {
 		$post     = new zohoapi\Post();
 
-		$response = $post->request( $path, $body, false, $has_attachments );
+		$response = $post->request( $path, $body, false, $has_attachments, $method );
 
 		if ( is_wp_error( $response ) ) {
 
