@@ -630,17 +630,25 @@ class CF_Processors {
 					$this->upload_file( $file_path );
 				}
 			}
-			do_action( 'cf_zoho_mail_attachment_check', $this->zoho_id, $mail, $data, $form );
+			do_action( 'cf_zoho_mail_attachment_check', $this->zoho_id, $mail, $data, $form, $this );
 		}
 		return $mail;
 	}
 
 	/**
 	 * Does the request to upload the file.
-	 * @param $file_path
+	 * @param $file_path string
+	 * @param $forced_id boolean
+	 * @return void | array
 	 */
-	public function upload_file( $file_path ) {
-		$path   = '/crm/v2/' . ucfirst( $this->module ) . '/' . $this->zoho_id .'/Attachments';
+	public function upload_file( $file_path, $forced_id = false ) {
+
+		$zoho_id = $this->zoho_id;
+		if ( false !== $forced_id ) {
+			$zoho_id = $forced_id;
+		}
+
+		$path   = '/crm/v2/' . ucfirst( $this->module ) . '/' . $zoho_id .'/Attachments';
 		$post     = new zohoapi\Post();
 		$attachURL = false;
 
@@ -652,7 +660,7 @@ class CF_Processors {
 			}
 			$response = $post->send_file( $path, $body );
 		} else {
-			$fileURL = str_replace( '/var/www/vhosts/ge-africa-v2.feedmybeta.com/httpdocs', 'https://ge-africa-v2.feedmybeta.com', $file_path );
+			$fileURL = str_replace( '/httpdocs', '', $file_path );
 			$body = $fileURL;
 			$response = $post->send_file( $path, $body, true );
 		}
