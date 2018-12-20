@@ -639,16 +639,22 @@ class CF_Processors {
 	 * Does the request to upload the file.
 	 * @param $file_path string
 	 * @param $forced_id boolean
+	 * @param $forced_module boolean
 	 * @return void | array
 	 */
-	public function upload_file( $file_path, $forced_id = false ) {
+	public function upload_file( $file_path, $forced_id = false, $forced_module = false ) {
 
 		$zoho_id = $this->zoho_id;
 		if ( false !== $forced_id ) {
 			$zoho_id = $forced_id;
 		}
 
-		$path   = '/crm/v2/' . ucfirst( $this->module ) . '/' . $zoho_id .'/Attachments';
+		$module = $this->module;
+		if ( false !== $forced_module ) {
+			$module = $forced_module;
+		}
+
+		$path   = '/crm/v2/' . ucfirst( $module ) . '/' . $zoho_id .'/Attachments';
 		$post     = new zohoapi\Post();
 		$attachURL = false;
 
