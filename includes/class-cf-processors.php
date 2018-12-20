@@ -46,7 +46,7 @@ class CF_Processors {
 	 *
 	 * @var array.
 	 */
-	private $additional_mails = '';
+	private $additional_mails = array();
 
 	/**
 	 * Contains the object built and stored.
@@ -59,6 +59,12 @@ class CF_Processors {
 	 * @var string
 	 */
 	private $zoho_id = '';
+
+	/**
+	 * Prevents duplicate submissions
+	 * @var array
+	 */
+	public $requests_completed = array();
 
 	/**
 	 * Registers our processors with Caldera Forms.
@@ -310,7 +316,7 @@ class CF_Processors {
 			];
 		}
 
-		if ( ! isset( $response['data'][0]['code'] ) || 'SUCCESS' !== $response['data'][0]['code'] ) {
+		if ( ! isset( $response['data'][0]['code'] ) || ( 'SUCCESS' !== $response['data'][0]['code'] && 'DUPLICATE_DATA' !== $response['data'][0]['code'] ) ) {
 
 			$this->log( $response['data'][0]['message'], $object, print_r( $response, true ), 0, 'error' );
 
@@ -471,8 +477,29 @@ class CF_Processors {
 		 */
 		$value = \Caldera_Forms::do_magic_tags( $this->config[ $key ], null, $this->form );
 
-		if ( $this->is_zoho_form_field( $this->config[ $key ] ) ) {
-			$value = $this->do_side_request( '38' );
+		$zoho_field = $this->is_zoho_form_field( $this->config[ $key ] );
+		if ( false !== $zoho_field ) {
+
+			$new_values = array();
+
+			if ( isset( $_POST[ $zoho_field ] ) ) {
+				$values = explode( ',', $_POST[ $zoho_field ] );
+				if ( ! is_array( $values ) ) {
+					$values = array( $values );
+				}
+				foreach( $values as $entryid ) {
+					if ( ! in_array( $entryid, $this->requests_completed ) ) {
+						$new_values[] = $this->do_side_request( $entryid );
+						$this->requests_completed[] = $entryid;
+					}
+				}
+			}
+
+			if ( ! empty( $new_values ) ) {
+				$new_values = implode( ',', $new_values );
+				$value = $new_values;
+			}
+			$value = apply_filters( 'cf_zoho_object_build_value', $new_values, $key, $field );
 		}
 
 		if ( 'boolean' !== strtolower( $field['data_type'] ) ) {
@@ -500,6 +527,8 @@ class CF_Processors {
 				if ( in_array( $module, array( 'task', 'lead', 'contacts' ) ) ) {
 
 					$path   = '/crm/v2/' . ucfirst( $module );
+
+					$this->log( 'Doing Side Request', $entry, 'Side Request Error', 0, 'side-request' );
 					$object_id = $this->do_request( $path, $data, $data );
 
 					if ( ! is_wp_error( $object_id ) ) {
@@ -571,7 +600,7 @@ class CF_Processors {
 			}
 		}
 		if ( false !== $current_field && 'zoho_form' === $current_field['type'] ) {
-			$is_zoho = true;
+			$is_zoho = $current_field['ID'];
 		}
 		return $is_zoho;
 	}
@@ -710,6 +739,7 @@ class CF_Processors {
 	 * @param string $method Method for sending email
 	 */
 	public function additional_mail_check( $mail, $data, $form, $method ) {
+		$this->log( 'Additional Mails', $this->additional_mails, 'Additional Mails', 0, 'email' );
 		if ( ! empty( $this->additional_mails ) ) {
 
 			remove_filter('caldera_forms_send_email', array(

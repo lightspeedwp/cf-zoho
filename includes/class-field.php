@@ -66,7 +66,7 @@ class Field {
 			'field_attrs',
 		), 10, 3 );
 
-		add_filter( 'caldera_forms_validate_field_zoho_form', array( $this, 'field_validation' ), 25, 3 );
+		//add_filter( 'caldera_forms_validate_field_zoho_form', array( $this, 'field_validation' ), 25, 3 );
 	}
 
 	/**
@@ -114,7 +114,7 @@ class Field {
 	 */
 	public function handler( $value, $field, $form ) {
 
-		if ( '' !== $value ) {
+		if ( '' === $value ) {
 			return new \WP_Error( 'error',
 				apply_filters( 'cf_zoho_form_field_error_empty_message', __( "This field is required.", 'cf-zoho' ) )
 			);
