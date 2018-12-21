@@ -238,10 +238,14 @@ class CF_Processors {
 
 		add_filter( 'caldera_forms_mailer', array(
 			$this, 'mail_attachment_check'
-		), 11, 3 );
+		), 20, 3 );
 
 		add_action( 'caldera_forms_mailer_complete', array(
 			$this, 'additional_mail_check'
+		), 11, 4 );
+
+		add_action( 'caldera_forms_save_field_zoho_form', array(
+			$this, 'save_actual_data'
 		), 11, 4 );
 
 		$path   = '/crm/v2/' . ucfirst( $this->module );
@@ -760,5 +764,22 @@ class CF_Processors {
 				$this->log( $entry_id . ' Email Sent', $values, 'Email Sent', 0, 'email' );
 			}
 		}
+	}
+
+	/**
+	 * @param $entry
+	 * @param $field
+	 * @param $form
+	 * @param $entry_id
+	 * @return $entry
+	 */
+	public function save_actual_data( $entry, $field, $form, $entry_id ) {
+		print_r('<pre>');
+		print_r($_POST[ $field['ID'] ]);
+		print_r('</pre>');
+		if ( isset( $_POST[ $field['ID'] ] ) ) {
+			$entry = $_POST[ $field['ID'] ];
+		}
+		return $entry;
 	}
 }
