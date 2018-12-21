@@ -494,7 +494,9 @@ class CF_Processors {
 				}
 				foreach( $values as $entryid ) {
 					if ( ! in_array( $entryid, $this->requests_completed ) ) {
-						$new_values[] = $this->do_side_request( $entryid );
+						$return = $this->do_side_request( $entryid );
+						$this->update_entry( $entryid, $return );
+						$new_values[] = $return;
 						$this->requests_completed[] = $entryid;
 					}
 				}
@@ -575,6 +577,18 @@ class CF_Processors {
 			}
 		}
 		return $return;
+	}
+
+	public function update_entry( $entry_id, $object_id ) {
+		global $wpdb;
+		$entry_obj = new \Caldera_Forms_Entry( $this->form, $entry_id );
+		$query = "
+		UPDATE `" . $wpdb->prefix . "cf_form_entry_meta` SET
+		`meta_value` = '{$object_id}'
+		WHERE `entry_id` = {$entry_id}
+		AND `meta_key` = 'id'
+		";
+		$entry_meta_data = $wpdb->query( $query );
 	}
 
 	/**
