@@ -61,10 +61,21 @@ class CF_Processors {
 	private $zoho_id = '';
 
 	/**
+	 * @var zohoapi\Post
+	 */
+	public $post = '';
+
+	/**
 	 * Prevents duplicate submissions
 	 * @var array
 	 */
 	public $requests_completed = array();
+
+	/**
+	 * Records the extra side requests and their modules.
+	 * @var array
+	 */
+	public $requests_list = array();
 
 	/**
 	 * Registers our processors with Caldera Forms.
@@ -280,6 +291,9 @@ class CF_Processors {
 		} else {
 			$object_id = $this->do_request( $path, $body, $object );
 			$this->zoho_id = $object_id;
+
+			//This is where the actions are run to link the items.
+			do_action( 'cf_zoho_do_submission_complete', $object_id, $this->module, $this->requests_list, $this->post );
 		}
 
 		do_action( 'cf_zoho_create_entry_complete', $object_id, $this->config, $this->form );
@@ -308,6 +322,7 @@ class CF_Processors {
 	 */
 	public function do_request( $path, $body, $object, $has_attachments = false, $method = 'POST' ) {
 		$post     = new zohoapi\Post();
+		$this->post = $post;
 
 		$response = $post->request( $path, $body, false, $has_attachments, $method );
 
@@ -332,6 +347,8 @@ class CF_Processors {
 		}
 
 		$object_id = $response['data'][0]['details']['id'];
+
+		//TODO THIS IS WHERE THE EXTRA FILTER GOES
 		$this->log( $response['data'][0]['message'], $object, $response['data'][0]['details'], $object_id, 'event' );
 
 		return $object_id;
@@ -541,7 +558,9 @@ class CF_Processors {
 					if ( ! is_wp_error( $object_id ) ) {
 						$this->maybe_register_mailer( $return, $object_id, $module );
 						$return = $object_id;
-						//TODO Update the entry with the ZOHO ID.
+
+						//This registers the module to be linked.
+						$this->requests_list[ $module ][] = $return;
 					}
 				}
 			}
@@ -788,9 +807,6 @@ class CF_Processors {
 	 * @return $entry
 	 */
 	public function save_actual_data( $entry, $field, $form, $entry_id ) {
-		print_r('<pre>');
-		print_r($_POST[ $field['ID'] ]);
-		print_r('</pre>');
 		if ( isset( $_POST[ $field['ID'] ] ) ) {
 			$entry = $_POST[ $field['ID'] ];
 		}
