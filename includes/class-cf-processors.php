@@ -613,13 +613,17 @@ class CF_Processors {
 	public function update_entry( $entry_id, $object_id ) {
 		global $wpdb;
 		$entry_obj = new \Caldera_Forms_Entry( $this->form, $entry_id );
-		$query = "
-		UPDATE `" . $wpdb->prefix . "cf_form_entry_meta` SET
-		`meta_value` = '{$object_id}'
-		WHERE `entry_id` = {$entry_id}
-		AND `meta_key` = 'id'
-		";
-		$entry_meta_data = $wpdb->query( $query );
+		$entry_meta_data = $wpdb->get_results(
+			$wpdb->prepare(
+				'UPDATE `' . $wpdb->prefix . 'cf_form_entry_meta` SET
+				`meta_value` = %d
+				WHERE `entry_id` = %d
+				AND `meta_key` = `id`',
+				$object_id,
+				$entry_id
+			),
+			ARRAY_A
+		);
 	}
 
 	/**
@@ -669,7 +673,7 @@ class CF_Processors {
 			$this->additional_mails[ $entryid ] = array(
 				'form'    => $form,
 				'zoho_id' => $zoho_id,
-				'module'  => $module
+				'module'  => $module,
 			);
 		}
 	}
@@ -687,7 +691,7 @@ class CF_Processors {
 			$return_message = $this->config['return_message'];
 
 			if ( isset( $this->body['data'] ) && isset( $this->body['data'][0] ) ) {
-				foreach ( $this->body['data'][0] as $field_key => $field_value ){
+				foreach ( $this->body['data'][0] as $field_key => $field_value ) {
 					$search = '[' . strtolower( $field_key ) . ']';
 					$return_message = str_replace( $search, $field_value, $return_message );
 				}
@@ -740,11 +744,11 @@ class CF_Processors {
 			$module = $forced_module;
 		}
 
-		$path   = '/crm/v2/' . ucfirst( $module ) . '/' . $zoho_id .'/Attachments';
+		$path   = '/crm/v2/' . ucfirst( $module ) . '/' . $zoho_id . '/Attachments';
 		$post     = new zohoapi\Post();
-		$attachURL = false;
+		$attach_url = false;
 
-		if ( false === $attachURL ) {
+		if ( false === $attach_url ) {
 			if ( function_exists( 'curl_file_create' ) ) { // php 5.6+
 				$body = curl_file_create( $file_path );
 			} else { //
@@ -752,8 +756,8 @@ class CF_Processors {
 			}
 			$response = $post->send_file( $path, $body );
 		} else {
-			$fileURL = str_replace( '/httpdocs', '', $file_path );
-			$body = $fileURL;
+			$file_url = str_replace( '/httpdocs', '', $file_path );
+			$body = $file_url;
 			$response = $post->send_file( $path, $body, true );
 		}
 
@@ -805,7 +809,7 @@ class CF_Processors {
 				'additional_mail_check',
 			), 11 );
 
-			foreach( $this->additional_mails as $entry_id => $values ) {
+			foreach ( $this->additional_mails as $entry_id => $values ) {
 				\Caldera_Forms_Save_Final::do_mailer( $values['form'], $entry_id );
 				do_action( 'cf_zoho_additional_mail_check', $entry_id, $values );
 				$this->log( $entry_id . ' Email Sent', $values, 'Email Sent', 0, 'email' );

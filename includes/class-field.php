@@ -116,7 +116,7 @@ class Field {
 
 		if ( '' === $value ) {
 			return new \WP_Error( 'error',
-				apply_filters( 'cf_zoho_form_field_error_empty_message', __( "This field is required.", 'cf-zoho' ) ) );
+				apply_filters( 'cf_zoho_form_field_error_empty_message', __( 'This field is required.', 'cf-zoho' ) ) );
 		}
 
 		$value = explode( ',', $value );
@@ -154,7 +154,7 @@ class Field {
 	 */
 	public function output_modals() {
 		if ( ! empty( $this->modals ) && is_array( $this->modals ) ) {
-			foreach( $this->modals as $form_id => $values ) {
+			foreach ( $this->modals as $form_id => $values ) {
 
 				//add filter to alter the passenger form
 				add_filter( 'caldera_forms_get_form-' . $form_id, array(
@@ -215,7 +215,7 @@ class Field {
 	 *
 	 * @return array
 	 */
-	public function field_attrs( $attrs, $field, $form ){
+	public function field_attrs( $attrs, $field, $form ) {
 		if ( 'zoho_form' === $field['type'] ) {
 			//set the limit
 			$limit = 1;
@@ -223,10 +223,10 @@ class Field {
 				$limit = $field['config']['limit'];
 			}
 			$limit = apply_filters( 'cf_zoho_form_field_limit', $limit );
-			$attrs[ 'type' ] = 'hidden';
-			$attrs[ 'data-limit' ] = $limit;
-			$attrs[ 'data-count' ] = 0;
-			$attrs[ 'class' ][] = 'zoho-form-field';
+			$attrs['type'] = 'hidden';
+			$attrs['data-limit'] = $limit;
+			$attrs['data-count'] = 0;
+			$attrs['class'][] = 'zoho-form-field';
 		}
 		return $attrs;
 	}
@@ -239,8 +239,8 @@ class Field {
 	 * @return mixed
 	 */
 	public function field_validation( $value, $field, $form ) {
-		if( '' == $value  ) {
-			return new \WP_Error( $field[ 'ID' ], esc_html__( 'This field cannot be empty', 'cf-zoho' ) );
+		if ( '' == $value  ) {
+			return new \WP_Error( $field['ID'], esc_html__( 'This field cannot be empty', 'cf-zoho' ) );
 		}
 		return $value;
 	}
