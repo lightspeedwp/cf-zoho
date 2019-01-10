@@ -69,7 +69,7 @@ class Modules {
 	 */
 	public function save_modules( $token_response ) {
 		// Set the access token to a transient that expires when the Zoho API expires it.
-		set_transient( CFZ_TRANSIENT_SLUG . '_module', $modules, 60*60 );
+		set_transient( CFZ_TRANSIENT_SLUG . '_module', $modules, 60 * 60 );
 		$this->modules = $modules;
 		// No refresh token included, exit.
 		if ( empty( $modules ) ) {

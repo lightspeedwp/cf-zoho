@@ -310,7 +310,11 @@ class CF_Processors {
 		/**
 		 * TODO: if the form is capturing entries, then serialize the data and return that for saving.
 		 */
-		return serialize( array( $module => $body ) );
+		return serialize(
+			array(
+				$module => $body,
+			)
+		);
 	}
 
 	/**

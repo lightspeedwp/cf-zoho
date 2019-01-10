@@ -82,11 +82,11 @@ class Post extends Connect {
 		// get cURL resource
 		$ch = curl_init();
 		// set url
-		curl_setopt($ch, CURLOPT_URL, $url );
+		curl_setopt( $ch, CURLOPT_URL, $url );
 		// set method
-		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+		curl_setopt( $ch, CURLOPT_CUSTOMREQUEST, 'POST' );
 		// return the transfer as a string
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
 
 
 		// multipart body
@@ -101,14 +101,14 @@ class Post extends Connect {
 		}
 
 		// set body
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+		curl_setopt( $ch, CURLOPT_POST, 1 );
+		curl_setopt( $ch, CURLOPT_POSTFIELDS, $body );
 
 		// set headers
-		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers_formatted );
+		curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers_formatted );
 
 		// send the request and save response to $response
-		$response = curl_exec($ch);
+		$response = curl_exec( $ch );
 		$decoded_response = json_decode( $response, true );
 		return $decoded_response;
 	}

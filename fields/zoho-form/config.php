@@ -26,7 +26,7 @@
 
 <div class="caldera-config-group">
 	<label for="{{_id}}_form_id">
-		<?php esc_html_e('Form ID', 'cf-zoho' ); ?>
+		<?php esc_html_e( 'Form ID', 'cf-zoho' ); ?>
 	</label>
 	<div class="caldera-config-field">
 		<input type="text" id="{{_id}}_form_id" class="block-input field-config magic-tag-enabled" name="{{_name}}[form_id]" value="{{form_id}}">
@@ -35,7 +35,7 @@
 
 <div class="caldera-config-group">
 	<label for="{{_id}}_limit">
-		<?php esc_html_e('Limit', 'cf-zoho' ); ?>
+		<?php esc_html_e( 'Limit', 'cf-zoho' ); ?>
 	</label>
 	<div class="caldera-config-field">
 		<input type="text" id="{{_id}}_limit" class="block-input field-config magic-tag-enabled" name="{{_name}}[limit]" value="{{limit}}">

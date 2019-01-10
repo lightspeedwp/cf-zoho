@@ -27,7 +27,7 @@
 
 <div class="caldera-config-group">
 	<label for="{{_id}}_return_message">
-		<?php esc_html_e('Return Message', 'cf-zoho' ); ?>
+		<?php esc_html_e( 'Return Message', 'cf-zoho' ); ?>
 	</label>
 	<div class="caldera-config-field">
 		<input type="text" id="{{_id}}_return_message" class="block-input field-config" name="{{_name}}[return_message]" value="{{return_message}}">

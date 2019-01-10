@@ -38,3 +38,4 @@
 
 <?php
 	echo wp_kses_post( $wrapper_after );
+?>
