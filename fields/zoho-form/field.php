@@ -19,7 +19,7 @@
 	echo wp_kses_post( Caldera_Forms_Field_Input::html( $field, $field_structure, $form ) );
 
 
-	if ( isset( $field_structure['field']['config']['form_id'] ) && ( 0 !== $field_structure['field']['config']['form_id'] && '' !== $field_structure['field']['config']['form_id'] && '0' !== $field_structure['field']['config']['form_id'] )  ) {
+	if ( isset( $field_structure['field']['config']['form_id'] ) && ( 0 !== $field_structure['field']['config']['form_id'] && '' !== $field_structure['field']['config']['form_id'] && '0' !== $field_structure['field']['config']['form_id'] ) ) {
 		$value = $field_structure['field']['config']['form_id'];
 		$field_base_id = Caldera_Forms_Field_Util::get_base_id( $field, null, $form );
 
@@ -38,4 +38,3 @@
 
 <?php
 	echo wp_kses_post( $wrapper_after );
-?>

@@ -88,7 +88,6 @@ class Post extends Connect {
 		// return the transfer as a string
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
 
-
 		// multipart body
 		if ( false === $attached_url ) {
 			$body = [

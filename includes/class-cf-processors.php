@@ -516,7 +516,7 @@ class CF_Processors {
 				if ( ! is_array( $values ) ) {
 					$values = array( $values );
 				}
-				foreach( $values as $entryid ) {
+				foreach ( $values as $entryid ) {
 					if ( ! in_array( $entryid, $this->requests_completed ) ) {
 						$return = $this->do_side_request( $entryid );
 						$this->update_entry( $entryid, $return );
@@ -554,7 +554,7 @@ class CF_Processors {
 		$entry = maybe_unserialize( $entry );
 
 		if ( is_array( $entry ) ) {
-			foreach( $entry as $module => $data ) {
+			foreach ( $entry as $module => $data ) {
 				if ( in_array( $module, array( 'task', 'lead', 'contacts' ) ) ) {
 
 					$path   = '/crm/v2/' . ucfirst( $module );
@@ -593,8 +593,13 @@ class CF_Processors {
 	private function get_entry_form_id( $entry_id ) {
 		global $wpdb;
 
-		$entry_data = $wpdb->get_results($wpdb->prepare("SELECT form_id FROM `" . $wpdb->prefix . "cf_form_entries` WHERE `id` = %d",
-			$entry_id), ARRAY_A);
+		$entry_data = $wpdb->get_results(
+			$wpdb->prepare(
+				'SELECT form_id FROM `' . $wpdb->prefix . 'cf_form_entries` WHERE `id` = %d',
+				$entry_id
+			),
+			ARRAY_A
+		);
 
 		$return = '';
 		if ( ! empty( $entry_data ) ) {
