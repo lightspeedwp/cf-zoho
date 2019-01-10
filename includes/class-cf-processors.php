@@ -644,7 +644,7 @@ class CF_Processors {
 	public function is_zoho_form_field( $magic_tag = '' ) {
 		$is_zoho = false;
 		$current_field = false;
-		foreach( $this->form['fields'] as $field ) {
+		foreach ( $this->form['fields'] as $field ) {
 			if ( '%' . $field['slug'] . '%' === $magic_tag ) {
 				$current_field = $field;
 			}
@@ -687,7 +687,7 @@ class CF_Processors {
 			$return_message = $this->config['return_message'];
 
 			if ( isset( $this->body['data'] ) && isset( $this->body['data'][0] ) ) {
-				foreach( $this->body['data'][0] as $field_key => $field_value ){
+				foreach ( $this->body['data'][0] as $field_key => $field_value ){
 					$search = '[' . strtolower( $field_key ) . ']';
 					$return_message = str_replace( $search, $field_value, $return_message );
 				}
@@ -797,10 +797,12 @@ class CF_Processors {
 				'stagger_mailer',
 			), 1);
 			remove_filter( 'caldera_forms_mailer', array(
-				$this, 'mail_attachment_check'
+				$this,
+				'mail_attachment_check',
 			), 11 );
 			remove_action( 'caldera_forms_mailer_complete', array(
-				$this, 'additional_mail_check'
+				$this,
+				'additional_mail_check',
 			), 11 );
 
 			foreach( $this->additional_mails as $entry_id => $values ) {

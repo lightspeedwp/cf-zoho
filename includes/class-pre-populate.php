@@ -125,7 +125,6 @@ class Pre_Populate {
 				$module_label = esc_html__( 'Deals', 'cf-zoho' );
 				break;
 
-
 			default :
 				break;
 		}
@@ -162,7 +161,7 @@ class Pre_Populate {
 				$keys = array();
 
 				//Make sure we account for the arrays.
-				switch( $item_key ) {
+				switch ( $item_key ) {
 					case 'Created_By':
 						foreach ( $item_value as $sub_key => $sub_value ) {
 							$temp_key = str_replace( '-', '_', sanitize_title( $sub_key ) );
@@ -178,7 +177,7 @@ class Pre_Populate {
 
 				//Run through each of the keys
 				if ( ! empty( $keys ) ) {
-					foreach( $keys as $index => $value ) {
+					foreach ( $keys as $index => $value ) {
 						$field = \Caldera_Forms_Field_Util::get_field_by_slug( $index, $this->form );
 						if ( false !== $field ) {
 							$this->entry[ $field['ID'] ] = $value;

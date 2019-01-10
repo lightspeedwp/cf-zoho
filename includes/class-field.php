@@ -89,12 +89,12 @@ class Field {
 				'preview'       => CFZ_FIELDS_PATH . 'zoho-form/preview.php',
 				'not_supported' => array(
 					'caption',
-					'required'
+					'required',
 				),
 			),
 			'scripts' => array(
 				CFZ_FIELDS_URL . 'zoho-form/js/zoho-form-field.js'
-			)
+			),
 		);
 
 		return $fields;
@@ -116,8 +116,7 @@ class Field {
 
 		if ( '' === $value ) {
 			return new \WP_Error( 'error',
-				apply_filters( 'cf_zoho_form_field_error_empty_message', __( "This field is required.", 'cf-zoho' ) )
-			);
+				apply_filters( 'cf_zoho_form_field_error_empty_message', __( "This field is required.", 'cf-zoho' ) ) );
 		}
 
 		$value = explode( ',', $value );
@@ -125,15 +124,13 @@ class Field {
 			$value = array( $value );
 		}
 
-		if ( (int) $value < (int) $field['config']['limit']  ) {
+		if ( (int) $value < (int) $field['config']['limit'] ) {
 			return new \WP_Error( 'error',
-				apply_filters( 'cf_zoho_form_field_error_limit_message', __( "Please complete the rest of this field", 'cf-zoho' ) )
+				apply_filters( 'cf_zoho_form_field_error_limit_message', __( 'Please complete the rest of this field', 'cf-zoho' ) )
 			);
 		}
 
-
 		return true;
-
 	}
 
 	/**
@@ -164,7 +161,6 @@ class Field {
 					$this,
 					'register_js_callback',
 				) );
-
 
 				do {
 					include( CFZ_TEMPLATE_PATH . 'zoho-modal.php' );
