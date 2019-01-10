@@ -93,7 +93,6 @@ class CF_Processor_Render {
 
 		$path = '/crm/v2/settings/layouts?module=' . $module;
 
-
 		$all_modules = $this->get_get()->request( '/crm/v2/settings/modules' );
 		$data = $this->get_get()->request( $path );
 

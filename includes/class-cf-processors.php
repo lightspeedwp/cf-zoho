@@ -248,15 +248,18 @@ class CF_Processors {
 		), 10, 2 );
 
 		add_filter( 'caldera_forms_mailer', array(
-			$this, 'mail_attachment_check'
+			$this,
+			'mail_attachment_check',
 		), 20, 3 );
 
 		add_action( 'caldera_forms_mailer_complete', array(
-			$this, 'additional_mail_check'
+			$this,
+			'additional_mail_check',
 		), 11, 4 );
 
 		add_action( 'caldera_forms_save_field_zoho_form', array(
-			$this, 'save_actual_data'
+			$this,
+			'save_actual_data',
 		), 11, 4 );
 
 		$path   = '/crm/v2/' . ucfirst( $this->module );
@@ -293,7 +296,7 @@ class CF_Processors {
 			$this->zoho_id = $object_id;
 
 			//This is where the actions are run to link the items.
-			do_action( 'cf_zoho_do_submission_complete', $object_id, $this->module, $this->requests_list, $this->post );
+			do_action( 'cf_zoho_do_submission_complete', $object_id, $this->module, $this->requests_list, $this );
 		}
 
 		do_action( 'cf_zoho_create_entry_complete', $object_id, $this->config, $this->form );

@@ -80,6 +80,6 @@ final class CF_Zoho {
 		add_action( 'init', [ $this->field, 'setup' ] );
 
 		$this->pre_populate = Pre_Populate::init();
-		add_filter( 'caldera_forms_render_pre_get_entry', [ $this->pre_populate, 'pre_populate_form'], 10, 2 );
+		add_filter( 'caldera_forms_render_pre_get_entry', [ $this->pre_populate, 'pre_populate_form' ], 10, 2 );
 	}
 }
