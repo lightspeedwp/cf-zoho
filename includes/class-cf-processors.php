@@ -578,8 +578,13 @@ class CF_Processors {
 	private function get_entry_meta( $entry_id ) {
 		global $wpdb;
 
-		$entry_meta_data = $wpdb->get_results($wpdb->prepare("SELECT * FROM `" . $wpdb->prefix . "cf_form_entry_meta` WHERE `entry_id` = %d AND `meta_key` = 'id'",
-			$entry_id), ARRAY_A);
+		$entry_meta_data = $wpdb->get_results(
+			$wpdb->prepare(
+				'SELECT * FROM `' . $wpdb->prefix . 'cf_form_entry_meta` WHERE `entry_id` = %d AND `meta_key` = `id`',
+				$entry_id
+			),
+			ARRAY_A
+		);
 
 		$return = '';
 		if ( ! empty( $entry_meta_data ) ) {

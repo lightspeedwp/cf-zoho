@@ -115,8 +115,7 @@ class Field {
 	public function handler( $value, $field, $form ) {
 
 		if ( '' === $value ) {
-			return new \WP_Error( 'error',
-				apply_filters( 'cf_zoho_form_field_error_empty_message', __( 'This field is required.', 'cf-zoho' ) ) );
+			return new \WP_Error( 'error', apply_filters( 'cf_zoho_form_field_error_empty_message', __( 'This field is required.', 'cf-zoho' ) ) );
 		}
 
 		$value = explode( ',', $value );
@@ -239,7 +238,7 @@ class Field {
 	 * @return mixed
 	 */
 	public function field_validation( $value, $field, $form ) {
-		if ( '' == $value  ) {
+		if ( '' == $value ) {
 			return new \WP_Error( $field['ID'], esc_html__( 'This field cannot be empty', 'cf-zoho' ) );
 		}
 		return $value;
