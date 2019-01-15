@@ -1,6 +1,6 @@
 <input 
 	type="text" 
-	id="{{_id}}<?php echo $field_num; ?>" 
+	id="{{_id}}<?php echo esc_attr( $field_num ); ?>"
 	class="field-config block-input magic-tag-enabled 
 	<?php
 	if ( true === (bool) $field['required'] ) {

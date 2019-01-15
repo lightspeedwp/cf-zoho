@@ -11,7 +11,7 @@ while ( have_posts() ) {
 
 	$content = get_the_content();
 
-	echo '<pre>' . print_r( json_decode( $content, true ), true ) . '</pre>';
+	echo wp_kses_post( '<pre>' . print_r( json_decode( $content, true ), true ) . '</pre>' );
 
 }
 

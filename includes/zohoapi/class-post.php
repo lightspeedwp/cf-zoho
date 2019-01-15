@@ -18,9 +18,11 @@ class Post extends Connect {
 	 * @param  string  $path      URL path to request from.
 	 * @param  array   $body      Form post data.
 	 * @param  boolean $new_token Whether this is a second attempt with a new token.
+	 * @param  boolean $has_attachments
+	 * @param  string $method
 	 * @return object|array            WP_Error|Zoho response.
 	 */
-	public function request( $path, $body, $new_token = false ) {
+	public function request( $path, $body, $new_token = false, $has_attachments = false, $method = 'POST' ) {
 
 		$this->tokens->load_token_data();
 
@@ -29,8 +31,9 @@ class Post extends Connect {
 		$response = wp_remote_post(
 			$url, [
 				'timeout' => 45,
-				'headers' => $this->headers(),
+				'headers' => $this->headers( $has_attachments ),
 				'body'    => wp_json_encode( $body ),
+				'method' => $method,
 			]
 		);
 
@@ -52,9 +55,60 @@ class Post extends Connect {
 			}
 
 			// Call self.
-			return $this->request( $path, $data, true );
+			return $this->request( $path, $body, true );
 		}
 
+		return $decoded_response;
+	}
+
+	/**
+	 * @param $path
+	 * @param $body
+	 * @param $attached_url
+	 * @return mixed
+	 */
+	public function send_file( $path, $body, $attached_url = false ) {
+
+		$this->tokens->load_token_data();
+		$base_url = $this->tokens->get_api_domain();
+		$url = $base_url . $path;
+
+		$headers_array     = $this->headers( true );
+		$headers_formatted = array();
+		foreach ( $headers_array as $ha_key => $ha ) {
+			$headers_formatted[] = $ha_key . ': ' . $ha;
+		}
+
+		// get cURL resource
+		$ch = curl_init();
+		// set url
+		curl_setopt( $ch, CURLOPT_URL, $url );
+		// set method
+		curl_setopt( $ch, CURLOPT_CUSTOMREQUEST, 'POST' );
+		// return the transfer as a string
+		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
+
+		// multipart body
+		if ( false === $attached_url ) {
+			$body = [
+				'file' => $body,
+			];
+		} else {
+			$body = [
+				'attachmentUrl' => $body,
+			];
+		}
+
+		// set body
+		curl_setopt( $ch, CURLOPT_POST, 1 );
+		curl_setopt( $ch, CURLOPT_POSTFIELDS, $body );
+
+		// set headers
+		curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers_formatted );
+
+		// send the request and save response to $response
+		$response = curl_exec( $ch );
+		$decoded_response = json_decode( $response, true );
 		return $decoded_response;
 	}
 }

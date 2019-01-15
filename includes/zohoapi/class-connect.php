@@ -40,17 +40,22 @@ class Connect {
 	/**
 	 * Headers for any API request.
 	 *
+	 * @param boolean $has_attachments
 	 * @return array API request headers.
 	 */
-	public function headers() {
+	public function headers( $has_attachments = false ) {
 
 		$token = $this->tokens->get_access_token();
+		$content_type = 'application/json';
+		if ( false !== $has_attachments ) {
+			$content_type = 'multipart/form-data';
+		}
 
 		if ( false !== $token ) {
 
 			return [
 				'Authorization' => "Zoho-oauthtoken {$token}",
-				'Content-Type'  => 'application/json',
+				'Content-Type'  => $content_type,
 			];
 		}
 
@@ -60,7 +65,7 @@ class Connect {
 
 		return [
 			'Authorization' => "Zoho-oauthtoken {$token}",
-			'Content-Type'  => 'application/json',
+			'Content-Type'  => $content_type,
 		];
 	}
 
@@ -83,7 +88,7 @@ class Connect {
 	public function generate_token( $grant_type ) {
 
 		$url          = $this->options->get_option( 'cfzoho_url' ) . '/token';
-		$redirect_uri = cf_zoho\cf_zoho_redirect_url();
+		$redirect_uri = cf_zoho_redirect_url();
 
 		$body = [
 			'client_id'     => $this->options->get_option( 'cfzoho_client_id' ),

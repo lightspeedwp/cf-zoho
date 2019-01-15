@@ -15,27 +15,26 @@
 		</label>
 
 		<label>
-			<input type="checkbox" id="{{_id}}_update_existing" class="field-config" value="update" name="{{_name}}[_allow_duplicates]" {{#is _allow_duplicates value="update"}}checked="checked"{{/is}}> <?php esc_html_e( 'Update existing records', 'cf-zoho' ); ?>
+			<input type="checkbox" id="{{_id}}_update_existing" class="field-config" value="update" name="{{_name}}[_allow_duplicates]" {{#if _allow_duplicates}}checked="checked"{{/if}}> <?php esc_html_e( 'Update existing records', 'cf-zoho' ); ?>
 		</label>
 
+		<label>
+			<input type="checkbox" id="{{_id}}_return_information" class="field-config" value="1" name="{{_name}}[_return_information]" {{#if _return_information}}checked="checked"{{/if}}> <?php esc_html_e( 'Return Information', 'cf-zoho' ); ?>
+		</label>
+		<small><?php esc_html_e( 'Enable the option above when attaching one module to another module, (e.g attaching a contact to a task).', 'cf-zoho' ); ?></small>
 	</div>
+</div>
 
+<div class="caldera-config-group">
+	<label for="{{_id}}_return_message">
+		<?php esc_html_e( 'Return Message', 'cf-zoho' ); ?>
+	</label>
 	<div class="caldera-config-field">
-<!--
-		<label>
-			<input type="radio" id="{{_id}}_allow_duplicates" class="field-config" value="allow" name="{{_name}}[_allow_duplicates]" {{#is _allow_duplicates value=""}}checked="checked"{{/is}} {{#is _allow_duplicates value="allow"}}selected="selected"{{/is}}> <?php esc_html_e( 'Allow duplicate records', 'cf-zoho' ); ?>
-		</label>
-
-		<label>
-			<input type="radio" id="{{_id}}_update_existing" class="field-config" value="update" name="{{_name}}[_allow_duplicates]" {{#is _allow_duplicates value="update"}}checked="checked"{{/is}}> <?php esc_html_e( 'Update existing records', 'cf-zoho' ); ?>
-		</label>
-
-		<label>
-			<input type="radio" id="{{_id}}_no_updates" class="field-config" value="none" name="{{_name}}[_allow_duplicates]" {{#is _allow_duplicates value="none"}}checked="checked"{{/is}}> <?php esc_html_e( 'No duplicates, no updates', 'cf-zoho' ); ?>
-		</label>
--->
+		<input type="text" id="{{_id}}_return_message" class="block-input field-config" name="{{_name}}[return_message]" value="{{return_message}}">
 	</div>
-
+	<p class="description" style="text-align:center;">
+		<?php esc_html_e( 'Enter the zoho slugs you want from the attached processor. e.g [first_name] [last_name] - [email]', 'cf-zoho' ); ?>
+	</p>
 </div>
 
 <?php endif; ?>
@@ -44,7 +43,7 @@
 
 	<?php foreach ( $module->get_module_data() as $section ) : ?>
 
-		<h4><?php echo $section['name']; ?></h4>
+		<h4><?php echo wp_kses_post( $section['name'] ); ?></h4>
 
 		<?php foreach ( $section['fields'] as $field_num => $field ) : ?>
 
@@ -58,8 +57,8 @@
 
 				<div class="caldera-config-group">
 
-					<label for="{{_id}}<?php echo $field_num; ?>">
-						<?php echo $module->label( $field ); ?>
+					<label for="{{_id}}<?php echo esc_attr( $field_num ); ?>">
+						<?php echo wp_kses_post( $module->label( $field ) ); ?>
 					</label>
 
 					<div class="caldera-config-field">

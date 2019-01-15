@@ -2,22 +2,18 @@
 /**
  * The plugin bootstrap file
  *
- * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
- * registers the activation and deactivation functions, and defines a function
- * that starts the plugin.
- *
  * @package           cf_zoho
  *
  * @wordpress-plugin
  * Plugin Name:       Zoho CRM Addon for Caldera Forms
- * Plugin URI:        https://www.lsdev.biz/product/caldera-forms-zoho-crm-addon/
+ * Plugin URI:        https://github.com/lightspeeddevelopment/cf-zoho
  * Description:       Caldera Forms is one of a kind WordPress form builder. With its user friendly drag and drop interface, it’s simple to create forms for your WordPress site that look awesome on any device. Caldera also comes with a range of add-ons, like integration with the Zoho CRM platform, which allows users to automate their day-to-day business activities allowing them to focus on selling without having to worry about digging through data. Use the extension to track your sales activities and gain complete understanding of your sales cycle.
  * Version:           2.0.0
  * Author:            LightSpeed
- * Author URI:        https://lsdev.biz
+ * Author URI:        https://www.lsdev.biz/
+ * Contributors       feedmycode, matttrustmytravel
  * License:           GPL-3.0+
- * License URI:       http://www.gnu.org/licenses/gpl-3.0.txt
+ * License URI:       https://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain:       cf-zoho
  */
 
@@ -34,35 +30,42 @@ if ( ! defined( 'WPINC' ) ) {
  */
 define( 'CFZ_VERSION', '2.0.0' );
 define( 'CFZ_ABSPATH', dirname( __FILE__ ) . '/' );
+
 define( 'CFZ_TEMPLATE_PATH', CFZ_ABSPATH . 'templates/' );
 define( 'CFZ_PROCESSORS_PATH', CFZ_ABSPATH . 'processors/' );
+define( 'CFZ_FIELDS_PATH', CFZ_ABSPATH . 'fields/' );
 define( 'CFZ_URL', plugin_dir_url( __FILE__ ) . '/' );
+define( 'CFZ_FIELDS_URL', CFZ_URL . 'fields/' );
+
 define( 'CFZ_OPTION_SLUG', '_uix_cf-zoho' );
 define( 'CFZ_TRANSIENT_SLUG', '_uix_cf-zoho_transient' );
 
 // Autoloader.
+require CFZ_ABSPATH . 'includes/template-tags.php';
 require CFZ_ABSPATH . 'lib/autoloader.php';
 
 // Register settings.
 register_setting( 'cfzoho', CFZ_OPTION_SLUG );
 
-/**
- * CF Zoho Options page URL.
- * Used to populate redirect_uri field in Zoho requests.
- * Can't use menu_page_url in Zoho requests so built this instead.
- *
- * @return string CF Zoho Options page URL.
- */
-function cf_zoho_redirect_url() {
-	return admin_url( add_query_arg( 'page', 'cfzoho', 'options-general.php' ) );
-}
+
 
 /**
- * Begins execution of the plugin.
+ * Begins execution of the plugin on plugins loaded.
  */
-function run_plugin() {
-	$cf_zoho = new includes\CF_Zoho();
-	add_action( 'plugins_loaded', [ $cf_zoho, 'init' ], 2 );
+function cf_zoho_run_plugin() {
+	$cf_zoho = \cf_zoho\includes\CF_Zoho::init();
+	add_action( 'plugins_loaded', [ $cf_zoho, 'setup' ], 2 );
+}
+add_action( 'plugins_loaded', __NAMESPACE__ . '\cf_zoho_run_plugin', 1 );
+
+/**
+ * Returns the main instance of the CF Zoho Plugin
+ * @return object \cf_zoho\includes\CF_Zoho()
+ */
+function cf_zoho() {
+	return \cf_zoho\includes\CF_Zoho::init();
 }
 
-add_action( 'plugins_loaded', __NAMESPACE__ . '\run_plugin', 1 );
+
+
+

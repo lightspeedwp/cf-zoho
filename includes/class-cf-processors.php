@@ -9,6 +9,12 @@ namespace cf_zoho\includes;
 
 use cf_zoho\includes\zohoapi;
 
+/*
+ * 		if (self::should_send_mail($form, $transdata)) {
+			Caldera_Forms_Save_Final::do_mailer($form, $entryid);
+		}
+ */
+
 /**
  * Processors Class.
  */
@@ -22,7 +28,7 @@ class CF_Processors {
 	private $config = [];
 
 	/**
-	 * Form config.
+	 * The current form being processed.
 	 *
 	 * @var array.
 	 */
@@ -36,6 +42,42 @@ class CF_Processors {
 	private $module = '';
 
 	/**
+	 * Contains any additional mails that need to be sent out.
+	 *
+	 * @var array.
+	 */
+	private $additional_mails = array();
+
+	/**
+	 * Contains the object built and stored.
+	 * @var array
+	 */
+	private $body = array();
+
+	/**
+	 * Contains the submitted Zoho ID
+	 * @var string
+	 */
+	private $zoho_id = '';
+
+	/**
+	 * @var zohoapi\Post
+	 */
+	public $post = '';
+
+	/**
+	 * Prevents duplicate submissions
+	 * @var array
+	 */
+	public $requests_completed = array();
+
+	/**
+	 * Records the extra side requests and their modules.
+	 * @var array
+	 */
+	public $requests_list = array();
+
+	/**
 	 * Registers our processors with Caldera Forms.
 	 *
 	 * @param  array $processors Array of current processors.
@@ -44,10 +86,10 @@ class CF_Processors {
 	public function register_processors( $processors ) {
 
 		$processors['zoho_lead'] = [
-			'name'        => __( 'Zoho CRM - Create Lead', 'cf-zoho-2' ),
-			'description' => __( 'Create or Update a lead on form submission', 'cf-zoho-2' ),
-			'author'      => 'Matt Bush',
-			'author_url'  => 'https://haycroftmedia.com/',
+			'name'        => __( 'Zoho CRM - Leads', 'cf-zoho' ),
+			'description' => __( 'Create or Update a lead on form submission', 'cf-zoho' ),
+			'author'      => 'LightSpeed',
+			'author_url'  => 'https://lsdev.biz/',
 			'processor'   => [ $this, 'process_lead_submission' ],
 			'template'    => CFZ_PROCESSORS_PATH . 'lead-processor-config.php',
 			'icon'        => CFZ_URL . 'assets/images/icon.png',
@@ -57,10 +99,10 @@ class CF_Processors {
 		];
 
 		$processors['zoho_contact'] = [
-			'name'        => __( 'Zoho CRM - Create Contact', 'cf-zoho-2' ),
-			'description' => __( 'Create or Update a contact on form submission', 'cf-zoho-2' ),
-			'author'      => 'Matt Bush',
-			'author_url'  => 'https://haycroftmedia.com/',
+			'name'        => __( 'Zoho CRM - Contacts', 'cf-zoho' ),
+			'description' => __( 'Create or Update a contact on form submission', 'cf-zoho' ),
+			'author'      => 'LightSpeed',
+			'author_url'  => 'https://lsdev.biz/',
 			'processor'   => [ $this, 'process_contact_submission' ],
 			'template'    => CFZ_PROCESSORS_PATH . 'contact-processor-config.php',
 			'icon'        => CFZ_URL . 'assets/images/icon.png',
@@ -70,12 +112,23 @@ class CF_Processors {
 		];
 
 		$processors['zoho_task'] = [
-			'name'        => __( 'Zoho CRM - Create Task', 'cf-zoho-2' ),
-			'description' => __( 'Create or Update a task on form submission', 'cf-zoho-2' ),
-			'author'      => 'Matt Bush',
-			'author_url'  => 'https://haycroftmedia.com/',
+			'name'        => __( 'Zoho CRM - Tasks', 'cf-zoho' ),
+			'description' => __( 'Create or Update a task on form submission', 'cf-zoho' ),
+			'author'      => 'LightSpeed',
+			'author_url'  => 'https://lsdev.biz/',
 			'processor'   => [ $this, 'process_task_submission' ],
 			'template'    => CFZ_PROCESSORS_PATH . 'task-processor-config.php',
+			'icon'        => CFZ_URL . 'assets/images/icon.png',
+			'magic_tags'  => [ 'id' ],
+		];
+
+		$processors['zoho_deal'] = [
+			'name'        => __( 'Zoho CRM - Deals', 'cf-zoho' ),
+			'description' => __( 'Create or Update deals on form submission', 'cf-zoho' ),
+			'author'      => 'LightSpeed',
+			'author_url'  => 'https://lsdev.biz/',
+			'processor'   => [ $this, 'process_deal_submission' ],
+			'template'    => CFZ_PROCESSORS_PATH . 'deal-processor-config.php',
 			'icon'        => CFZ_URL . 'assets/images/icon.png',
 			'magic_tags'  => [ 'id' ],
 		];
@@ -89,7 +142,7 @@ class CF_Processors {
 	 * @param  array  $config Processor config
 	 * @param  array  $form Form config
 	 * @param  string $process_id Unique process ID for this submission
-	 * @return void|array.
+	 * @return array.
 	 */
 	public function process_lead_submission( $config, $form, $process_id ) {
 
@@ -106,7 +159,7 @@ class CF_Processors {
 	 * @param  array  $config Processor config
 	 * @param  array  $form Form config
 	 * @param  string $process_id Unique process ID for this submission
-	 * @return void|array.
+	 * @return array.
 	 */
 	public function process_contact_submission( $config, $form, $process_id ) {
 
@@ -123,13 +176,30 @@ class CF_Processors {
 	 * @param  array  $config Processor config
 	 * @param  array  $form Form config
 	 * @param  string $process_id Unique process ID for this submission
-	 * @return void|array.
+	 * @return array.
 	 */
 	public function process_task_submission( $config, $form, $process_id ) {
 
 		$this->config = $config;
 		$this->form   = $form;
 		$this->module = 'tasks';
+
+		return $this->do_submission();
+	}
+
+	/**
+	 * Callback for Deals form submissions.
+	 *
+	 * @param  array  $config Processor config
+	 * @param  array  $form Form config
+	 * @param  string $process_id Unique process ID for this submission
+	 * @return array.
+	 */
+	public function process_deal_submission( $config, $form, $process_id ) {
+
+		$this->config = $config;
+		$this->form   = $form;
+		$this->module = 'deals';
 
 		return $this->do_submission();
 	}
@@ -165,6 +235,33 @@ class CF_Processors {
 	 */
 	public function do_submission() {
 
+		/**
+		 * TODO: This is where we check to see if we should submit this info or not.
+		 */
+		add_filter('caldera_forms_send_email', array(
+			$this,
+			'stagger_mailer',
+		), 1, 2);
+		add_filter( 'caldera_forms_ajax_return', array(
+			$this,
+			'filter_ajax_return',
+		), 10, 2 );
+
+		add_filter( 'caldera_forms_mailer', array(
+			$this,
+			'mail_attachment_check',
+		), 20, 3 );
+
+		add_action( 'caldera_forms_mailer_complete', array(
+			$this,
+			'additional_mail_check',
+		), 11, 4 );
+
+		add_action( 'caldera_forms_save_field_zoho_form', array(
+			$this,
+			'save_actual_data',
+		), 11, 4 );
+
 		$path   = '/crm/v2/' . ucfirst( $this->module );
 		$object = $this->build_object();
 
@@ -190,8 +287,51 @@ class CF_Processors {
 
 		// Filter hook.
 		$body     = apply_filters( 'process_zoho_submission', $body, $this->config, $this->form );
+		$this->body = $body;
+
+		if ( isset( $this->config['_return_information'] ) && ( true === $this->config['_return_information'] || 'true' === $this->config['_return_information'] || 1 === $this->config['_return_information'] ) ) {
+			$object_id = $this->capture_info( $this->module, $body, $object );
+		} else {
+			$object_id = $this->do_request( $path, $body, $object );
+			$this->zoho_id = $object_id;
+
+			//This is where the actions are run to link the items.
+			do_action( 'cf_zoho_do_submission_complete', $object_id, $this->module, $this->requests_list, $this );
+		}
+
+		do_action( 'cf_zoho_create_entry_complete', $object_id, $this->config, $this->form );
+
+		return [
+			'id' => $object_id,
+		];
+	}
+
+	public function capture_info( $module, $body, $object ) {
+		/**
+		 * TODO: if the form is capturing entries, then serialize the data and return that for saving.
+		 */
+		return serialize(
+			array(
+				$module => $body,
+			)
+		);
+	}
+
+	/**
+	 * The function which send the build info
+	 * @param $path
+	 * @param $body
+	 * @param $object
+	 * @param $has_attachments
+	 * @param $method
+	 *
+	 * @return array
+	 */
+	public function do_request( $path, $body, $object, $has_attachments = false, $method = 'POST' ) {
 		$post     = new zohoapi\Post();
-		$response = $post->request( $path, $body );
+		$this->post = $post;
+
+		$response = $post->request( $path, $body, false, $has_attachments, $method );
 
 		if ( is_wp_error( $response ) ) {
 
@@ -203,23 +343,22 @@ class CF_Processors {
 			];
 		}
 
-		if ( ! isset( $response['data'][0]['code'] ) || 'SUCCESS' !== $response['data'][0]['code'] ) {
+		if ( ! isset( $response['data'][0]['code'] ) || ( 'SUCCESS' !== $response['data'][0]['code'] && 'DUPLICATE_DATA' !== $response['data'][0]['code'] ) ) {
 
-			$this->log( $response['data'][0]['message'], $object, $response['data'][0]['details'], 0, 'error' );
+			$this->log( $response['data'][0]['message'], $object, print_r( $response, true ), 0, 'error' );
 
 			return [
-				'note' => $response['data'][0]['message'],
+				'note' => print_r( $response['data'][0]['message'] ) . ' - ' . $path,
 				'type' => 'error',
 			];
 		}
 
 		$object_id = $response['data'][0]['details']['id'];
 
+		//TODO THIS IS WHERE THE EXTRA FILTER GOES
 		$this->log( $response['data'][0]['message'], $object, $response['data'][0]['details'], $object_id, 'event' );
 
-		do_action( 'cf_zoho_create_entry_complete', $object_id, $this->config, $this->form );
-
-		return [ 'id' => $object_id ];
+		return $object_id;
 	}
 
 	/**
@@ -229,7 +368,7 @@ class CF_Processors {
 	 */
 	public function build_object() {
 
-		$object = $this->get_default_object( $this->module, $this->config );
+		$object = $this->get_default_object( );
 
 		$cache  = new Cache();
 		$fields = $cache->get_plugin_cache_item( $this->module );
@@ -249,6 +388,9 @@ class CF_Processors {
 					continue;
 				}
 				$label            = str_replace( ' ', '_', $field['field_label'] );
+				/**
+				 * TODO: Change this to a preg_match
+				 */
 				if ( 'Lead_Owner' === $label || 'Task_Owner' === $label || 'Contact_Owner' === $label ) {
 					$label = 'Owner';
 				}
@@ -354,19 +496,344 @@ class CF_Processors {
 	 * @return string        Form field value.
 	 */
 	public function get_form_value( $field ) {
-
 		$key = sanitize_key( $field['field_label'] );
 
 		if ( ! isset( $this->config[ $key ] ) ) {
 			return;
 		}
+		/*
+		 * TODO: Check why this is not working.
+		 */
+		$value = \Caldera_Forms::do_magic_tags( $this->config[ $key ], null, $this->form );
 
-		$value = \Caldera_Forms::do_magic_tags( $this->config[ $key ] );
+		$zoho_field = $this->is_zoho_form_field( $this->config[ $key ] );
+		if ( false !== $zoho_field ) {
+
+			$new_values = array();
+
+			if ( isset( $_POST[ $zoho_field ] ) ) {
+				$values = explode( ',', $_POST[ $zoho_field ] );
+				if ( ! is_array( $values ) ) {
+					$values = array( $values );
+				}
+				foreach ( $values as $entryid ) {
+					if ( ! in_array( $entryid, $this->requests_completed ) ) {
+						$return = $this->do_side_request( $entryid );
+						$this->update_entry( $entryid, $return );
+						$new_values[] = $return;
+						$this->requests_completed[] = $entryid;
+					}
+				}
+			}
+
+			if ( ! empty( $new_values ) ) {
+				$new_values = implode( ',', $new_values );
+				$value = $new_values;
+			}
+			$value = apply_filters( 'cf_zoho_object_build_value', $new_values, $key, $field );
+		}
 
 		if ( 'boolean' !== strtolower( $field['data_type'] ) ) {
 			return $value;
 		}
 
 		return empty( $value ) ? (bool) false : (bool) true;
+	}
+
+	/**
+	 * The function which send the build info
+	 * @param $path
+	 * @param $body
+	 * @param $object
+	 *
+	 * @return array
+	 */
+	public function do_side_request( $value ) {
+		$return = $value;
+		$entry = $this->get_entry_meta( $value );
+		$entry = maybe_unserialize( $entry );
+
+		if ( is_array( $entry ) ) {
+			foreach ( $entry as $module => $data ) {
+				if ( in_array( $module, array( 'task', 'lead', 'contacts' ) ) ) {
+
+					$path   = '/crm/v2/' . ucfirst( $module );
+
+					$this->log( 'Doing Side Request', $entry, 'Side Request Error', 0, 'side-request' );
+					$object_id = $this->do_request( $path, $data, $data );
+
+					if ( ! is_wp_error( $object_id ) ) {
+						$this->maybe_register_mailer( $return, $object_id, $module );
+						$return = $object_id;
+
+						//This registers the module to be linked.
+						$this->requests_list[ $module ][] = $return;
+					}
+				}
+			}
+		}
+		return $return;
+	}
+
+	private function get_entry_meta( $entry_id ) {
+		global $wpdb;
+
+		$entry_meta_data = $wpdb->get_results(
+			$wpdb->prepare(
+				'SELECT * FROM `' . $wpdb->prefix . 'cf_form_entry_meta` WHERE `entry_id` = %d AND `meta_key` = `id`',
+				$entry_id
+			),
+			ARRAY_A
+		);
+
+		$return = '';
+		if ( ! empty( $entry_meta_data ) ) {
+			if ( isset( $entry_meta_data[0] ) && isset( $entry_meta_data[0]['meta_value'] ) ) {
+				$return = $entry_meta_data[0]['meta_value'];
+			}
+		}
+		
+		return $return;
+	}
+
+	private function get_entry_form_id( $entry_id ) {
+		global $wpdb;
+
+		$entry_data = $wpdb->get_results(
+			$wpdb->prepare(
+				'SELECT form_id FROM `' . $wpdb->prefix . 'cf_form_entries` WHERE `id` = %d',
+				$entry_id
+			),
+			ARRAY_A
+		);
+
+		$return = '';
+		if ( ! empty( $entry_data ) ) {
+			if ( isset( $entry_data[0] ) && isset( $entry_data[0]['form_id'] ) ) {
+				$return = $entry_data[0]['form_id'];
+			}
+		}
+		return $return;
+	}
+
+	public function update_entry( $entry_id, $object_id ) {
+		global $wpdb;
+		$entry_obj = new \Caldera_Forms_Entry( $this->form, $entry_id );
+		$entry_meta_data = $wpdb->get_results(
+			$wpdb->prepare(
+				'UPDATE `' . $wpdb->prefix . 'cf_form_entry_meta` SET
+				`meta_value` = %d
+				WHERE `entry_id` = %d
+				AND `meta_key` = `id`',
+				$object_id,
+				$entry_id
+			),
+			ARRAY_A
+		);
+	}
+
+	/**
+	 *
+	 * @param $send boolean
+	 * @param $form object
+	 *
+	 * @return boolean
+	 */
+	public function stagger_mailer( $send, $form ) {
+		if ( isset( $this->config['_return_information'] ) && ( true === $this->config['_return_information'] || 'true' === $this->config['_return_information'] || 1 === $this->config['_return_information'] ) ) {
+			$send = false;
+		}
+		return $send;
+	}
+
+	/**
+	 * Check to see if the current field is a zoho form field.
+	 * @param string $magic_tag
+	 * @return boolean
+	 */
+	public function is_zoho_form_field( $magic_tag = '' ) {
+		$is_zoho = false;
+		$current_field = false;
+		foreach ( $this->form['fields'] as $field ) {
+			if ( '%' . $field['slug'] . '%' === $magic_tag ) {
+				$current_field = $field;
+			}
+		}
+		if ( false !== $current_field && 'zoho_form' === $current_field['type'] ) {
+			$is_zoho = $current_field['ID'];
+		}
+		return $is_zoho;
+	}
+
+	/**
+	 * Checks to see if we should register a mailer for this form.
+	 * @param $entryid
+	 * @param $zoho_id
+	 * @param $module
+	 */
+	public function maybe_register_mailer( $entryid, $zoho_id, $module ) {
+		$form_id = $this->get_entry_form_id( $entryid );
+		$form = \Caldera_Forms::get_form( $form_id );
+
+		if ( ! isset( $form['mailer']['enable_mailer'] ) ) {
+			$this->additional_mails[ $entryid ] = array(
+				'form'    => $form,
+				'zoho_id' => $zoho_id,
+				'module'  => $module,
+			);
+		}
+	}
+
+	/**
+	 * Filter the ajax return and maybe add our output
+	 * @param $out
+	 * @param $form
+	 *
+	 * @return mixed
+	 */
+	public function filter_ajax_return( $out, $form ) {
+		if ( isset( $this->config['_return_information'] ) && ( true === $this->config['_return_information'] || 'true' === $this->config['_return_information'] || 1 === $this->config['_return_information'] ) ) {
+
+			$return_message = $this->config['return_message'];
+
+			if ( isset( $this->body['data'] ) && isset( $this->body['data'][0] ) ) {
+				foreach ( $this->body['data'][0] as $field_key => $field_value ) {
+					$search = '[' . strtolower( $field_key ) . ']';
+					$return_message = str_replace( $search, $field_value, $return_message );
+				}
+			}
+			$out['return_message'] = '<div data-entry-id="' . $out['data']['cf_id'] . '" class="alert alert-success fade in">' . $return_message . '<a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a></div>';
+		}
+		return $out;
+	}
+
+	/**
+	 * Prepare upload PDF attachments to zoho.
+	 * Attach passports to email
+	 *
+	 * @param array $mail Email data
+	 * @param array $data ?
+	 * @param array $form For config
+	 *
+	 * @return array
+	 */
+	public function mail_attachment_check( $mail, $data, $form ) {
+		global $transdata;
+		if ( '' !== $this->zoho_id ) {
+			//Update the trip and attach the PDF
+			if ( ! empty( $transdata['pdf_attachment'] ) ) {
+				foreach ( $transdata['pdf_attachment'] as $file_path ) {
+					$this->upload_file( $file_path );
+				}
+			}
+			$mail = apply_filters( 'cf_zoho_mail_attachment_check', $mail, $this->zoho_id, $data, $form, $this );
+		}
+		return $mail;
+	}
+
+	/**
+	 * Does the request to upload the file.
+	 * @param $file_path string
+	 * @param $forced_id boolean
+	 * @param $forced_module boolean
+	 * @return void | array
+	 */
+	public function upload_file( $file_path, $forced_id = false, $forced_module = false ) {
+
+		$zoho_id = $this->zoho_id;
+		if ( false !== $forced_id ) {
+			$zoho_id = $forced_id;
+		}
+
+		$module = $this->module;
+		if ( false !== $forced_module ) {
+			$module = $forced_module;
+		}
+
+		$path   = '/crm/v2/' . ucfirst( $module ) . '/' . $zoho_id . '/Attachments';
+		$post     = new zohoapi\Post();
+		$attach_url = false;
+
+		if ( false === $attach_url ) {
+			if ( function_exists( 'curl_file_create' ) ) { // php 5.6+
+				$body = curl_file_create( $file_path );
+			} else { //
+				$body = '@' . realpath( $file_path );
+			}
+			$response = $post->send_file( $path, $body );
+		} else {
+			$file_url = str_replace( '/httpdocs', '', $file_path );
+			$body = $file_url;
+			$response = $post->send_file( $path, $body, true );
+		}
+
+		if ( is_wp_error( $response ) ) {
+
+			$this->log( $response->get_error_message(), $body, 'WordPress Error', 0, 'error' );
+
+			return [
+				'note' => $response->get_error_message(),
+				'type' => 'error',
+			];
+		}
+
+		if ( ! isset( $response['data'][0]['code'] ) || 'SUCCESS' !== $response['data'][0]['code'] ) {
+
+			$this->log( $response['data'][0]['message'], $body, print_r( $response, true ), 0, 'error' );
+
+			return [
+				'note' => print_r( $response, true ),
+				'type' => 'error',
+			];
+		}
+
+		$object_id = $response['data'][0]['details']['id'];
+		$this->log( $response['data'][0]['message'], $body, $response['data'][0]['details'], $object_id, 'uploaded' );
+	}
+
+	/**
+	 * Checks for any additional mails and sends them
+	 * @param array $mail Email data
+	 * @param array $data Form entry data
+	 * @param array $form The form config
+	 * @param string $method Method for sending email
+	 */
+	public function additional_mail_check( $mail, $data, $form, $method ) {
+		$this->log( 'Additional Mails', $this->additional_mails, 'Additional Mails', 0, 'email' );
+		if ( ! empty( $this->additional_mails ) ) {
+
+			remove_filter('caldera_forms_send_email', array(
+				$this,
+				'stagger_mailer',
+			), 1);
+			remove_filter( 'caldera_forms_mailer', array(
+				$this,
+				'mail_attachment_check',
+			), 11 );
+			remove_action( 'caldera_forms_mailer_complete', array(
+				$this,
+				'additional_mail_check',
+			), 11 );
+
+			foreach ( $this->additional_mails as $entry_id => $values ) {
+				\Caldera_Forms_Save_Final::do_mailer( $values['form'], $entry_id );
+				do_action( 'cf_zoho_additional_mail_check', $entry_id, $values );
+				$this->log( $entry_id . ' Email Sent', $values, 'Email Sent', 0, 'email' );
+			}
+		}
+	}
+
+	/**
+	 * @param $entry
+	 * @param $field
+	 * @param $form
+	 * @param $entry_id
+	 * @return $entry
+	 */
+	public function save_actual_data( $entry, $field, $form, $entry_id ) {
+		if ( isset( $_POST[ $field['ID'] ] ) ) {
+			$entry = $_POST[ $field['ID'] ];
+		}
+		return $entry;
 	}
 }

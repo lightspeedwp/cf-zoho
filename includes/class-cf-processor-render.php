@@ -92,6 +92,8 @@ class CF_Processor_Render {
 		}
 
 		$path = '/crm/v2/settings/layouts?module=' . $module;
+
+		$all_modules = $this->get_get()->request( '/crm/v2/settings/modules' );
 		$data = $this->get_get()->request( $path );
 
 		if ( is_wp_error( $data ) ) {
@@ -314,7 +316,7 @@ class CF_Processor_Render {
 	 * @return boolean.
 	 */
 	public function has_approval_mode() {
-		return in_array( $this->module, [ 'leads', 'contacts' ], true );
+		return in_array( $this->module, [ 'leads', 'contacts', 'potentials' ], true );
 	}
 
 	/**

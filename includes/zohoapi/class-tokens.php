@@ -49,7 +49,7 @@ class Tokens {
 	 *
 	 * @var string.
 	 */
-	private $api_domain = '';
+	private $api_domain = 'https://www.zohoapis.com';
 
 	/**
 	 * Getter for $api_domain.

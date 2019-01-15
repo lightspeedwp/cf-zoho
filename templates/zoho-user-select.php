@@ -1,19 +1,20 @@
 <div class="caldera-config-group">
 
-	<label for="{{_id}}<?php echo $field_num; ?>">
-		<?php echo $module->label( $field ); ?>
+	<label for="{{_id}}<?php echo esc_attr( $field_num ); ?>">
+		<?php echo wp_kses_post( $module->label( $field ) ); ?>
 	</label>
 
 	<div class="caldera-config-field">
 
-		<select id="{{_id}}<?php echo $field_num; ?>" class="field-config block-input" 
-										<?php
-										if ( true === (bool) $field['required'] ) {
-											?>
-			required<?php } ?> name="{{_name}}[<?php echo $key; ?>]">
+		<select id="{{_id}}<?php echo esc_attr( $field_num ); ?>"
+				class="field-config block-input"
+				<?php if ( true === (bool) $field['required'] ) { ?>
+					required
+				<?php } ?>
+				name="{{_name}}[<?php echo esc_attr( $key ); ?>]">
 
 			<?php if ( false === $field['required'] && 'ownerlookup' === $field['data_type'] ) { ?>
-				<option value="">--None--</option>
+				<option value=""><?php esc_html_e( '--None--', 'cf-zoho' ); ?></option>
 			<?php } ?>
 
 			<?php foreach ( $field['val'] as $value_key => $value_value ) : ?>
@@ -37,7 +38,7 @@
 				}
 				?>
 
-				<option value="<?php echo $value; ?>" {{#is <?php echo $key; ?> value="<?php echo $value; ?>"}}selected="selected"{{/is}}><?php echo $label; ?></option>
+				<option value="<?php echo esc_attr( $value ); ?>" {{#is <?php echo esc_attr( $key ); ?> value="<?php echo esc_attr( $value ); ?>"}}selected="selected"{{/is}}><?php echo wp_kses_post( $label ); ?></option>
 
 			<?php endforeach; ?>
 
