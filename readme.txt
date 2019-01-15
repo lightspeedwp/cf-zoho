@@ -34,33 +34,3 @@ In order for this plugin to work at efficient speeds, Zoho CRM fields and users 
 == Upgrade Notice ==
 
 If you are upgrading from version 1.1.2 or earlier, you will need to give the plugin access to Zoho as per the CF Zoho Options page. All other settings should be retained from the previous version of the plugin.
-
-== Changelog ==
-
-= 2.0.0 =
-* Changed all calls to old Zoho API to new REST API.
-* Renamed 'cf_zoho_create_entry' hook to 'process_zoho_submission' as the old hook passes a different $object array which will probably break any code hooking this.
-* Added in the Travis Integration
-* Removed the force text fields
-
-= 1.1.2 =
-* Dev - Added in a filter to replace any checkbox values with a set "true" or "false"
-* Dev - Removed the restricted fields from the configuration options allowing you to map a magic tag to the field.
-* Dev - Removed the unused options for the Lead and the Contact processors.
-* Dev - Adding in a setting field to allow the user to define their API url
-* Fix - Added in 3 options to fix the duplicate checks on Contact and Lead Submission
-
-= 1.1.1 =
-* Added A Filter 'cf_zoho_create_entry' to allow manipulation of the request object
-* Added An Action 'cf_zoho_create_entry_complete' to allow tasks for after creation
-* Added a new config page "Field Setup"
-* Fixed a typo in the get config call which prevented certain tasks from running
-* Added in a setup page to allow you to force "select" dropdowns via WP
-* Fixed the list configs
-
-= 1.1.0 =
-* Added in a fallback connection for the wp_remote_request in the CF_Zoho_CRM() class
-* Fixed the filtering of the XML data sent to Zoho
-
-= 1.0.0 =
-* Initial release

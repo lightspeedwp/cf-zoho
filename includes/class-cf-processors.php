@@ -592,6 +592,7 @@ class CF_Processors {
 				$return = $entry_meta_data[0]['meta_value'];
 			}
 		}
+		
 		return $return;
 	}
 
