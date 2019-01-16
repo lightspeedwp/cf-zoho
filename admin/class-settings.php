@@ -31,13 +31,13 @@ class Settings {
 	private $tokens;
 
 	/**
-	 * Register a CF Zoho Settings page.
+	 * Register a LSX CF Zoho Settings page.
 	 */
 	public function settings_page() {
 
 		add_options_page(
-			'CF Zoho Options',
-			'CF Zoho',
+			'LSX CF Zoho Options',
+			'LSX CF Zoho',
 			'manage_options',
 			'lsx_cfzoho',
 			[ $this, 'lsx_cfzoho_settings_page_html' ]

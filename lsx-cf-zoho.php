@@ -55,7 +55,7 @@ function lsx_cf_zoho_run_plugin() {
 add_action( 'plugins_loaded', __NAMESPACE__ . '\lsx_cf_zoho_run_plugin', 1 );
 
 /**
- * Returns the main instance of the CF Zoho Plugin
+ * Returns the main instance of the LSX CF Zoho Plugin
  * @return object \lsx_cf_zoho\includes\CF_Zoho()
  */
 function lsx_cf_zoho() {

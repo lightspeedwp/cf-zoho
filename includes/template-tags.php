@@ -2,7 +2,7 @@
 /**
  * Template Tags
  *
- * @package   CF Zoho
+ * @package   LSX CF Zoho
  * @author    LightSpeed
  * @license   GPL3
  * @link
@@ -10,11 +10,11 @@
  */
 
 /**
- * CF Zoho Options page URL.
+ * LSX CF Zoho Options page URL.
  * Used to populate redirect_uri field in Zoho requests.
  * Can't use menu_page_url in Zoho requests so built this instead.
  *
- * @return string CF Zoho Options page URL.
+ * @return string LSX CF Zoho Options page URL.
  */
 function lsx_cf_zoho_redirect_url() {
 	return admin_url( add_query_arg( 'page', 'lsx_cfzoho', 'options-general.php' ) );
