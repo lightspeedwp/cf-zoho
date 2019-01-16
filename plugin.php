@@ -28,24 +28,24 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Currently plugin version.
  */
-define( 'CFZ_VERSION', '2.0.0' );
-define( 'CFZ_ABSPATH', dirname( __FILE__ ) . '/' );
+define( 'LSX_CFZ_VERSION', '2.0.0' );
+define( 'LSX_CFZ_ABSPATH', dirname( __FILE__ ) . '/' );
 
-define( 'CFZ_TEMPLATE_PATH', CFZ_ABSPATH . 'templates/' );
-define( 'CFZ_PROCESSORS_PATH', CFZ_ABSPATH . 'processors/' );
-define( 'CFZ_FIELDS_PATH', CFZ_ABSPATH . 'fields/' );
-define( 'CFZ_URL', plugin_dir_url( __FILE__ ) . '/' );
-define( 'CFZ_FIELDS_URL', CFZ_URL . 'fields/' );
+define( 'LSX_CFZ_TEMPLATE_PATH', LSX_CFZ_ABSPATH . 'templates/' );
+define( 'LSX_CFZ_PROCESSORS_PATH', LSX_CFZ_ABSPATH . 'processors/' );
+define( 'LSX_CFZ_FIELDS_PATH', LSX_CFZ_ABSPATH . 'fields/' );
+define( 'LSX_CFZ_URL', plugin_dir_url( __FILE__ ) . '/' );
+define( 'LSX_CFZ_FIELDS_URL', LSX_CFZ_URL . 'fields/' );
 
-define( 'CFZ_OPTION_SLUG', '_uix_cf-zoho' );
-define( 'CFZ_TRANSIENT_SLUG', '_uix_cf-zoho_transient' );
+define( 'LSX_CFZ_OPTION_SLUG', '_uix_cf-zoho' );
+define( 'LSX_CFZ_TRANSIENT_SLUG', '_uix_cf-zoho_transient' );
 
 // Autoloader.
-require CFZ_ABSPATH . 'includes/template-tags.php';
-require CFZ_ABSPATH . 'lib/autoloader.php';
+require LSX_CFZ_ABSPATH . 'includes/template-tags.php';
+require LSX_CFZ_ABSPATH . 'lib/autoloader.php';
 
 // Register settings.
-register_setting( 'cfzoho', CFZ_OPTION_SLUG );
+register_setting( 'cfzoho', LSX_CFZ_OPTION_SLUG );
 
 
 

@@ -57,13 +57,13 @@ class Options {
 	 * Save options to DB.
 	 */
 	public function save_options() {
-		update_option( CFZ_OPTION_SLUG, $this->plugin_options );
+		update_option( LSX_CFZ_OPTION_SLUG, $this->plugin_options );
 	}
 
 	/**
 	 * Class constructor.
 	 */
 	public function __construct() {
-		$this->plugin_options = get_option( CFZ_OPTION_SLUG );
+		$this->plugin_options = get_option( LSX_CFZ_OPTION_SLUG );
 	}
 }

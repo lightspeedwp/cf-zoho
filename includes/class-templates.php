@@ -38,6 +38,6 @@ class Templates {
 			return $template;
 		}
 
-		return CFZ_TEMPLATE_PATH . '/single-wp-log.php';
+		return LSX_CFZ_TEMPLATE_PATH . '/single-wp-log.php';
 	}
 }

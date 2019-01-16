@@ -51,7 +51,7 @@
 
 			<?php if ( ! empty( $field['val'] ) ) : ?>
 
-				<?php include CFZ_TEMPLATE_PATH . 'zoho-user-select.php'; ?>
+				<?php include LSX_CFZ_TEMPLATE_PATH . 'zoho-user-select.php'; ?>
 
 			<?php else : ?>
 
@@ -62,7 +62,7 @@
 					</label>
 
 					<div class="caldera-config-field">
-						<?php include CFZ_TEMPLATE_PATH . $module->template( $field ); ?>
+						<?php include LSX_CFZ_TEMPLATE_PATH . $module->template( $field ); ?>
 					</div>
 
 				</div>

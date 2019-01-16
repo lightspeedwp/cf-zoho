@@ -91,8 +91,8 @@ class CF_Processors {
 			'author'      => 'LightSpeed',
 			'author_url'  => 'https://lsdev.biz/',
 			'processor'   => [ $this, 'process_lead_submission' ],
-			'template'    => CFZ_PROCESSORS_PATH . 'lead-processor-config.php',
-			'icon'        => CFZ_URL . 'assets/images/icon.png',
+			'template'    => LSX_CFZ_PROCESSORS_PATH . 'lead-processor-config.php',
+			'icon'        => LSX_CFZ_URL . 'assets/images/icon.png',
 			'magic_tags'  => [
 				'id' => [ 'text', 'zoho_task' ],
 			],
@@ -104,8 +104,8 @@ class CF_Processors {
 			'author'      => 'LightSpeed',
 			'author_url'  => 'https://lsdev.biz/',
 			'processor'   => [ $this, 'process_contact_submission' ],
-			'template'    => CFZ_PROCESSORS_PATH . 'contact-processor-config.php',
-			'icon'        => CFZ_URL . 'assets/images/icon.png',
+			'template'    => LSX_CFZ_PROCESSORS_PATH . 'contact-processor-config.php',
+			'icon'        => LSX_CFZ_URL . 'assets/images/icon.png',
 			'magic_tags'  => [
 				'id' => [ 'text', 'zoho_task' ],
 			],
@@ -117,8 +117,8 @@ class CF_Processors {
 			'author'      => 'LightSpeed',
 			'author_url'  => 'https://lsdev.biz/',
 			'processor'   => [ $this, 'process_task_submission' ],
-			'template'    => CFZ_PROCESSORS_PATH . 'task-processor-config.php',
-			'icon'        => CFZ_URL . 'assets/images/icon.png',
+			'template'    => LSX_CFZ_PROCESSORS_PATH . 'task-processor-config.php',
+			'icon'        => LSX_CFZ_URL . 'assets/images/icon.png',
 			'magic_tags'  => [ 'id' ],
 		];
 
@@ -128,8 +128,8 @@ class CF_Processors {
 			'author'      => 'LightSpeed',
 			'author_url'  => 'https://lsdev.biz/',
 			'processor'   => [ $this, 'process_deal_submission' ],
-			'template'    => CFZ_PROCESSORS_PATH . 'deal-processor-config.php',
-			'icon'        => CFZ_URL . 'assets/images/icon.png',
+			'template'    => LSX_CFZ_PROCESSORS_PATH . 'deal-processor-config.php',
+			'icon'        => LSX_CFZ_URL . 'assets/images/icon.png',
 			'magic_tags'  => [ 'id' ],
 		];
 

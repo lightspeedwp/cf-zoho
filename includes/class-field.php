@@ -80,20 +80,20 @@ class Field {
 		$fields['zoho_form']      = array(
 			'field'       => __( 'Zoho Form', 'cf-zoho' ),
 			'description' => __( 'Capture a new contact, lead or task and return the ID.', 'cf-zoho' ),
-			'file'        => CFZ_FIELDS_PATH . 'zoho-form/field.php',
+			'file'        => LSX_CFZ_FIELDS_PATH . 'zoho-form/field.php',
 			'category'    => __( 'Special', 'cf-zoho' ),
 			'handler'     => array( $this, 'handler' ),
 			'capture'     => false,
 			'setup'       => array(
-				'template'      => CFZ_FIELDS_PATH . 'zoho-form/config.php',
-				'preview'       => CFZ_FIELDS_PATH . 'zoho-form/preview.php',
+				'template'      => LSX_CFZ_FIELDS_PATH . 'zoho-form/config.php',
+				'preview'       => LSX_CFZ_FIELDS_PATH . 'zoho-form/preview.php',
 				'not_supported' => array(
 					'caption',
 					'required',
 				),
 			),
 			'scripts' => array(
-				CFZ_FIELDS_URL . 'zoho-form/js/zoho-form-field.js'
+				LSX_CFZ_FIELDS_URL . 'zoho-form/js/zoho-form-field.js'
 			),
 		);
 
@@ -162,7 +162,7 @@ class Field {
 				) );
 
 				do {
-					include( CFZ_TEMPLATE_PATH . 'zoho-modal.php' );
+					include( LSX_CFZ_TEMPLATE_PATH . 'zoho-modal.php' );
 					$values['limit']--;
 				} while ( $values['limit'] > 0 );
 			}

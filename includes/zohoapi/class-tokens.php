@@ -65,9 +65,9 @@ class Tokens {
 	 */
 	public function load_token_data() {
 
-		$this->access_token  = get_transient( CFZ_TRANSIENT_SLUG . '_access_token' );
-		$this->refresh_token = get_option( CFZ_OPTION_SLUG . '_refresh_token', false );
-		$this->api_domain    = get_option( CFZ_OPTION_SLUG . '_api_domain', false );
+		$this->access_token  = get_transient( LSX_CFZ_TRANSIENT_SLUG . '_access_token' );
+		$this->refresh_token = get_option( LSX_CFZ_OPTION_SLUG . '_refresh_token', false );
+		$this->api_domain    = get_option( LSX_CFZ_OPTION_SLUG . '_api_domain', false );
 	}
 
 	/**
@@ -76,7 +76,7 @@ class Tokens {
 	 * @return boolean.
 	 */
 	public function has_refresh_token() {
-		return false !== get_option( CFZ_OPTION_SLUG . '_refresh_token', false );
+		return false !== get_option( LSX_CFZ_OPTION_SLUG . '_refresh_token', false );
 	}
 
 	/**
@@ -89,7 +89,7 @@ class Tokens {
 	public function save_tokens( $token_response ) {
 
 		// Set the access token to a transient that expires when the Zoho API expires it.
-		set_transient( CFZ_TRANSIENT_SLUG . '_access_token', $token_response['access_token'], $token_response['expires_in_sec'] );
+		set_transient( LSX_CFZ_TRANSIENT_SLUG . '_access_token', $token_response['access_token'], $token_response['expires_in_sec'] );
 
 		$this->access_token = $token_response['access_token'];
 
@@ -99,7 +99,7 @@ class Tokens {
 		}
 
 		// Otherwise store it with the api domain.
-		update_option( CFZ_OPTION_SLUG . '_refresh_token', $token_response['refresh_token'] );
-		update_option( CFZ_OPTION_SLUG . '_api_domain', $token_response['api_domain'] );
+		update_option( LSX_CFZ_OPTION_SLUG . '_refresh_token', $token_response['refresh_token'] );
+		update_option( LSX_CFZ_OPTION_SLUG . '_api_domain', $token_response['api_domain'] );
 	}
 }

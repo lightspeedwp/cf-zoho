@@ -15,4 +15,4 @@ $errors = $module->get_errors();
 
 $template = ( ! empty( $errors ) ) ? 'zoho-errors.php' : 'processor.php';
 
-require CFZ_TEMPLATE_PATH . $template;
+require LSX_CFZ_TEMPLATE_PATH . $template;

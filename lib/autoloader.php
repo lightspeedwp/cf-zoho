@@ -51,7 +51,7 @@ spl_autoload_register(
 		 * We ignore the first index since it's always the top-level package. The last index is always
 		 * the file so we append that at the end.
 		 */
-		$fully_qualified_path = CFZ_ABSPATH;
+		$fully_qualified_path = LSX_CFZ_ABSPATH;
 		$file_path_count = count( $file_path );
 
 		for ( $i = 1; $i < $file_path_count - 1; $i++ ) {

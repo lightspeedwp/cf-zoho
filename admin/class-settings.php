@@ -66,7 +66,7 @@ class Settings {
 		settings_errors( 'cfzoho_messages' );
 
 		// Template.
-		include_once CFZ_TEMPLATE_PATH . 'settings-form.php';
+		include_once LSX_CFZ_TEMPLATE_PATH . 'settings-form.php';
 	}
 
 	/**
@@ -180,11 +180,11 @@ class Settings {
 	public function cfzoho_settings_field_cb( $args ) {
 
 		$id       = isset( $args['id'] ) ? esc_attr( $args['id'] ) : esc_attr( $args['label_for'] );
-		$name     = CFZ_OPTION_SLUG . '[' . $id . ']';
+		$name     = LSX_CFZ_OPTION_SLUG . '[' . $id . ']';
 		$value    = $this->options->get_option( $id );
 		$template = $this->templates[ $id ];
 
-		include_once CFZ_TEMPLATE_PATH . $template;
+		include_once LSX_CFZ_TEMPLATE_PATH . $template;
 	}
 
 	/**
@@ -215,7 +215,7 @@ class Settings {
 			$url = add_query_arg( $key, $value, $url );
 		}
 
-		include_once CFZ_TEMPLATE_PATH . 'settings-tokens.php';
+		include_once LSX_CFZ_TEMPLATE_PATH . 'settings-tokens.php';
 	}
 
 	/**
