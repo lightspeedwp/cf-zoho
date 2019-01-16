@@ -2,10 +2,10 @@
 /**
  * The file that defines plugin Tokens.
  *
- * @package cf_zoho/includes/zohoapi.
+ * @package lsx_cf_zoho/includes/zohoapi.
  */
 
-namespace cf_zoho\includes\zohoapi;
+namespace lsx_cf_zoho\includes\zohoapi;
 
 /**
  * Tokens.
@@ -48,7 +48,7 @@ class Modules {
 	 * Loads in the module data
 	 */
 	public function load_modules() {
-		$this->modules  = get_transient( CFZ_TRANSIENT_SLUG . '_modules' );
+		$this->modules  = get_transient( LSX_CFZ_TRANSIENT_SLUG . '_modules' );
 	}
 
 	/**
@@ -69,7 +69,7 @@ class Modules {
 	 */
 	public function save_modules( $token_response ) {
 		// Set the access token to a transient that expires when the Zoho API expires it.
-		set_transient( CFZ_TRANSIENT_SLUG . '_module', $modules, 60 * 60 );
+		set_transient( LSX_CFZ_TRANSIENT_SLUG . '_module', $modules, 60 * 60 );
 		$this->modules = $modules;
 		// No refresh token included, exit.
 		if ( empty( $modules ) ) {

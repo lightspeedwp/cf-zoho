@@ -2,10 +2,10 @@
 /**
  * The file that handles GET requests to the Zoho API.
  *
- * @package cf_zoho/includes/zohoapi.
+ * @package lsx_cf_zoho/includes/zohoapi.
  */
 
-namespace cf_zoho\includes\zohoapi;
+namespace lsx_cf_zoho\includes\zohoapi;
 
 /**
  * CF_Zoho API GET Class.

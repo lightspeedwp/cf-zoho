@@ -4,9 +4,9 @@
 
 	<form action="options.php" method="post">
 
-		<?php settings_fields( 'cfzoho' ); ?>
+		<?php settings_fields( 'lsx_cf_zoho' ); ?>
 
-		<?php do_settings_sections( 'cfzoho' ); ?>
+		<?php do_settings_sections( 'lsx_cf_zoho' ); ?>
 
 		<?php submit_button( 'Save Settings' ); ?>
 

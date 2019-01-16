@@ -3,13 +3,13 @@
 /**
  * Class for logging events and errors.
  *
- * @package     cf_zoho/includes.
+ * @package     lsx_cf_zoho/includes.
  * @copyright   Copyright (c) 2012, Pippin Williamson.
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License.
  * @source      https://github.com/pippinsplugins/WP-Logging.
  */
 
-namespace cf_zoho\includes;
+namespace lsx_cf_zoho\includes;
 
 /**
  * Class for logging events and errors.
@@ -154,12 +154,9 @@ class WP_Logging {
 	*/
 
 	public function register_post_type() {
-
-		/* logs post type */
-
 		$log_args = array(
 			'labels'          => array(
-				'name' => __( 'Logs', 'cf-zoho' ),
+				'name' => __( 'Logs', 'lsx-cf-zoho' ),
 			),
 			'public'          => true,
 			'query_var'       => false,
@@ -169,7 +166,6 @@ class WP_Logging {
 			'can_export'      => false,
 		);
 		register_post_type( 'wp_log', apply_filters( 'wp_logging_post_type_args', $log_args ) );
-
 	}
 
 
@@ -377,7 +373,7 @@ class WP_Logging {
 	 * @uses    get_query_var()
 	 * @uses    self::valid_type()
 	 *
-	 * @return  array / false
+	 * @return  array | false
 	*/
 
 	public static function get_connected_logs( $args = array() ) {
@@ -413,7 +409,6 @@ class WP_Logging {
 
 		// no logs found
 		return false;
-
 	}
 
 
@@ -454,13 +449,9 @@ class WP_Logging {
 			$query_args['meta_query'] = $meta_query;
 		}
 
-		$logs = new WP_Query( $query_args );
+		$logs = new \WP_Query( $query_args );
 
 		return (int) $logs->post_count;
-
 	}
+}
 
-}
-if ( ! class_exists( 'WP_Logging' ) ) {
-	$GLOBALS['wp_logs'] = new WP_Logging();
-}

@@ -2,13 +2,13 @@
 /**
  * The file that handles connections to the Zoho API.
  *
- * @package cf_zoho/includes/zohoapi.
+ * @package lsx_cf_zoho/includes/zohoapi.
  */
 
-namespace cf_zoho\includes\zohoapi;
+namespace lsx_cf_zoho\includes\zohoapi;
 
-use cf_zoho;
-use cf_zoho\includes;
+use lsx_cf_zoho;
+use lsx_cf_zoho\includes;
 
 /**
  * CF_Zoho API Connection Class.
@@ -87,12 +87,12 @@ class Connect {
 	 */
 	public function generate_token( $grant_type ) {
 
-		$url          = $this->options->get_option( 'cfzoho_url' ) . '/token';
-		$redirect_uri = cf_zoho_redirect_url();
+		$url          = $this->options->get_option( 'lsx_cf_zoho_url' ) . '/token';
+		$redirect_uri = lsx_cf_zoho_redirect_url();
 
 		$body = [
-			'client_id'     => $this->options->get_option( 'cfzoho_client_id' ),
-			'client_secret' => $this->options->get_option( 'cfzoho_client_secret' ),
+			'client_id'     => $this->options->get_option( 'lsx_cf_zoho_client_id' ),
+			'client_secret' => $this->options->get_option( 'lsx_cf_zoho_client_secret' ),
 			'redirect_uri'  => $redirect_uri,
 			'grant_type'    => $grant_type,
 		];

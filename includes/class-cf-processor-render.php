@@ -2,12 +2,12 @@
 /**
  * Class to render out Form Processors for Caldera Forms.
  *
- * @package cf_zoho/includes.
+ * @package lsx_cf_zoho/includes.
  */
 
-namespace cf_zoho\includes;
+namespace lsx_cf_zoho\includes;
 
-use cf_zoho\includes\zohoapi;
+use lsx_cf_zoho\includes\zohoapi;
 
 /**
  * Processor Render Class.

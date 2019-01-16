@@ -2,10 +2,10 @@
 /**
  * The file that defines plugin cache.
  *
- * @package cf_zoho/includes.
+ * @package lsx_cf_zoho/includes.
  */
 
-namespace cf_zoho\includes;
+namespace lsx_cf_zoho\includes;
 
 /**
  * Cache.
@@ -27,7 +27,7 @@ class Cache {
 	 */
 	public function set_plugin_cache_item( $item, $value ) {
 		$this->plugin_cache[ $item ] = $value;
-		set_transient( CFZ_TRANSIENT_SLUG, $this->plugin_cache, MONTH_IN_SECONDS );
+		set_transient( LSX_CFZ_TRANSIENT_SLUG, $this->plugin_cache, MONTH_IN_SECONDS );
 	}
 
 	/**
@@ -49,7 +49,7 @@ class Cache {
 	 * Deletes plugin transients.
 	 */
 	public function flush_plugin_cache() {
-		delete_transient( CFZ_TRANSIENT_SLUG );
+		delete_transient( LSX_CFZ_TRANSIENT_SLUG );
 	}
 
 	/**
@@ -63,6 +63,6 @@ class Cache {
 			return;
 		}
 
-		$this->plugin_cache = get_transient( CFZ_TRANSIENT_SLUG );
+		$this->plugin_cache = get_transient( LSX_CFZ_TRANSIENT_SLUG );
 	}
 }

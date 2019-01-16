@@ -1,12 +1,12 @@
-=== CF Zoho ===
+=== LSX Zoho CRM Addon for Caldera Forms ===
 Contributors: feedmymedia, matttrustmytravel
 Tags: Caldera Forms, zoho
 Requires at least: 4.3
 Tested up to: 4.5.1
 Requires PHP: 5.3
-Stable tag: 1.1.2
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Stable tag: 2.0.0
+License: GPLv3.0+
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Plugin to add processors for Zoho leads, contacts and tasks to the Caldera Forms plugin.
 
@@ -16,21 +16,21 @@ Caldera Forms is one of a kind WordPress form builder. With its user friendly dr
 == Installation ==
 
 1. Ensure you have the Caldera Forms plugin installed 
-2. Upload the CF Zoho plugin to the `/wp-content/plugins/` directory
+2. Upload the LSX CF Zoho plugin to the `/wp-content/plugins/` directory
 3. Activate the plugin through the 'Plugins' menu in WordPress
-4. Go the the plugin options page `/wp-admin/options-general.php?page=cfzoho` and follow instructions on configuring your Zoho CRM to allow access.
+4. Go the the plugin options page `/wp-admin/options-general.php?page=lsx_cf_zoho` and follow instructions on configuring your Zoho CRM to allow access.
 5. Create a Caldera Form and click the `Processors` tab to select the relevant Zoho processor(s) you wish to apply to the form
 
 == Frequently Asked Questions ==
  
 = How do I allow the plugin access to my Zoho CRM? =
  
-Go to `https://accounts.zoho.eu/developerconsole` or `https://accounts.zoho.com/developerconsole` (depending on the region your Zoho CRM is registered in), and add a client ID with the settings shown on the CF Zoho Options page.
+Go to `https://accounts.zoho.eu/developerconsole` or `https://accounts.zoho.com/developerconsole` (depending on the region your Zoho CRM is registered in), and add a client ID with the settings shown on the LSX CF Zoho Options page.
 
 = I have added a new field to my Zoho CRM and its not showing up the Caldera Forms processor, how do I resolve this?
 
-In order for this plugin to work at efficient speeds, Zoho CRM fields and users data are cached. If you have added new users or fields to your Zoho CRM, go to the CF Zoho Options page, check the "Flush Cache" checkbox and click the "Save Settings" button. This will flush all cached settings. Next time you edit a processor, new fields and/or users will be displayed.
+In order for this plugin to work at efficient speeds, Zoho CRM fields and users data are cached. If you have added new users or fields to your Zoho CRM, go to the LSX CF Zoho Options page, check the "Flush Cache" checkbox and click the "Save Settings" button. This will flush all cached settings. Next time you edit a processor, new fields and/or users will be displayed.
 
 == Upgrade Notice ==
 
-If you are upgrading from version 1.1.2 or earlier, you will need to give the plugin access to Zoho as per the CF Zoho Options page. All other settings should be retained from the previous version of the plugin.
+If you are upgrading from version 1.1.2 or earlier, you will need to give the plugin access to Zoho as per the LSX CF Zoho Options page. All other settings should be retained from the previous version of the plugin.

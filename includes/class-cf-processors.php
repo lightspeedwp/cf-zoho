@@ -2,18 +2,12 @@
 /**
  * Defines processors for Caldera Forms.
  *
- * @package cf_zoho/includes.
+ * @package lsx_cf_zoho/includes.
  */
 
-namespace cf_zoho\includes;
+namespace lsx_cf_zoho\includes;
 
-use cf_zoho\includes\zohoapi;
-
-/*
- * 		if (self::should_send_mail($form, $transdata)) {
-			Caldera_Forms_Save_Final::do_mailer($form, $entryid);
-		}
- */
+use lsx_cf_zoho\includes\zohoapi;
 
 /**
  * Processors Class.
@@ -86,50 +80,50 @@ class CF_Processors {
 	public function register_processors( $processors ) {
 
 		$processors['zoho_lead'] = [
-			'name'        => __( 'Zoho CRM - Leads', 'cf-zoho' ),
-			'description' => __( 'Create or Update a lead on form submission', 'cf-zoho' ),
+			'name'        => __( 'Zoho CRM - Leads', 'lsx-cf-zoho' ),
+			'description' => __( 'Create or Update a lead on form submission', 'lsx-cf-zoho' ),
 			'author'      => 'LightSpeed',
 			'author_url'  => 'https://lsdev.biz/',
 			'processor'   => [ $this, 'process_lead_submission' ],
-			'template'    => CFZ_PROCESSORS_PATH . 'lead-processor-config.php',
-			'icon'        => CFZ_URL . 'assets/images/icon.png',
+			'template'    => LSX_CFZ_PROCESSORS_PATH . 'lead-processor-config.php',
+			'icon'        => LSX_CFZ_URL . 'assets/images/icon.png',
 			'magic_tags'  => [
 				'id' => [ 'text', 'zoho_task' ],
 			],
 		];
 
 		$processors['zoho_contact'] = [
-			'name'        => __( 'Zoho CRM - Contacts', 'cf-zoho' ),
-			'description' => __( 'Create or Update a contact on form submission', 'cf-zoho' ),
+			'name'        => __( 'Zoho CRM - Contacts', 'lsx-cf-zoho' ),
+			'description' => __( 'Create or Update a contact on form submission', 'lsx-cf-zoho' ),
 			'author'      => 'LightSpeed',
 			'author_url'  => 'https://lsdev.biz/',
 			'processor'   => [ $this, 'process_contact_submission' ],
-			'template'    => CFZ_PROCESSORS_PATH . 'contact-processor-config.php',
-			'icon'        => CFZ_URL . 'assets/images/icon.png',
+			'template'    => LSX_CFZ_PROCESSORS_PATH . 'contact-processor-config.php',
+			'icon'        => LSX_CFZ_URL . 'assets/images/icon.png',
 			'magic_tags'  => [
 				'id' => [ 'text', 'zoho_task' ],
 			],
 		];
 
 		$processors['zoho_task'] = [
-			'name'        => __( 'Zoho CRM - Tasks', 'cf-zoho' ),
-			'description' => __( 'Create or Update a task on form submission', 'cf-zoho' ),
+			'name'        => __( 'Zoho CRM - Tasks', 'lsx-cf-zoho' ),
+			'description' => __( 'Create or Update a task on form submission', 'lsx-cf-zoho' ),
 			'author'      => 'LightSpeed',
 			'author_url'  => 'https://lsdev.biz/',
 			'processor'   => [ $this, 'process_task_submission' ],
-			'template'    => CFZ_PROCESSORS_PATH . 'task-processor-config.php',
-			'icon'        => CFZ_URL . 'assets/images/icon.png',
+			'template'    => LSX_CFZ_PROCESSORS_PATH . 'task-processor-config.php',
+			'icon'        => LSX_CFZ_URL . 'assets/images/icon.png',
 			'magic_tags'  => [ 'id' ],
 		];
 
 		$processors['zoho_deal'] = [
-			'name'        => __( 'Zoho CRM - Deals', 'cf-zoho' ),
-			'description' => __( 'Create or Update deals on form submission', 'cf-zoho' ),
+			'name'        => __( 'Zoho CRM - Deals', 'lsx-cf-zoho' ),
+			'description' => __( 'Create or Update deals on form submission', 'lsx-cf-zoho' ),
 			'author'      => 'LightSpeed',
 			'author_url'  => 'https://lsdev.biz/',
 			'processor'   => [ $this, 'process_deal_submission' ],
-			'template'    => CFZ_PROCESSORS_PATH . 'deal-processor-config.php',
-			'icon'        => CFZ_URL . 'assets/images/icon.png',
+			'template'    => LSX_CFZ_PROCESSORS_PATH . 'deal-processor-config.php',
+			'icon'        => LSX_CFZ_URL . 'assets/images/icon.png',
 			'magic_tags'  => [ 'id' ],
 		];
 
@@ -257,11 +251,6 @@ class CF_Processors {
 			'additional_mail_check',
 		), 11, 4 );
 
-		add_action( 'caldera_forms_save_field_zoho_form', array(
-			$this,
-			'save_actual_data',
-		), 11, 4 );
-
 		$path   = '/crm/v2/' . ucfirst( $this->module );
 		$object = $this->build_object();
 
@@ -296,10 +285,10 @@ class CF_Processors {
 			$this->zoho_id = $object_id;
 
 			//This is where the actions are run to link the items.
-			do_action( 'cf_zoho_do_submission_complete', $object_id, $this->module, $this->requests_list, $this );
+			do_action( 'lsx_cf_zoho_do_submission_complete', $object_id, $this->module, $this->requests_list, $this );
 		}
 
-		do_action( 'cf_zoho_create_entry_complete', $object_id, $this->config, $this->form );
+		do_action( 'lsx_cf_zoho_create_entry_complete', $object_id, $this->config, $this->form );
 
 		return [
 			'id' => $object_id,
@@ -511,8 +500,8 @@ class CF_Processors {
 
 			$new_values = array();
 
-			if ( isset( $_POST[ $zoho_field ] ) ) {
-				$values = explode( ',', $_POST[ $zoho_field ] );
+			if ( '' !== $value ) {
+				$values = explode( ',', $value );
 				if ( ! is_array( $values ) ) {
 					$values = array( $values );
 				}
@@ -530,7 +519,7 @@ class CF_Processors {
 				$new_values = implode( ',', $new_values );
 				$value = $new_values;
 			}
-			$value = apply_filters( 'cf_zoho_object_build_value', $new_values, $key, $field );
+			$value = apply_filters( 'lsx_cf_zoho_object_build_value', $new_values, $key, $field );
 		}
 
 		if ( 'boolean' !== strtolower( $field['data_type'] ) ) {
@@ -592,7 +581,6 @@ class CF_Processors {
 				$return = $entry_meta_data[0]['meta_value'];
 			}
 		}
-		
 		return $return;
 	}
 
@@ -726,7 +714,7 @@ class CF_Processors {
 					$this->upload_file( $file_path );
 				}
 			}
-			$mail = apply_filters( 'cf_zoho_mail_attachment_check', $mail, $this->zoho_id, $data, $form, $this );
+			$mail = apply_filters( 'lsx_cf_zoho_mail_attachment_check', $mail, $this->zoho_id, $data, $form, $this );
 		}
 		return $mail;
 	}
@@ -817,23 +805,9 @@ class CF_Processors {
 
 			foreach ( $this->additional_mails as $entry_id => $values ) {
 				\Caldera_Forms_Save_Final::do_mailer( $values['form'], $entry_id );
-				do_action( 'cf_zoho_additional_mail_check', $entry_id, $values );
+				do_action( 'lsx_cf_zoho_additional_mail_check', $entry_id, $values );
 				$this->log( $entry_id . ' Email Sent', $values, 'Email Sent', 0, 'email' );
 			}
 		}
-	}
-
-	/**
-	 * @param $entry
-	 * @param $field
-	 * @param $form
-	 * @param $entry_id
-	 * @return $entry
-	 */
-	public function save_actual_data( $entry, $field, $form, $entry_id ) {
-		if ( isset( $_POST[ $field['ID'] ] ) ) {
-			$entry = $_POST[ $field['ID'] ];
-		}
-		return $entry;
 	}
 }

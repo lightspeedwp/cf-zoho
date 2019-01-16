@@ -5,20 +5,20 @@
 <table class="form-table">
 	<tbody>
 		<tr>
-			<th scope="row"><?php esc_html_e( 'Client Name', 'cf-zoho' ); ?></th>
-			<td><?php esc_html_e( 'Caldera Forms App', 'cf-zoho' ); ?></td>
+			<th scope="row"><?php esc_html_e( 'Client Name', 'lsx-cf-zoho' ); ?></th>
+			<td><?php esc_html_e( 'Caldera Forms App', 'lsx-cf-zoho' ); ?></td>
 		</tr>
 		<tr>
-			<th><?php esc_html_e( 'Client domain', 'cf-zoho' ); ?></th>
+			<th><?php esc_html_e( 'Client domain', 'lsx-cf-zoho' ); ?></th>
 			<td><?php echo esc_url( get_site_url() ); ?></td>
 		</tr>
 		<tr>
-			<th><?php esc_html_e( 'Authorized redirect URIs', 'cf-zoho' ); ?></th>
-			<td><?php echo esc_url( cf_zoho_redirect_url() ); ?></td>
+			<th><?php esc_html_e( 'Authorized redirect URIs', 'lsx-cf-zoho' ); ?></th>
+			<td><?php echo esc_url( lsx_cf_zoho_redirect_url() ); ?></td>
 		</tr>
 		<tr>
-			<th><?php esc_html_e( 'Client Type', 'cf-zoho' ); ?></th>
-			<td><?php esc_html_e( 'WEB', 'cf-zoho' ); ?></td>
+			<th><?php esc_html_e( 'Client Type', 'lsx-cf-zoho' ); ?></th>
+			<td><?php esc_html_e( 'WEB', 'lsx-cf-zoho' ); ?></td>
 		</tr>
 	</tbody>
 </table>

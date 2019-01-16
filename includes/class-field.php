@@ -2,10 +2,10 @@
 /**
  * The file that defines plugin templates.
  *
- * @package cf_zoho/includes.
+ * @package lsx_cf_zoho/includes.
  */
 
-namespace cf_zoho\includes;
+namespace lsx_cf_zoho\includes;
 
 /**
  * Templates.
@@ -58,15 +58,10 @@ class Field {
 			'wp_kses_allowed_html',
 		), 10, 2 );
 
-		//Prevent removing recaptcha from DOM from being effective bypass of recpatcha
-		//add_filter( 'caldera_forms_validate_field_recaptcha', array( $this, 'check_for_captcha' ), 10, 3 );
-
 		add_filter( 'caldera_forms_field_attributes', array(
 			$this,
 			'field_attrs',
 		), 10, 3 );
-
-		//add_filter( 'caldera_forms_validate_field_zoho_form', array( $this, 'field_validation' ), 25, 3 );
 	}
 
 	/**
@@ -78,22 +73,22 @@ class Field {
 	 */
 	public function add_field( $fields ) {
 		$fields['zoho_form']      = array(
-			'field'       => __( 'Zoho Form', 'cf-zoho' ),
-			'description' => __( 'Capture a new contact, lead or task and return the ID.', 'cf-zoho' ),
-			'file'        => CFZ_FIELDS_PATH . 'zoho-form/field.php',
-			'category'    => __( 'Special', 'cf-zoho' ),
+			'field'       => __( 'Zoho Form (experimental)', 'lsx-cf-zoho' ),
+			'description' => __( 'Capture a new contact, lead or task and return CF entry ID.', 'lsx-cf-zoho' ),
+			'file'        => LSX_CFZ_FIELDS_PATH . 'zoho-form/field.php',
+			'category'    => __( 'Special', 'lsx-cf-zoho' ),
 			'handler'     => array( $this, 'handler' ),
 			'capture'     => false,
 			'setup'       => array(
-				'template'      => CFZ_FIELDS_PATH . 'zoho-form/config.php',
-				'preview'       => CFZ_FIELDS_PATH . 'zoho-form/preview.php',
+				'template'      => LSX_CFZ_FIELDS_PATH . 'zoho-form/config.php',
+				'preview'       => LSX_CFZ_FIELDS_PATH . 'zoho-form/preview.php',
 				'not_supported' => array(
 					'caption',
 					'required',
 				),
 			),
 			'scripts' => array(
-				CFZ_FIELDS_URL . 'zoho-form/js/zoho-form-field.js'
+				LSX_CFZ_FIELDS_URL . 'zoho-form/js/zoho-form-field.js'
 			),
 		);
 
@@ -115,7 +110,7 @@ class Field {
 	public function handler( $value, $field, $form ) {
 
 		if ( '' === $value ) {
-			return new \WP_Error( 'error', apply_filters( 'cf_zoho_form_field_error_empty_message', __( 'This field is required.', 'cf-zoho' ) ) );
+			return new \WP_Error( 'error', apply_filters( 'lsx_cf_zoho_form_field_error_empty_message', __( 'This field is required.', 'lsx-cf-zoho' ) ) );
 		}
 
 		$value = explode( ',', $value );
@@ -125,7 +120,7 @@ class Field {
 
 		if ( (int) $value < (int) $field['config']['limit'] ) {
 			return new \WP_Error( 'error',
-				apply_filters( 'cf_zoho_form_field_error_limit_message', __( 'Please complete the rest of this field', 'cf-zoho' ) )
+				apply_filters( 'lsx_cf_zoho_form_field_error_limit_message', __( 'Please complete the rest of this field', 'lsx-cf-zoho' ) )
 			);
 		}
 
@@ -162,7 +157,7 @@ class Field {
 				) );
 
 				do {
-					include( CFZ_TEMPLATE_PATH . 'zoho-modal.php' );
+					include( LSX_CFZ_TEMPLATE_PATH . 'zoho-modal.php' );
 					$values['limit']--;
 				} while ( $values['limit'] > 0 );
 			}
@@ -198,7 +193,7 @@ class Field {
 	 */
 	public function register_js_callback( $form ) {
 		$form['has_ajax_callback'] = true;
-		$form['custom_callback']   = 'cf_zoho_handle_return';
+		$form['custom_callback']   = 'lsx_cf_zoho_handle_return';
 		return $form;
 	}
 
@@ -221,26 +216,12 @@ class Field {
 			if ( ! empty( $field['config']['limit'] ) && '' !== $field['config']['limit'] ) {
 				$limit = $field['config']['limit'];
 			}
-			$limit = apply_filters( 'cf_zoho_form_field_limit', $limit );
+			$limit = apply_filters( 'lsx_cf_zoho_form_field_limit', $limit );
 			$attrs['type'] = 'hidden';
 			$attrs['data-limit'] = $limit;
 			$attrs['data-count'] = 0;
 			$attrs['class'][] = 'zoho-form-field';
 		}
 		return $attrs;
-	}
-
-	/**
-	 * Validates the Zoho Form Field
-	 * @param $value
-	 * @param $field
-	 * @param $form
-	 * @return mixed
-	 */
-	public function field_validation( $value, $field, $form ) {
-		if ( '' == $value ) {
-			return new \WP_Error( $field['ID'], esc_html__( 'This field cannot be empty', 'cf-zoho' ) );
-		}
-		return $value;
 	}
 }
