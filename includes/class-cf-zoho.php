@@ -21,21 +21,33 @@ final class CF_Zoho {
 
 	/**
 	 * Holds the Fields class
-	 * @var array lsx_cf_zoho\includes\Field()
+	 * @var \lsx_cf_zoho\admin\Settings()
+	 */
+	var $settings;
+
+	/**
+	 * Holds the Fields class
+	 * @var \lsx_cf_zoho\includes\Field()
 	 */
 	var $field;
 
 	/**
 	 * Holds the Templates class
-	 * @var array lsx_cf_zoho\includes\Templates()
+	 * @var \lsx_cf_zoho\includes\Templates()
 	 */
 	var $templates;
 
 	/**
 	 * Holds the Pre Populate class
-	 * @var array lsx_cf_zoho\includes\Pre_Populate()
+	 * @var \lsx_cf_zoho\includes\Pre_Populate()
 	 */
 	var $pre_populate;
+
+	/**
+	 * Holds the Error Logging class
+	 * @var \lsx_cf_zoho\includes\WP_Logging()
+	 */
+	var $logging;
 
 	/**
 	 * Return an instance of this class.
@@ -58,19 +70,20 @@ final class CF_Zoho {
 	public function setup() {
 
 		// Admin Settings.
-		$settings = new admin\Settings();
+		$this->settings = new admin\Settings();
 
-		add_action( 'admin_menu', [ $settings, 'settings_page' ] );
-		add_action( 'admin_init', [ $settings, 'settings_api_init' ] );
+		add_action( 'admin_menu', [ $this->settings, 'settings_page' ] );
+		add_action( 'admin_init', [ $this->settings, 'settings_api_init' ] );
 
 		// Caldera Forms Processors.
 		$cf_processors = new CF_Processors();
 		add_filter( 'caldera_forms_get_form_processors', [ $cf_processors, 'register_processors' ] );
 
 		// WP Logs.
-		if ( ! class_exists( 'WP_Logging' ) ) {
-			$wp_logging = new WP_Logging();
+		if ( true === (bool) $this->settings->options->get_option( 'lsx_cfzoho_enable_debug' ) ) {
+			$this->logging = new WP_Logging();
 		}
+
 		// WP Logs template.
 		$this->templates = Templates::init();
 		add_filter( 'template_include', [ $this->templates, 'template_handler' ], 99 );

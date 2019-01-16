@@ -19,16 +19,24 @@ class Settings {
 	/**
 	 * Options class.
 	 *
-	 * @var object.
+	 * @var \lsx_cf_zoho\includes\Options()
 	 */
-	private $options;
+	public $options;
 
 	/**
 	 * Tokens class.
 	 *
-	 * @var object.
+	 * @var \lsx_cf_zoho\includes\Tokens()
 	 */
 	private $tokens;
+
+	/**
+	 * LSX_Search constructor
+	 */
+	public function __construct() {
+		$this->options = new includes\Options();
+		$this->tokens  = new zohoapi\Tokens();
+	}
 
 	/**
 	 * Register a LSX CF Zoho Settings page.
@@ -53,9 +61,6 @@ class Settings {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
-
-		$this->options = new includes\Options();
-		$this->tokens  = new zohoapi\Tokens();
 
 		// Test for transient flush.
 		if ( true === (bool) $this->options->get_option( 'flush_transients' ) ) {
@@ -82,7 +87,7 @@ class Settings {
 		// Register app details.
 		add_settings_section(
 			'lsx_cfzoho_section_developers',
-			__( 'Registering a Zoho app for use with the Caldera Forms Zoho plugin.', 'lsx-cf-zoho' ),
+			__( 'Registering a Zoho app for use with the Caldera Forms Zoho plugin', 'lsx-cf-zoho' ),
 			[ $this, 'lsx_cfzoho_settings_field_cb' ],
 			'lsx_cfzoho'
 		);
@@ -90,7 +95,7 @@ class Settings {
 		// API Details.
 		add_settings_section(
 			'lsx_cfzoho_section_api_keys',
-			__( 'API Settings.', 'lsx-cf-zoho' ),
+			__( 'API Settings', 'lsx-cf-zoho' ),
 			[ $this, 'lsx_cfzoho_settings_field_cb' ],
 			'lsx_cfzoho'
 		);
@@ -154,7 +159,15 @@ class Settings {
 		// Flush transients.
 		add_settings_section(
 			'flush_transients',
-			__( 'Flush Transients.', 'lsx-cf-zoho' ),
+			__( 'Flush Transients', 'lsx-cf-zoho' ),
+			[ $this, 'lsx_cfzoho_settings_field_cb' ],
+			'lsx_cfzoho'
+		);
+
+		// Enable Debug
+		add_settings_section(
+			'lsx_cfzoho_enable_debug',
+			__( 'Enable Debug', 'lsx-cf-zoho' ),
 			[ $this, 'lsx_cfzoho_settings_field_cb' ],
 			'lsx_cfzoho'
 		);
@@ -169,7 +182,8 @@ class Settings {
 		'lsx_cfzoho_url'                => 'settings-url.php',
 		'lsx_cfzoho_client_id'          => 'settings-client-id.php',
 		'lsx_cfzoho_client_secret'      => 'settings-client-secret.php',
-		'flush_transients'          => 'settings-flush-transients.php',
+		'flush_transients'              => 'settings-flush-transients.php',
+		'lsx_cfzoho_enable_debug'       => 'settings-enable-debug.php',
 	];
 
 	/**

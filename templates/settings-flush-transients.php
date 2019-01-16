@@ -3,3 +3,5 @@
 </p>
 
 <input type="checkbox" id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( $name ); ?>" value="1" /> <?php esc_html_e( 'Flush Cache', 'lsx-cf-zoho' ); ?>
+
+<br />
