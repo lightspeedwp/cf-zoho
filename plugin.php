@@ -1,7 +1,5 @@
 <?php
 /**
- * The plugin bootstrap file
- *
  * @package           lsx_cf_zoho
  *
  * @wordpress-plugin
@@ -45,7 +43,7 @@ require LSX_CFZ_ABSPATH . 'includes/template-tags.php';
 require LSX_CFZ_ABSPATH . 'lib/autoloader.php';
 
 // Register settings.
-register_setting( 'cfzoho', LSX_CFZ_OPTION_SLUG );
+register_setting( 'lsx_cfzoho', LSX_CFZ_OPTION_SLUG );
 
 /**
  * Begins execution of the plugin on plugins loaded.

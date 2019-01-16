@@ -87,12 +87,12 @@ class Connect {
 	 */
 	public function generate_token( $grant_type ) {
 
-		$url          = $this->options->get_option( 'cfzoho_url' ) . '/token';
+		$url          = $this->options->get_option( 'lsx_cfzoho_url' ) . '/token';
 		$redirect_uri = lsx_cf_zoho_redirect_url();
 
 		$body = [
-			'client_id'     => $this->options->get_option( 'cfzoho_client_id' ),
-			'client_secret' => $this->options->get_option( 'cfzoho_client_secret' ),
+			'client_id'     => $this->options->get_option( 'lsx_cfzoho_client_id' ),
+			'client_secret' => $this->options->get_option( 'lsx_cfzoho_client_secret' ),
 			'redirect_uri'  => $redirect_uri,
 			'grant_type'    => $grant_type,
 		];

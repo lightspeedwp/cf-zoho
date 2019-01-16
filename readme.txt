@@ -18,7 +18,7 @@ Caldera Forms is one of a kind WordPress form builder. With its user friendly dr
 1. Ensure you have the Caldera Forms plugin installed 
 2. Upload the CF Zoho plugin to the `/wp-content/plugins/` directory
 3. Activate the plugin through the 'Plugins' menu in WordPress
-4. Go the the plugin options page `/wp-admin/options-general.php?page=cfzoho` and follow instructions on configuring your Zoho CRM to allow access.
+4. Go the the plugin options page `/wp-admin/options-general.php?page=lsx_cfzoho` and follow instructions on configuring your Zoho CRM to allow access.
 5. Create a Caldera Form and click the `Processors` tab to select the relevant Zoho processor(s) you wish to apply to the form
 
 == Frequently Asked Questions ==
