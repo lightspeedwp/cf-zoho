@@ -5,7 +5,7 @@
   "main": "gulpfile.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lightspeeddevelopment/lsx-cf-zoho"
+    "url": "git+https://github.com/lightspeeddevelopment/cf-zoho"
   },
   "keywords": [
     "lsx"
@@ -13,7 +13,7 @@
   "author": "LightSpeed",
   "license": "GPLv3 or later",
   "bugs": {
-    "url": "https://github.com/lightspeeddevelopment/lsx-cf-zoho/issues"
+    "url": "https://github.com/lightspeeddevelopment/cf-zoho/issues"
   },
   "dependencies": {
     "gulp": "^3.9.1",

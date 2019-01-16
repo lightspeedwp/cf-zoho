@@ -5,8 +5,8 @@ Requires at least: 4.3
 Tested up to: 4.5.1
 Requires PHP: 5.3
 Stable tag: 1.1.2
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License: GPLv3.0+
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Plugin to add processors for Zoho leads, contacts and tasks to the Caldera Forms plugin.
 

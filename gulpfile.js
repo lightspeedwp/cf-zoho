@@ -25,7 +25,7 @@ gulp.task('wordpress-pot', function() {
 		.pipe(wppot({
 			domain: 'tour-operator',
 			package: 'tour-operator',
-			bugReport: 'https://github.com/lightspeeddevelopment/lsx-cf-zoho/issues',
+			bugReport: 'https://github.com/lightspeeddevelopment/cf-zoho/issues',
 			team: 'LightSpeed <webmaster@lsdev.biz>'
 		}))
 		.pipe(gulp.dest('languages/lsx-cf-zoho.pot'))
@@ -37,7 +37,7 @@ gulp.task('wordpress-po', function() {
 		.pipe(wppot({
 			domain: 'tour-operator',
 			package: 'tour-operator',
-			bugReport: 'https://github.com/lightspeeddevelopment/lsx-cf-zoho/issues',
+			bugReport: 'https://github.com/lightspeeddevelopment/cf-zoho/issues',
 			team: 'LightSpeed <webmaster@lsdev.biz>'
 		}))
 		.pipe(gulp.dest('languages/lsx-cf-zoho-en_EN.po'))

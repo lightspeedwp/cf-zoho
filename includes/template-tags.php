@@ -4,9 +4,9 @@
  *
  * @package   LSX CF Zoho
  * @author    LightSpeed
- * @license   GPL3
+ * @license   GPLv3.0+
  * @link
- * @copyright 2018 LightSpeed
+ * @copyright 2019 LightSpeed
  */
 
 /**
