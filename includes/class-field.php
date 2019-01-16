@@ -78,10 +78,10 @@ class Field {
 	 */
 	public function add_field( $fields ) {
 		$fields['zoho_form']      = array(
-			'field'       => __( 'Zoho Form', 'cf-zoho' ),
-			'description' => __( 'Capture a new contact, lead or task and return the ID.', 'cf-zoho' ),
+			'field'       => __( 'Zoho Form', 'lsx-cf-zoho' ),
+			'description' => __( 'Capture a new contact, lead or task and return the ID.', 'lsx-cf-zoho' ),
 			'file'        => LSX_CFZ_FIELDS_PATH . 'zoho-form/field.php',
-			'category'    => __( 'Special', 'cf-zoho' ),
+			'category'    => __( 'Special', 'lsx-cf-zoho' ),
 			'handler'     => array( $this, 'handler' ),
 			'capture'     => false,
 			'setup'       => array(
@@ -115,7 +115,7 @@ class Field {
 	public function handler( $value, $field, $form ) {
 
 		if ( '' === $value ) {
-			return new \WP_Error( 'error', apply_filters( 'cf_zoho_form_field_error_empty_message', __( 'This field is required.', 'cf-zoho' ) ) );
+			return new \WP_Error( 'error', apply_filters( 'cf_zoho_form_field_error_empty_message', __( 'This field is required.', 'lsx-cf-zoho' ) ) );
 		}
 
 		$value = explode( ',', $value );
@@ -125,7 +125,7 @@ class Field {
 
 		if ( (int) $value < (int) $field['config']['limit'] ) {
 			return new \WP_Error( 'error',
-				apply_filters( 'cf_zoho_form_field_error_limit_message', __( 'Please complete the rest of this field', 'cf-zoho' ) )
+				apply_filters( 'cf_zoho_form_field_error_limit_message', __( 'Please complete the rest of this field', 'lsx-cf-zoho' ) )
 			);
 		}
 
@@ -239,7 +239,7 @@ class Field {
 	 */
 	public function field_validation( $value, $field, $form ) {
 		if ( '' == $value ) {
-			return new \WP_Error( $field['ID'], esc_html__( 'This field cannot be empty', 'cf-zoho' ) );
+			return new \WP_Error( $field['ID'], esc_html__( 'This field cannot be empty', 'lsx-cf-zoho' ) );
 		}
 		return $value;
 	}

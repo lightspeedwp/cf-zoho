@@ -110,19 +110,19 @@ class Pre_Populate {
 		$module_label = '';
 		switch ( $module_id ) {
 			case 'cid':
-				$module_label = esc_html__( 'Contacts', 'cf-zoho' );
+				$module_label = esc_html__( 'Contacts', 'lsx-cf-zoho' );
 				break;
 
 			case 'tid':
-				$module_label = esc_html__( 'Activities', 'cf-zoho' );
+				$module_label = esc_html__( 'Activities', 'lsx-cf-zoho' );
 				break;
 
 			case 'lid':
-				$module_label = esc_html__( 'Leads', 'cf-zoho' );
+				$module_label = esc_html__( 'Leads', 'lsx-cf-zoho' );
 				break;
 
 			case 'pid':
-				$module_label = esc_html__( 'Deals', 'cf-zoho' );
+				$module_label = esc_html__( 'Deals', 'lsx-cf-zoho' );
 				break;
 
 			default :
@@ -202,7 +202,7 @@ class Pre_Populate {
 
 		if ( false !== $form ) {
 			wp_localize_script(
-				'cf-zoho-form-fieldjs',
+				'lsx-cf-zoho-form-fieldjs',
 				'lsx_cf_zoho',
 				$this->args
 			);

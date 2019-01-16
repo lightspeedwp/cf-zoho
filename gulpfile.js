@@ -25,10 +25,10 @@ gulp.task('wordpress-pot', function() {
 		.pipe(wppot({
 			domain: 'tour-operator',
 			package: 'tour-operator',
-			bugReport: 'https://github.com/lightspeeddevelopment/cf-zoho/issues',
+			bugReport: 'https://github.com/lightspeeddevelopment/lsx-cf-zoho/issues',
 			team: 'LightSpeed <webmaster@lsdev.biz>'
 		}))
-		.pipe(gulp.dest('languages/cf-zoho.pot'))
+		.pipe(gulp.dest('languages/lsx-cf-zoho.pot'))
 });
 
 gulp.task('wordpress-po', function() {
@@ -37,14 +37,14 @@ gulp.task('wordpress-po', function() {
 		.pipe(wppot({
 			domain: 'tour-operator',
 			package: 'tour-operator',
-			bugReport: 'https://github.com/lightspeeddevelopment/cf-zoho/issues',
+			bugReport: 'https://github.com/lightspeeddevelopment/lsx-cf-zoho/issues',
 			team: 'LightSpeed <webmaster@lsdev.biz>'
 		}))
-		.pipe(gulp.dest('languages/cf-zoho-en_EN.po'))
+		.pipe(gulp.dest('languages/lsx-cf-zoho-en_EN.po'))
 });
 
 gulp.task('wordpress-po-mo', ['wordpress-po'], function() {
-	return gulp.src('languages/cf-zoho-en_EN.po')
+	return gulp.src('languages/lsx-cf-zoho-en_EN.po')
 		.pipe(gettext())
 		.pipe(gulp.dest('languages'))
 });

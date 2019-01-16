@@ -49,9 +49,9 @@ var CF_ZOHO_FIELD = {
      */
     init_primary_form: function( ) {
         jQuery( document ).on( 'cf.form.init', function () {
-            if ( 0 < jQuery( '.cf-zoho-modal' ).length ) {
+            if ( 0 < jQuery( '.lsx-cf-zoho-modal' ).length ) {
                 var modal_counter = 0;
-                jQuery( '.cf-zoho-modal' ).each( function() {
+                jQuery( '.lsx-cf-zoho-modal' ).each( function() {
                     modal_counter++;
                     //move the button
                     var field_id = jQuery(this).attr('data-field-id');

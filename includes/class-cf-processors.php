@@ -86,8 +86,8 @@ class CF_Processors {
 	public function register_processors( $processors ) {
 
 		$processors['zoho_lead'] = [
-			'name'        => __( 'Zoho CRM - Leads', 'cf-zoho' ),
-			'description' => __( 'Create or Update a lead on form submission', 'cf-zoho' ),
+			'name'        => __( 'Zoho CRM - Leads', 'lsx-cf-zoho' ),
+			'description' => __( 'Create or Update a lead on form submission', 'lsx-cf-zoho' ),
 			'author'      => 'LightSpeed',
 			'author_url'  => 'https://lsdev.biz/',
 			'processor'   => [ $this, 'process_lead_submission' ],
@@ -99,8 +99,8 @@ class CF_Processors {
 		];
 
 		$processors['zoho_contact'] = [
-			'name'        => __( 'Zoho CRM - Contacts', 'cf-zoho' ),
-			'description' => __( 'Create or Update a contact on form submission', 'cf-zoho' ),
+			'name'        => __( 'Zoho CRM - Contacts', 'lsx-cf-zoho' ),
+			'description' => __( 'Create or Update a contact on form submission', 'lsx-cf-zoho' ),
 			'author'      => 'LightSpeed',
 			'author_url'  => 'https://lsdev.biz/',
 			'processor'   => [ $this, 'process_contact_submission' ],
@@ -112,8 +112,8 @@ class CF_Processors {
 		];
 
 		$processors['zoho_task'] = [
-			'name'        => __( 'Zoho CRM - Tasks', 'cf-zoho' ),
-			'description' => __( 'Create or Update a task on form submission', 'cf-zoho' ),
+			'name'        => __( 'Zoho CRM - Tasks', 'lsx-cf-zoho' ),
+			'description' => __( 'Create or Update a task on form submission', 'lsx-cf-zoho' ),
 			'author'      => 'LightSpeed',
 			'author_url'  => 'https://lsdev.biz/',
 			'processor'   => [ $this, 'process_task_submission' ],
@@ -123,8 +123,8 @@ class CF_Processors {
 		];
 
 		$processors['zoho_deal'] = [
-			'name'        => __( 'Zoho CRM - Deals', 'cf-zoho' ),
-			'description' => __( 'Create or Update deals on form submission', 'cf-zoho' ),
+			'name'        => __( 'Zoho CRM - Deals', 'lsx-cf-zoho' ),
+			'description' => __( 'Create or Update deals on form submission', 'lsx-cf-zoho' ),
 			'author'      => 'LightSpeed',
 			'author_url'  => 'https://lsdev.biz/',
 			'processor'   => [ $this, 'process_deal_submission' ],
