@@ -2,14 +2,14 @@
 /**
  * The file that defines admin settings.
  *
- * @package cf_zoho/admin.
+ * @package lsx_cf_zoho/admin.
  */
 
-namespace cf_zoho\admin;
+namespace lsx_cf_zoho\admin;
 
-use cf_zoho;
-use cf_zoho\includes;
-use cf_zoho\includes\zohoapi;
+use lsx_cf_zoho;
+use lsx_cf_zoho\includes;
+use lsx_cf_zoho\includes\zohoapi;
 
 /**
  * Settings API.

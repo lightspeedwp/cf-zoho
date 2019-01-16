@@ -44,7 +44,7 @@ function cf_zoho_get_caldera_forms() {
  */
 function cf_zoho_register_modal( $caldera_id = '', $field_id = '', $limit = 1 ) {
 	if ( '' !== $caldera_id && '' !== $field_id ) {
-		$cf_zoho = cf_zoho\includes\CF_Zoho::init();
+		$cf_zoho = lsx_cf_zoho\includes\CF_Zoho::init();
 		$cf_zoho->field->add_modal( $caldera_id, $field_id, $limit );
 	}
 }

@@ -2,7 +2,7 @@
 /**
  * The plugin bootstrap file
  *
- * @package           cf_zoho
+ * @package           lsx_cf_zoho
  *
  * @wordpress-plugin
  * Plugin Name:       Zoho CRM Addon for Caldera Forms
@@ -17,9 +17,9 @@
  * Text Domain:       cf-zoho
  */
 
-namespace cf_zoho;
+namespace lsx_cf_zoho;
 
-use cf_zoho\includes;
+use lsx_cf_zoho\includes;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -53,17 +53,17 @@ register_setting( 'cfzoho', LSX_CFZ_OPTION_SLUG );
  * Begins execution of the plugin on plugins loaded.
  */
 function cf_zoho_run_plugin() {
-	$cf_zoho = \cf_zoho\includes\CF_Zoho::init();
+	$cf_zoho = \lsx_cf_zoho\includes\CF_Zoho::init();
 	add_action( 'plugins_loaded', [ $cf_zoho, 'setup' ], 2 );
 }
 add_action( 'plugins_loaded', __NAMESPACE__ . '\cf_zoho_run_plugin', 1 );
 
 /**
  * Returns the main instance of the CF Zoho Plugin
- * @return object \cf_zoho\includes\CF_Zoho()
+ * @return object \lsx_cf_zoho\includes\CF_Zoho()
  */
-function cf_zoho() {
-	return \cf_zoho\includes\CF_Zoho::init();
+function lsx_cf_zoho() {
+	return \lsx_cf_zoho\includes\CF_Zoho::init();
 }
 
 

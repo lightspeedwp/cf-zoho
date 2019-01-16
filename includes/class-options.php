@@ -2,10 +2,10 @@
 /**
  * The file that defines plugin options.
  *
- * @package cf_zoho/includes.
+ * @package lsx_cf_zoho/includes.
  */
 
-namespace cf_zoho\includes;
+namespace lsx_cf_zoho\includes;
 
 /**
  * Options.

@@ -2,10 +2,10 @@
 /**
  * Automatically loads the specified file.
  *
- * @package cf_zoho\lib
+ * @package lsx_cf_zoho\lib
  */
 
-namespace cf_zoho\lib;
+namespace lsx_cf_zoho\lib;
 
 /**
  * Automatically loads the specified file.
@@ -13,12 +13,12 @@ namespace cf_zoho\lib;
  * Examines the fully qualified class name, separates it into components, then creates
  * a string that represents where the file is loaded on disk.
  *
- * @package cf_zoho\lib
+ * @package lsx_cf_zoho\lib
  */
 spl_autoload_register(
 	function( $filename ) {
 
-		$plugin_namespace = 'cf_zoho';
+		$plugin_namespace = 'lsx_cf_zoho';
 
 		// First, separate the components of the incoming file.
 		$file_path = explode( '\\', $filename );

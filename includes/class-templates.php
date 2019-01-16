@@ -2,10 +2,10 @@
 /**
  * The file that defines plugin templates.
  *
- * @package cf_zoho/includes.
+ * @package lsx_cf_zoho/includes.
  */
 
-namespace cf_zoho\includes;
+namespace lsx_cf_zoho\includes;
 
 /**
  * Templates.

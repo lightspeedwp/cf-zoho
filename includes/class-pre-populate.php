@@ -2,10 +2,10 @@
 /**
  * The file that defines plugin templates.
  *
- * @package cf_zoho/includes.
+ * @package lsx_cf_zoho/includes.
  */
 
-namespace cf_zoho\includes;
+namespace lsx_cf_zoho\includes;
 
 /**
  * Templates.
@@ -203,7 +203,7 @@ class Pre_Populate {
 		if ( false !== $form ) {
 			wp_localize_script(
 				'cf-zoho-form-fieldjs',
-				'cf_zoho',
+				'lsx_cf_zoho',
 				$this->args
 			);
 		}

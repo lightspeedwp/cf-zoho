@@ -3,13 +3,13 @@
 /**
  * Class for logging events and errors.
  *
- * @package     cf_zoho/includes.
+ * @package     lsx_cf_zoho/includes.
  * @copyright   Copyright (c) 2012, Pippin Williamson.
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License.
  * @source      https://github.com/pippinsplugins/WP-Logging.
  */
 
-namespace cf_zoho\includes;
+namespace lsx_cf_zoho\includes;
 
 /**
  * Class for logging events and errors.

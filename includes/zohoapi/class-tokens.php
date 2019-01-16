@@ -2,10 +2,10 @@
 /**
  * The file that defines plugin Tokens.
  *
- * @package cf_zoho/includes/zohoapi.
+ * @package lsx_cf_zoho/includes/zohoapi.
  */
 
-namespace cf_zoho\includes\zohoapi;
+namespace lsx_cf_zoho\includes\zohoapi;
 
 /**
  * Tokens.

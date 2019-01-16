@@ -2,13 +2,13 @@
 /**
  * The file that handles connections to the Zoho API.
  *
- * @package cf_zoho/includes/zohoapi.
+ * @package lsx_cf_zoho/includes/zohoapi.
  */
 
-namespace cf_zoho\includes\zohoapi;
+namespace lsx_cf_zoho\includes\zohoapi;
 
-use cf_zoho;
-use cf_zoho\includes;
+use lsx_cf_zoho;
+use lsx_cf_zoho\includes;
 
 /**
  * CF_Zoho API Connection Class.
