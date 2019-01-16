@@ -1,8 +1,8 @@
-# Copyright (C) 2019 tour-operator
-# This file is distributed under the same license as the tour-operator package.
+# Copyright (C) 2019 lsx-cf-zoho
+# This file is distributed under the same license as the lsx-cf-zoho package.
 msgid ""
 msgstr ""
-"Project-Id-Version: tour-operator\n"
+"Project-Id-Version: lsx-cf-zoho\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
