@@ -80,7 +80,7 @@ final class CF_Zoho {
 		add_filter( 'caldera_forms_get_form_processors', [ $cf_processors, 'register_processors' ] );
 
 		// WP Logs.
-		if ( true === (bool) $this->settings->options->get_option( 'lsx_cfzoho_enable_debug' ) ) {
+		if ( true === (bool) $this->settings->options->get_option( 'lsx_cf_zoho_enable_debug' ) ) {
 			$this->logging = new WP_Logging();
 		}
 

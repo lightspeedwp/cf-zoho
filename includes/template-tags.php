@@ -17,7 +17,7 @@
  * @return string LSX CF Zoho Options page URL.
  */
 function lsx_cf_zoho_redirect_url() {
-	return admin_url( add_query_arg( 'page', 'lsx_cfzoho', 'options-general.php' ) );
+	return admin_url( add_query_arg( 'page', 'lsx_cf_zoho', 'options-general.php' ) );
 }
 
 /**

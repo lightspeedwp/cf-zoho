@@ -47,15 +47,15 @@ class Settings {
 			'LSX CF Zoho Options',
 			'LSX CF Zoho',
 			'manage_options',
-			'lsx_cfzoho',
-			[ $this, 'lsx_cfzoho_settings_page_html' ]
+			'lsx_cf_zoho',
+			[ $this, 'lsx_cf_zoho_settings_page_html' ]
 		);
 	}
 
 	/**
 	 *  Settings page.
 	 */
-	public function lsx_cfzoho_settings_page_html() {
+	public function lsx_cf_zoho_settings_page_html() {
 
 		// Check user capabilities.
 		if ( ! current_user_can( 'manage_options' ) ) {
@@ -68,7 +68,7 @@ class Settings {
 		}
 
 		// Show error/update messages.
-		settings_errors( 'lsx_cfzoho_messages' );
+		settings_errors( 'lsx_cf_zoho_messages' );
 
 		// Template.
 		include_once LSX_CFZ_TEMPLATE_PATH . 'settings-form.php';
@@ -86,73 +86,73 @@ class Settings {
 
 		// Register app details.
 		add_settings_section(
-			'lsx_cfzoho_section_developers',
+			'lsx_cf_zoho_section_developers',
 			__( 'Registering a Zoho app for use with the Caldera Forms Zoho plugin', 'lsx-cf-zoho' ),
-			[ $this, 'lsx_cfzoho_settings_field_cb' ],
-			'lsx_cfzoho'
+			[ $this, 'lsx_cf_zoho_settings_field_cb' ],
+			'lsx_cf_zoho'
 		);
 
 		// API Details.
 		add_settings_section(
-			'lsx_cfzoho_section_api_keys',
+			'lsx_cf_zoho_section_api_keys',
 			__( 'API Settings', 'lsx-cf-zoho' ),
-			[ $this, 'lsx_cfzoho_settings_field_cb' ],
-			'lsx_cfzoho'
+			[ $this, 'lsx_cf_zoho_settings_field_cb' ],
+			'lsx_cf_zoho'
 		);
 
 		// Region.
 		add_settings_field(
-			'lsx_cfzoho_url',
+			'lsx_cf_zoho_url',
 			__( 'ZOHO Oauth URL', 'lsx-cf-zoho' ),
-			[ $this, 'lsx_cfzoho_settings_field_cb' ],
-			'lsx_cfzoho',
-			'lsx_cfzoho_section_api_keys',
+			[ $this, 'lsx_cf_zoho_settings_field_cb' ],
+			'lsx_cf_zoho',
+			'lsx_cf_zoho_section_api_keys',
 			[
-				'label_for'          => 'lsx_cfzoho_url',
-				'class'              => 'lsx_cfzoho_row',
-				'lsx_cfzoho_custom_data' => 'custom',
+				'label_for'          => 'lsx_cf_zoho_url',
+				'class'              => 'lsx_cf_zoho_row',
+				'lsx_cf_zoho_custom_data' => 'custom',
 			]
 		);
 
 		// Client ID.
 		add_settings_field(
-			'lsx_cfzoho_client_id',
+			'lsx_cf_zoho_client_id',
 			__( 'ZOHO Client ID', 'lsx-cf-zoho' ),
-			[ $this, 'lsx_cfzoho_settings_field_cb' ],
-			'lsx_cfzoho',
-			'lsx_cfzoho_section_api_keys',
+			[ $this, 'lsx_cf_zoho_settings_field_cb' ],
+			'lsx_cf_zoho',
+			'lsx_cf_zoho_section_api_keys',
 			[
-				'label_for'          => 'lsx_cfzoho_client_id',
-				'class'              => 'lsx_cfzoho_row',
-				'lsx_cfzoho_custom_data' => 'custom',
+				'label_for'          => 'lsx_cf_zoho_client_id',
+				'class'              => 'lsx_cf_zoho_row',
+				'lsx_cf_zoho_custom_data' => 'custom',
 			]
 		);
 
 		// Client Secret.
 		add_settings_field(
-			'lsx_cfzoho_client_secret',
+			'lsx_cf_zoho_client_secret',
 			__( 'ZOHO Client Secret', 'lsx-cf-zoho' ),
-			[ $this, 'lsx_cfzoho_settings_field_cb' ],
-			'lsx_cfzoho',
-			'lsx_cfzoho_section_api_keys',
+			[ $this, 'lsx_cf_zoho_settings_field_cb' ],
+			'lsx_cf_zoho',
+			'lsx_cf_zoho_section_api_keys',
 			[
-				'label_for'          => 'lsx_cfzoho_client_secret',
-				'class'              => 'lsx_cfzoho_row',
-				'lsx_cfzoho_custom_data' => 'custom',
+				'label_for'          => 'lsx_cf_zoho_client_secret',
+				'class'              => 'lsx_cf_zoho_row',
+				'lsx_cf_zoho_custom_data' => 'custom',
 			]
 		);
 
 		// Tokens.
 		add_settings_field(
-			'lsx_cfzoho_tokens',
+			'lsx_cf_zoho_tokens',
 			__( 'Generate Tokens', 'lsx-cf-zoho' ),
-			[ $this, 'lsx_cfzoho_tokens_cb' ],
-			'lsx_cfzoho',
-			'lsx_cfzoho_section_api_keys',
+			[ $this, 'lsx_cf_zoho_tokens_cb' ],
+			'lsx_cf_zoho',
+			'lsx_cf_zoho_section_api_keys',
 			[
-				'label_for'          => 'lsx_cfzoho_tokens',
-				'class'              => 'lsx_cfzoho_row',
-				'lsx_cfzoho_custom_data' => 'custom',
+				'label_for'          => 'lsx_cf_zoho_tokens',
+				'class'              => 'lsx_cf_zoho_row',
+				'lsx_cf_zoho_custom_data' => 'custom',
 			]
 		);
 
@@ -160,16 +160,16 @@ class Settings {
 		add_settings_section(
 			'flush_transients',
 			__( 'Flush Transients', 'lsx-cf-zoho' ),
-			[ $this, 'lsx_cfzoho_settings_field_cb' ],
-			'lsx_cfzoho'
+			[ $this, 'lsx_cf_zoho_settings_field_cb' ],
+			'lsx_cf_zoho'
 		);
 
 		// Enable Debug
 		add_settings_section(
-			'lsx_cfzoho_enable_debug',
+			'lsx_cf_zoho_enable_debug',
 			__( 'Enable Debug', 'lsx-cf-zoho' ),
-			[ $this, 'lsx_cfzoho_settings_field_cb' ],
-			'lsx_cfzoho'
+			[ $this, 'lsx_cf_zoho_settings_field_cb' ],
+			'lsx_cf_zoho'
 		);
 	}
 
@@ -177,13 +177,13 @@ class Settings {
 	 * Section templates.
 	 */
 	private $templates = [
-		'lsx_cfzoho_section_developers' => 'settings-section.php',
-		'lsx_cfzoho_section_api_keys'   => 'settings-api.php',
-		'lsx_cfzoho_url'                => 'settings-url.php',
-		'lsx_cfzoho_client_id'          => 'settings-client-id.php',
-		'lsx_cfzoho_client_secret'      => 'settings-client-secret.php',
+		'lsx_cf_zoho_section_developers' => 'settings-section.php',
+		'lsx_cf_zoho_section_api_keys'   => 'settings-api.php',
+		'lsx_cf_zoho_url'                => 'settings-url.php',
+		'lsx_cf_zoho_client_id'          => 'settings-client-id.php',
+		'lsx_cf_zoho_client_secret'      => 'settings-client-secret.php',
 		'flush_transients'              => 'settings-flush-transients.php',
-		'lsx_cfzoho_enable_debug'       => 'settings-enable-debug.php',
+		'lsx_cf_zoho_enable_debug'       => 'settings-enable-debug.php',
 	];
 
 	/**
@@ -191,7 +191,7 @@ class Settings {
 	 *
 	 * @param array $args Settings arguments.
 	 */
-	public function lsx_cfzoho_settings_field_cb( $args ) {
+	public function lsx_cf_zoho_settings_field_cb( $args ) {
 
 		$id       = isset( $args['id'] ) ? esc_attr( $args['id'] ) : esc_attr( $args['label_for'] );
 		$name     = LSX_CFZ_OPTION_SLUG . '[' . $id . ']';
@@ -206,9 +206,9 @@ class Settings {
 	 *
 	 * @param array $args Settings arguments.
 	 */
-	public function lsx_cfzoho_tokens_cb() {
+	public function lsx_cf_zoho_tokens_cb() {
 
-		$url       = $this->options->get_option( 'lsx_cfzoho_url' ) . '/auth';
+		$url       = $this->options->get_option( 'lsx_cf_zoho_url' ) . '/auth';
 		$url_text  = false === $this->tokens->has_refresh_token() ? 'Generate ' : 'Re-generate ';
 		$url_text .= 'Access and Refresh Tokens';
 
@@ -218,7 +218,7 @@ class Settings {
 		 */
 		$params = [
 			'scope'         => 'ZohoCRM.settings.all,ZohoCRM.users.all,ZohoCRM.modules.all',
-			'client_id'     => $this->options->get_option( 'lsx_cfzoho_client_id' ),
+			'client_id'     => $this->options->get_option( 'lsx_cf_zoho_client_id' ),
 			'state'         => wp_create_nonce( 'zohotoken' ),
 			'response_type' => 'code',
 			'redirect_uri'  => lsx_cf_zoho_redirect_url(),
@@ -240,7 +240,7 @@ class Settings {
 		$nonce = filter_input( INPUT_GET, 'state', FILTER_SANITIZE_STRING );
 
 		if ( ! wp_verify_nonce( $nonce, 'zohotoken' ) ) {
-			add_settings_error( 'lsx_cfzoho_messages', 'lsx_cfzoho_message', 'The token request is invalid.', 'error' );
+			add_settings_error( 'lsx_cf_zoho_messages', 'lsx_cf_zoho_message', 'The token request is invalid.', 'error' );
 			return;
 		}
 
@@ -248,11 +248,11 @@ class Settings {
 		$response = $connect->generate_token( 'authorization_code' );
 
 		if ( true !== $response ) {
-			add_settings_error( 'lsx_cfzoho_messages', 'lsx_cfzoho_message', $response, 'error' );
+			add_settings_error( 'lsx_cf_zoho_messages', 'lsx_cf_zoho_message', $response, 'error' );
 			return;
 		}
 
-		$url = menu_page_url( 'lsx_cfzoho', false );
+		$url = menu_page_url( 'lsx_cf_zoho', false );
 
 		// Redirect back to settings page to prevent resubmission.
 		header( "Location: {$url}" );
@@ -268,6 +268,6 @@ class Settings {
 
 		$this->options->reset_cache_option();
 
-		add_settings_error( 'lsx_cfzoho_messages', 'lsx_cfzoho_message', 'Plugin cache successfully flushed', 'updated' );
+		add_settings_error( 'lsx_cf_zoho_messages', 'lsx_cf_zoho_message', 'Plugin cache successfully flushed', 'updated' );
 	}
 }

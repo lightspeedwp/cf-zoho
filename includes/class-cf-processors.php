@@ -9,12 +9,6 @@ namespace lsx_cf_zoho\includes;
 
 use lsx_cf_zoho\includes\zohoapi;
 
-/*
- * 		if (self::should_send_mail($form, $transdata)) {
-			Caldera_Forms_Save_Final::do_mailer($form, $entryid);
-		}
- */
-
 /**
  * Processors Class.
  */
@@ -255,11 +249,6 @@ class CF_Processors {
 		add_action( 'caldera_forms_mailer_complete', array(
 			$this,
 			'additional_mail_check',
-		), 11, 4 );
-
-		add_action( 'caldera_forms_save_field_zoho_form', array(
-			$this,
-			'save_actual_data',
 		), 11, 4 );
 
 		$path   = '/crm/v2/' . ucfirst( $this->module );
@@ -511,8 +500,8 @@ class CF_Processors {
 
 			$new_values = array();
 
-			if ( isset( $_POST[ $zoho_field ] ) ) {
-				$values = explode( ',', $_POST[ $zoho_field ] );
+			if ( '' !== $value ) {
+				$values = explode( ',', $value );
 				if ( ! is_array( $values ) ) {
 					$values = array( $values );
 				}
@@ -592,7 +581,6 @@ class CF_Processors {
 				$return = $entry_meta_data[0]['meta_value'];
 			}
 		}
-		
 		return $return;
 	}
 
@@ -821,19 +809,5 @@ class CF_Processors {
 				$this->log( $entry_id . ' Email Sent', $values, 'Email Sent', 0, 'email' );
 			}
 		}
-	}
-
-	/**
-	 * @param $entry
-	 * @param $field
-	 * @param $form
-	 * @param $entry_id
-	 * @return $entry
-	 */
-	public function save_actual_data( $entry, $field, $form, $entry_id ) {
-		if ( isset( $_POST[ $field['ID'] ] ) ) {
-			$entry = $_POST[ $field['ID'] ];
-		}
-		return $entry;
 	}
 }

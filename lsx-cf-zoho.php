@@ -43,7 +43,7 @@ require LSX_CFZ_ABSPATH . 'includes/template-tags.php';
 require LSX_CFZ_ABSPATH . 'lib/autoloader.php';
 
 // Register settings.
-register_setting( 'lsx_cfzoho', LSX_CFZ_OPTION_SLUG );
+register_setting( 'lsx_cf_zoho', LSX_CFZ_OPTION_SLUG );
 
 /**
  * Begins execution of the plugin on plugins loaded.

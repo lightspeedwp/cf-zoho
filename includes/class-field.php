@@ -58,15 +58,10 @@ class Field {
 			'wp_kses_allowed_html',
 		), 10, 2 );
 
-		//Prevent removing recaptcha from DOM from being effective bypass of recpatcha
-		//add_filter( 'caldera_forms_validate_field_recaptcha', array( $this, 'check_for_captcha' ), 10, 3 );
-
 		add_filter( 'caldera_forms_field_attributes', array(
 			$this,
 			'field_attrs',
 		), 10, 3 );
-
-		//add_filter( 'caldera_forms_validate_field_zoho_form', array( $this, 'field_validation' ), 25, 3 );
 	}
 
 	/**
@@ -78,8 +73,8 @@ class Field {
 	 */
 	public function add_field( $fields ) {
 		$fields['zoho_form']      = array(
-			'field'       => __( 'Zoho Form', 'lsx-cf-zoho' ),
-			'description' => __( 'Capture a new contact, lead or task and return the ID.', 'lsx-cf-zoho' ),
+			'field'       => __( 'Zoho Form (experimental)', 'lsx-cf-zoho' ),
+			'description' => __( 'Capture a new contact, lead or task and return CF entry ID.', 'lsx-cf-zoho' ),
 			'file'        => LSX_CFZ_FIELDS_PATH . 'zoho-form/field.php',
 			'category'    => __( 'Special', 'lsx-cf-zoho' ),
 			'handler'     => array( $this, 'handler' ),
@@ -228,19 +223,5 @@ class Field {
 			$attrs['class'][] = 'zoho-form-field';
 		}
 		return $attrs;
-	}
-
-	/**
-	 * Validates the Zoho Form Field
-	 * @param $value
-	 * @param $field
-	 * @param $form
-	 * @return mixed
-	 */
-	public function field_validation( $value, $field, $form ) {
-		if ( '' == $value ) {
-			return new \WP_Error( $field['ID'], esc_html__( 'This field cannot be empty', 'lsx-cf-zoho' ) );
-		}
-		return $value;
 	}
 }
