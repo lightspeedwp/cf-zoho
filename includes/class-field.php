@@ -115,7 +115,7 @@ class Field {
 	public function handler( $value, $field, $form ) {
 
 		if ( '' === $value ) {
-			return new \WP_Error( 'error', apply_filters( 'cf_zoho_form_field_error_empty_message', __( 'This field is required.', 'lsx-cf-zoho' ) ) );
+			return new \WP_Error( 'error', apply_filters( 'lsx_cf_zoho_form_field_error_empty_message', __( 'This field is required.', 'lsx-cf-zoho' ) ) );
 		}
 
 		$value = explode( ',', $value );
@@ -125,7 +125,7 @@ class Field {
 
 		if ( (int) $value < (int) $field['config']['limit'] ) {
 			return new \WP_Error( 'error',
-				apply_filters( 'cf_zoho_form_field_error_limit_message', __( 'Please complete the rest of this field', 'lsx-cf-zoho' ) )
+				apply_filters( 'lsx_cf_zoho_form_field_error_limit_message', __( 'Please complete the rest of this field', 'lsx-cf-zoho' ) )
 			);
 		}
 
@@ -198,7 +198,7 @@ class Field {
 	 */
 	public function register_js_callback( $form ) {
 		$form['has_ajax_callback'] = true;
-		$form['custom_callback']   = 'cf_zoho_handle_return';
+		$form['custom_callback']   = 'lsx_cf_zoho_handle_return';
 		return $form;
 	}
 
@@ -221,7 +221,7 @@ class Field {
 			if ( ! empty( $field['config']['limit'] ) && '' !== $field['config']['limit'] ) {
 				$limit = $field['config']['limit'];
 			}
-			$limit = apply_filters( 'cf_zoho_form_field_limit', $limit );
+			$limit = apply_filters( 'lsx_cf_zoho_form_field_limit', $limit );
 			$attrs['type'] = 'hidden';
 			$attrs['data-limit'] = $limit;
 			$attrs['data-count'] = 0;

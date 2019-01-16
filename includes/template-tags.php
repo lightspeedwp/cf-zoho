@@ -16,7 +16,7 @@
  *
  * @return string CF Zoho Options page URL.
  */
-function cf_zoho_redirect_url() {
+function lsx_cf_zoho_redirect_url() {
 	return admin_url( add_query_arg( 'page', 'cfzoho', 'options-general.php' ) );
 }
 
@@ -24,7 +24,7 @@ function cf_zoho_redirect_url() {
  * Returns the names and ids of the current available caldera forms.
  * @return bool
  */
-function cf_zoho_get_caldera_forms() {
+function lsx_cf_zoho_get_caldera_forms() {
 	$results = \Caldera_Forms_Forms::get_forms( true );
 	$forms   = false;
 
@@ -42,7 +42,7 @@ function cf_zoho_get_caldera_forms() {
  * @param $field_id string
  * @param $limit int
  */
-function cf_zoho_register_modal( $caldera_id = '', $field_id = '', $limit = 1 ) {
+function lsx_cf_zoho_register_modal( $caldera_id = '', $field_id = '', $limit = 1 ) {
 	if ( '' !== $caldera_id && '' !== $field_id ) {
 		$cf_zoho = lsx_cf_zoho\includes\CF_Zoho::init();
 		$cf_zoho->field->add_modal( $caldera_id, $field_id, $limit );
@@ -50,7 +50,7 @@ function cf_zoho_register_modal( $caldera_id = '', $field_id = '', $limit = 1 ) 
 }
 
 
-function cf_zoho_get_form_title( $caldera_id = '' ) {
+function lsx_cf_zoho_get_form_title( $caldera_id = '' ) {
 	$title = '';
 	if ( '' !== $caldera_id ) {
 		$form = Caldera_Forms_Forms::get_form( $caldera_id );

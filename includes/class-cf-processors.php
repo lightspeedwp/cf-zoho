@@ -296,10 +296,10 @@ class CF_Processors {
 			$this->zoho_id = $object_id;
 
 			//This is where the actions are run to link the items.
-			do_action( 'cf_zoho_do_submission_complete', $object_id, $this->module, $this->requests_list, $this );
+			do_action( 'lsx_cf_zoho_do_submission_complete', $object_id, $this->module, $this->requests_list, $this );
 		}
 
-		do_action( 'cf_zoho_create_entry_complete', $object_id, $this->config, $this->form );
+		do_action( 'lsx_cf_zoho_create_entry_complete', $object_id, $this->config, $this->form );
 
 		return [
 			'id' => $object_id,
@@ -530,7 +530,7 @@ class CF_Processors {
 				$new_values = implode( ',', $new_values );
 				$value = $new_values;
 			}
-			$value = apply_filters( 'cf_zoho_object_build_value', $new_values, $key, $field );
+			$value = apply_filters( 'lsx_cf_zoho_object_build_value', $new_values, $key, $field );
 		}
 
 		if ( 'boolean' !== strtolower( $field['data_type'] ) ) {
@@ -726,7 +726,7 @@ class CF_Processors {
 					$this->upload_file( $file_path );
 				}
 			}
-			$mail = apply_filters( 'cf_zoho_mail_attachment_check', $mail, $this->zoho_id, $data, $form, $this );
+			$mail = apply_filters( 'lsx_cf_zoho_mail_attachment_check', $mail, $this->zoho_id, $data, $form, $this );
 		}
 		return $mail;
 	}
@@ -817,7 +817,7 @@ class CF_Processors {
 
 			foreach ( $this->additional_mails as $entry_id => $values ) {
 				\Caldera_Forms_Save_Final::do_mailer( $values['form'], $entry_id );
-				do_action( 'cf_zoho_additional_mail_check', $entry_id, $values );
+				do_action( 'lsx_cf_zoho_additional_mail_check', $entry_id, $values );
 				$this->log( $entry_id . ' Email Sent', $values, 'Email Sent', 0, 'email' );
 			}
 		}

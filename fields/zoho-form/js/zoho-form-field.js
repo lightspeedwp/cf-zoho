@@ -199,6 +199,6 @@ jQuery(document).ready(function() {
     CF_ZOHO_FIELD.init();
 });
 
-var cf_zoho_handle_return = function( obj ) {
+var lsx_cf_zoho_handle_return = function( obj ) {
     CF_ZOHO_FIELD.handle_form_return( obj );
 };

@@ -85,7 +85,7 @@ class Pre_Populate {
 				add_filter( 'caldera_forms_get_form-' . $form['ID'], array( $this, 'enqueue_assets' ) );
 			}
 		}
-		$this->entry = apply_filters( 'cf_zoho_pre_populate_entry', $this->entry, $this );
+		$this->entry = apply_filters( 'lsx_cf_zoho_pre_populate_entry', $this->entry, $this );
 		return $this->entry;
 	}
 
@@ -94,7 +94,7 @@ class Pre_Populate {
 	 * @return array
 	 */
 	public function get_modules() {
-		$this->modules = apply_filters( 'cf_zoho_pre_populate_get_module_label', array(
+		$this->modules = apply_filters( 'lsx_cf_zoho_pre_populate_get_module_label', array(
 			'cid',
 			'tid',
 			'lid',
@@ -128,7 +128,7 @@ class Pre_Populate {
 			default :
 				break;
 		}
-		$module_label = apply_filters( 'cf_zoho_pre_populate_get_module_label', $module_label );
+		$module_label = apply_filters( 'lsx_cf_zoho_pre_populate_get_module_label', $module_label );
 		return $module_label;
 	}
 
@@ -145,7 +145,7 @@ class Pre_Populate {
 
 		if ( ! is_wp_error( $response ) && is_array( $response ) && isset( $response['data'] ) && ! empty( $response['data'] ) && isset( $response['data'][0] ) ) {
 			$this->filter_entry( $this->response['data'][0] );
-			$this->response = apply_filters( 'cf_zoho_pre_populate_filter_entry' , $this->response['data'][0], $key, $get );
+			$this->response = apply_filters( 'lsx_cf_zoho_pre_populate_filter_entry' , $this->response['data'][0], $key, $get );
 			$this->filter_entry( $this->response['data'][0] );
 		}
 	}

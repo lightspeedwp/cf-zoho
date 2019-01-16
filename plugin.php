@@ -50,11 +50,11 @@ register_setting( 'cfzoho', LSX_CFZ_OPTION_SLUG );
 /**
  * Begins execution of the plugin on plugins loaded.
  */
-function cf_zoho_run_plugin() {
+function lsx_cf_zoho_run_plugin() {
 	$cf_zoho = \lsx_cf_zoho\includes\CF_Zoho::init();
 	add_action( 'plugins_loaded', [ $cf_zoho, 'setup' ], 2 );
 }
-add_action( 'plugins_loaded', __NAMESPACE__ . '\cf_zoho_run_plugin', 1 );
+add_action( 'plugins_loaded', __NAMESPACE__ . '\lsx_cf_zoho_run_plugin', 1 );
 
 /**
  * Returns the main instance of the CF Zoho Plugin

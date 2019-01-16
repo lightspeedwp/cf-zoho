@@ -28,7 +28,7 @@
 			$limit = $field_structure['field']['config']['limit'];
 		}
 
-		cf_zoho_register_modal( $value, $field_base_id, $limit );
+		lsx_cf_zoho_register_modal( $value, $field_base_id, $limit );
 	}
 ?>
 

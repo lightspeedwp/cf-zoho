@@ -88,7 +88,7 @@ class Connect {
 	public function generate_token( $grant_type ) {
 
 		$url          = $this->options->get_option( 'cfzoho_url' ) . '/token';
-		$redirect_uri = cf_zoho_redirect_url();
+		$redirect_uri = lsx_cf_zoho_redirect_url();
 
 		$body = [
 			'client_id'     => $this->options->get_option( 'cfzoho_client_id' ),
