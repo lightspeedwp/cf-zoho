@@ -37,8 +37,8 @@ define( 'LSX_CFZ_FIELDS_PATH', LSX_CFZ_ABSPATH . 'fields/' );
 define( 'LSX_CFZ_URL', plugin_dir_url( __FILE__ ) . '/' );
 define( 'LSX_CFZ_FIELDS_URL', LSX_CFZ_URL . 'fields/' );
 
-define( 'LSX_CFZ_OPTION_SLUG', '_uix_cf-zoho' );
-define( 'LSX_CFZ_TRANSIENT_SLUG', '_uix_cf-zoho_transient' );
+define( 'LSX_CFZ_OPTION_SLUG', '_uix_lsx-cf-zoho' );
+define( 'LSX_CFZ_TRANSIENT_SLUG', '_uix_lsx-cf-zoho_transient' );
 
 // Autoloader.
 require LSX_CFZ_ABSPATH . 'includes/template-tags.php';
@@ -46,8 +46,6 @@ require LSX_CFZ_ABSPATH . 'lib/autoloader.php';
 
 // Register settings.
 register_setting( 'cfzoho', LSX_CFZ_OPTION_SLUG );
-
-
 
 /**
  * Begins execution of the plugin on plugins loaded.
