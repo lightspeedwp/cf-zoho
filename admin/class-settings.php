@@ -82,7 +82,7 @@ class Settings {
 		// Register app details.
 		add_settings_section(
 			'lsx_cfzoho_section_developers',
-			__( 'Registering a Zoho app for use with the Caldera Forms Zoho plugin.', 'lsx_cfzoho' ),
+			__( 'Registering a Zoho app for use with the Caldera Forms Zoho plugin.', 'lsx-cf-zoho' ),
 			[ $this, 'lsx_cfzoho_settings_field_cb' ],
 			'lsx_cfzoho'
 		);
@@ -90,7 +90,7 @@ class Settings {
 		// API Details.
 		add_settings_section(
 			'lsx_cfzoho_section_api_keys',
-			__( 'API Settings.', 'lsx_cfzoho' ),
+			__( 'API Settings.', 'lsx-cf-zoho' ),
 			[ $this, 'lsx_cfzoho_settings_field_cb' ],
 			'lsx_cfzoho'
 		);
@@ -98,7 +98,7 @@ class Settings {
 		// Region.
 		add_settings_field(
 			'lsx_cfzoho_url',
-			__( 'ZOHO Oauth URL', 'lsx_cfzoho' ),
+			__( 'ZOHO Oauth URL', 'lsx-cf-zoho' ),
 			[ $this, 'lsx_cfzoho_settings_field_cb' ],
 			'lsx_cfzoho',
 			'lsx_cfzoho_section_api_keys',
