@@ -147,6 +147,8 @@ class Pre_Populate {
 			$this->filter_entry( $this->response['data'][0] );
 			$this->response = apply_filters( 'lsx_cf_zoho_pre_populate_filter_entry' , $this->response['data'][0], $key, $get );
 			$this->filter_entry( $this->response['data'][0] );
+		} else {
+			$this->log( $this->response->get_error_message(), $this->response, 'Pre Populate Error', 0, 'error' );
 		}
 	}
 
@@ -209,5 +211,29 @@ class Pre_Populate {
 		}
 
 		return $form;
+	}
+
+	/**
+	 * Logs an event or an error with processor submission.
+	 *
+	 * @param string  $message    Error or event response.
+	 * @param array   $submission Data that was submitted to the form.
+	 * @param integer $id         ID of the form submission.
+	 * @param string  $type       Either error or event.
+	 */
+	public function log( $message, $submission, $details, $id, $type ) {
+
+		$submission = [
+			'response'   => $message,
+			'submission' => $submission,
+			'details'    => $details,
+		];
+
+		WP_Logging::add(
+			'Submission for pre populate form: ' . $type,
+			wp_json_encode( $submission ),
+			$id,
+			$type
+		);
 	}
 }

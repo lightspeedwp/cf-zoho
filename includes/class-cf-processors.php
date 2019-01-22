@@ -334,7 +334,7 @@ class CF_Processors {
 
 		if ( ! isset( $response['data'][0]['code'] ) || ( 'SUCCESS' !== $response['data'][0]['code'] && 'DUPLICATE_DATA' !== $response['data'][0]['code'] ) ) {
 
-			$this->log( $response['data'][0]['message'], $object, print_r( $response, true ), 0, 'error' );
+			$this->log( $response['data'][0]['message'], array( 'body' => $body, 'response' => $response ), 'Zoho Error', 0, 'error' );
 
 			return [
 				'note' => print_r( $response['data'][0]['message'] ) . ' - ' . $path,
@@ -345,7 +345,7 @@ class CF_Processors {
 		$object_id = $response['data'][0]['details']['id'];
 
 		//TODO THIS IS WHERE THE EXTRA FILTER GOES
-		$this->log( $response['data'][0]['message'], $object, $response['data'][0]['details'], $object_id, 'event' );
+		$this->log( $response['data'][0]['message'], $object, $response['data'][0]['details'], $object_id, 'do_request' );
 
 		return $object_id;
 	}
@@ -548,7 +548,6 @@ class CF_Processors {
 
 					$path   = '/crm/v2/' . ucfirst( $module );
 
-					$this->log( 'Doing Side Request', $entry, 'Side Request Error', 0, 'side-request' );
 					$object_id = $this->do_request( $path, $data, $data );
 
 					if ( ! is_wp_error( $object_id ) ) {
@@ -557,6 +556,8 @@ class CF_Processors {
 
 						//This registers the module to be linked.
 						$this->requests_list[ $module ][] = $return;
+					} else {
+						$this->log( 'Side Request Error', $object_id, 'Side Request Error', 0, 'side-request-error' );
 					}
 				}
 			}
@@ -569,7 +570,7 @@ class CF_Processors {
 
 		$entry_meta_data = $wpdb->get_results(
 			$wpdb->prepare(
-				'SELECT * FROM `' . $wpdb->prefix . 'cf_form_entry_meta` WHERE `entry_id` = %d AND `meta_key` = `id`',
+				"SELECT * FROM `{$wpdb->prefix}cf_form_entry_meta` WHERE `entry_id` = '%s' AND `meta_key` = 'id'",
 				$entry_id
 			),
 			ARRAY_A
@@ -609,10 +610,10 @@ class CF_Processors {
 		$entry_obj = new \Caldera_Forms_Entry( $this->form, $entry_id );
 		$entry_meta_data = $wpdb->get_results(
 			$wpdb->prepare(
-				'UPDATE `' . $wpdb->prefix . 'cf_form_entry_meta` SET
-				`meta_value` = %d
-				WHERE `entry_id` = %d
-				AND `meta_key` = `id`',
+				"UPDATE `{$wpdb->prefix}cf_form_entry_meta` SET
+				`meta_value` = '%s'
+				WHERE `entry_id` = '%d'
+				AND `meta_key` = 'id'",
 				$object_id,
 				$entry_id
 			),
