@@ -373,7 +373,7 @@ class CF_Processors {
 
 				$value = $this->get_form_value( $field );
 
-				if ( '' === $value || '-None-' === $value ) {
+				if ( '' === $value || '-None-' === $value || '--None--' === $value ) {
 					continue;
 				}
 				$label = str_replace( ' ', '_', $field['field_label'] );
@@ -500,8 +500,9 @@ class CF_Processors {
 
 			$new_values = array();
 
-			if ( '' !== $value ) {
-				$values = explode( ',', $value );
+
+			if ( isset( $_POST[ $zoho_field ] ) ) {
+				$values = explode( ',', $_POST[ $zoho_field ] );
 				if ( ! is_array( $values ) ) {
 					$values = array( $values );
 				}
@@ -514,6 +515,21 @@ class CF_Processors {
 					}
 				}
 			}
+
+			/*if ( '' !== $value ) {
+				$values = explode( ',', $value );
+				if ( ! is_array( $values ) ) {
+					$values = array( $values );
+				}
+				foreach ( $values as $entryid ) {
+					if ( ! in_array( $entryid, $this->requests_completed ) ) {
+						$return = $this->do_side_request( $entryid );
+						$this->update_entry( $entryid, $return );
+						$new_values[] = $return;
+						$this->requests_completed[] = $entryid;
+					}
+				}
+			}*/
 
 			if ( ! empty( $new_values ) ) {
 				$new_values = implode( ',', $new_values );
