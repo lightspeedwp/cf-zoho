@@ -275,7 +275,7 @@ class CF_Processors {
 		];
 
 		// Filter hook.
-		$body     = apply_filters( 'process_zoho_submission', $body, $this->config, $this->form );
+		$body = apply_filters( 'process_zoho_submission', $body, $this->config, $this->form );
 		$this->body = $body;
 
 		if ( isset( $this->config['_return_information'] ) && ( true === $this->config['_return_information'] || 'true' === $this->config['_return_information'] || 1 === $this->config['_return_information'] ) ) {
@@ -373,7 +373,8 @@ class CF_Processors {
 
 				$value = $this->get_form_value( $field );
 
-				if ( '' === $value || '-None-' === $value || '--None--' === $value ) {
+				$value = trim( $value );
+				if ( '' === $value || '-None-' === $value || '--None--' === $value || false === $value ) {
 					continue;
 				}
 				$label = str_replace( ' ', '_', $field['field_label'] );
@@ -383,8 +384,16 @@ class CF_Processors {
 				if ( 'Lead_Owner' === $label || 'Task_Owner' === $label || 'Contact_Owner' === $label ) {
 					$label = 'Owner';
 				}
+
+				$label = str_replace( '.', '', $label );
 				$object[ $label ] = $this->get_form_value( $field );
 			}
+		}
+
+		//Check for the Layout and change it to an array.
+		if ( isset( $object[ 'Layout' ] ) && '' !== $object[ 'Layout' ] ) {
+			$layout = $object[ 'Layout' ];
+			$object[ 'Layout' ] = array( 'id' => $layout );
 		}
 
 		return $object;
@@ -500,7 +509,6 @@ class CF_Processors {
 
 			$new_values = array();
 
-
 			if ( isset( $_POST[ $zoho_field ] ) ) {
 				$values = explode( ',', $_POST[ $zoho_field ] );
 				if ( ! is_array( $values ) ) {
@@ -563,6 +571,8 @@ class CF_Processors {
 				if ( in_array( $module, array( 'task', 'lead', 'contacts' ) ) ) {
 
 					$path   = '/crm/v2/' . ucfirst( $module );
+					$path                            .= '/upsert';
+					$data['data'][0]['duplicate_check_fields'] = 'Email';
 
 					$object_id = $this->do_request( $path, $data, $data );
 
@@ -753,6 +763,11 @@ class CF_Processors {
 		$module = $this->module;
 		if ( false !== $forced_module ) {
 			$module = $forced_module;
+		}
+
+		$should_skip = apply_filters( 'lsx_cf_zoho_skip_file_upload', false, $module, $zoho_id );
+		if ( true === $should_skip ) {
+			return;
 		}
 
 		$path   = '/crm/v2/' . ucfirst( $module ) . '/' . $zoho_id . '/Attachments';
