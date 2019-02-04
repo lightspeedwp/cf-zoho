@@ -232,7 +232,7 @@ class CF_Processors {
 	/**
 	 * Start the logging array.
 	 */
-	public function end_logging( $oject_id = false ) {
+	public function end_logging( $oject_id = false, $module_message = '' ) {
 		if ( ! empty( $this->logging_array ) ) {
 			$log_message = array();
 			foreach ( $this->logging_array as $log ) {
@@ -244,8 +244,12 @@ class CF_Processors {
 				];
 			}
 
+			if ( '' === $module_message ) {
+				$module_message = $this->module;
+			}
+
 			WP_Logging::add(
-				'Submission for ' . $this->module . ' ' . $oject_id . ': ',
+				'Submission for ' . $module_message . ' ' . $oject_id . ': ',
 				wp_json_encode( $log_message ),
 				0,
 				''
@@ -768,6 +772,7 @@ class CF_Processors {
 	public function mail_attachment_check( $mail, $data, $form ) {
 		global $transdata;
 		if ( '' !== $this->zoho_id ) {
+			$this->start_logging();
 			$this->check_for_files( $mail, $data, $form );
 
 			//Update the trip and attach the PDF
@@ -777,6 +782,7 @@ class CF_Processors {
 				}
 			}
 			$mail = apply_filters( 'lsx_cf_zoho_mail_attachment_check', $mail, $this->zoho_id, $data, $form, $this );
+			$this->end_logging( $this->zoho_id, 'File Upload' );
 		}
 		return $mail;
 	}
