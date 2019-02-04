@@ -109,7 +109,7 @@ class Field {
 	 */
 	public function handler( $value, $field, $form ) {
 
-		if ( '' === $value ) {
+		if ( isset( $field['config']['required'] ) && '' !== $field['config']['required']  && '' === $value ) {
 			return new \WP_Error( 'error', apply_filters( 'lsx_cf_zoho_form_field_error_empty_message', __( 'This field is required.', 'lsx-cf-zoho' ) ) );
 		}
 

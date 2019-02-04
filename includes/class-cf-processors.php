@@ -234,7 +234,7 @@ class CF_Processors {
 	 */
 	public function end_logging( $oject_id = false ) {
 		if ( ! empty( $this->logging_array ) ) {
-			$log_message = '';
+			$log_message = array();
 			foreach ( $this->logging_array as $log ) {
 				$log_message[] = '<h2>' . $log['message'] . ' ' . $log['type'] . '</h2>';
 				$log_message[] = [
@@ -768,6 +768,8 @@ class CF_Processors {
 	public function mail_attachment_check( $mail, $data, $form ) {
 		global $transdata;
 		if ( '' !== $this->zoho_id ) {
+			$this->check_for_files( $mail, $data, $form );
+
 			//Update the trip and attach the PDF
 			if ( ! empty( $transdata['pdf_attachment'] ) ) {
 				foreach ( $transdata['pdf_attachment'] as $file_path ) {
@@ -777,6 +779,29 @@ class CF_Processors {
 			$mail = apply_filters( 'lsx_cf_zoho_mail_attachment_check', $mail, $this->zoho_id, $data, $form, $this );
 		}
 		return $mail;
+	}
+
+	/**
+	 * Prepare upload PDF attachments to zoho.
+	 * Attach passports to email
+	 *
+	 * @param array $mail Email data
+	 * @param array $data ?
+	 * @param array $form For config
+	 *
+	 * @return array
+	 */
+	public function check_for_files( $mail, $data, $form ) {
+		foreach ( $form['fields'] as $field ) {
+			if ( 'file' === $field['type'] && isset( $data[ $field['ID'] ] ) && '' !== $data[ $field['ID'] ] ) {
+				$file_path = ABSPATH . 'wp-content/';
+				$url_paths = explode( '/wp-content/', $data[ $field['ID'] ] );
+				if ( is_array( $url_paths ) && isset( $url_paths[1] ) ) {
+					$file_path .= $url_paths[1];
+					$this->upload_file( $file_path );
+				}
+			}
+		}
 	}
 
 	/**
