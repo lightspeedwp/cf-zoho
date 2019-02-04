@@ -15,7 +15,8 @@
 </div>
 
 <?php
-	$field_structure['field_required'] = true;
+	//$field_structure['field_required'] = true;
+
 	echo wp_kses_post( Caldera_Forms_Field_Input::html( $field, $field_structure, $form ) );
 
 
@@ -28,7 +29,20 @@
 			$limit = $field_structure['field']['config']['limit'];
 		}
 
-		lsx_cf_zoho_register_modal( $value, $field_base_id, $limit );
+		if ( '' !== $field_structure['field']['config']['button_text'] ) {
+			$title = $field_structure['field']['config']['button_text'];
+		} else {
+			$title = $field_structure['field']['label'];
+		}
+
+		if ( '' === $title ) {
+			$title = lsx_cf_zoho_get_form_title( $field_structure['field']['config']['form_id'] );
+		}
+		if ( '' === $title ) {
+			$title = esc_attr__( 'Open', 'lsx-cf-zoho' );
+		}
+
+		lsx_cf_zoho_register_modal( $value, $field_base_id, $limit, $title );
 	}
 ?>
 

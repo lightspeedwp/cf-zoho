@@ -148,7 +148,11 @@ class Pre_Populate {
 			$this->response = apply_filters( 'lsx_cf_zoho_pre_populate_filter_entry' , $this->response['data'][0], $key, $get );
 			$this->filter_entry( $this->response['data'][0] );
 		} else {
-			$this->log( $this->response->get_error_message(), $this->response, 'Pre Populate Error', 0, 'error' );
+			if ( null === $this->response ) {
+				$this->log( 'Null Response', $this->response, 'Pre Populate Error', 0, 'error' );
+			} else {
+				$this->log( $this->response->get_error_message(), $this->response, 'Pre Populate Error', 0, 'error' );
+			}
 		}
 	}
 

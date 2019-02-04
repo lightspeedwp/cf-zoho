@@ -42,3 +42,14 @@
 	</div>
 </div>
 
+<div class="caldera-config-group">
+	<label for="{{_id}}_button_text">
+		<?php esc_html_e( 'Button Text', 'lsx-cf-zoho' ); ?>
+	</label>
+	<div class="caldera-config-field">
+		<input type="text" id="{{_id}}_button_text" class="block-input field-config" name="{{_name}}[button_text]" value="{{button_text}}">
+	</div>
+</div>
+<p class="description" style="text-align:center;">
+	<?php esc_html_e( 'If this is left blank the button will use the form label as the button text.', 'lsx-cf-zoho' ); ?>
+</p>

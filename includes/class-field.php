@@ -132,12 +132,14 @@ class Field {
 	 * @param $caldera_id string
 	 * @param $field_id string
 	 * @param $limit integer
+	 * @param $title string
 	 */
-	public function add_modal( $caldera_id = '', $field_id = '', $limit = 1 ) {
+	public function add_modal( $caldera_id = '', $field_id = '', $limit = 1, $title = '' ) {
 		if ( '' !== $caldera_id && '' !== $field_id ) {
 			$this->modals[ $caldera_id ] = array(
 				'field' => $field_id,
 				'limit' => $limit,
+				'title' => $title,
 			);
 			add_action( 'wp_footer', array( $this, 'output_modals' ), 1 );
 		}

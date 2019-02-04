@@ -41,11 +41,12 @@ function lsx_cf_zoho_get_caldera_forms() {
  * @param $caldera_id string
  * @param $field_id string
  * @param $limit int
+ * @param $title string
  */
-function lsx_cf_zoho_register_modal( $caldera_id = '', $field_id = '', $limit = 1 ) {
+function lsx_cf_zoho_register_modal( $caldera_id = '', $field_id = '', $limit = 1, $title = '' ) {
 	if ( '' !== $caldera_id && '' !== $field_id ) {
 		$cf_zoho = lsx_cf_zoho\includes\CF_Zoho::init();
-		$cf_zoho->field->add_modal( $caldera_id, $field_id, $limit );
+		$cf_zoho->field->add_modal( $caldera_id, $field_id, $limit, $title );
 	}
 }
 
