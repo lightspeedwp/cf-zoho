@@ -72,6 +72,12 @@ class CF_Processors {
 	public $requests_list = array();
 
 	/**
+	 * Holds the array of messages for the log.
+	 * @var array
+	 */
+	public $logging_array = array();
+
+	/**
 	 * Registers our processors with Caldera Forms.
 	 *
 	 * @param  array $processors Array of current processors.
@@ -207,19 +213,44 @@ class CF_Processors {
 	 * @param string  $type       Either error or event.
 	 */
 	public function log( $message, $submission, $details, $id, $type ) {
-
-		$submission = [
+		$this->logging_array[] = [
+			'id'         => $id,
+			'type'       => $type,
 			'response'   => $message,
 			'submission' => $submission,
 			'details'    => $details,
 		];
+	}
 
-		WP_Logging::add(
-			'Submission for ' . $this->module . ' form: ' . $type,
-			wp_json_encode( $submission ),
-			$id,
-			$type
-		);
+	/**
+	 * Start the logging array.
+	 */
+	public function start_logging() {
+		$this->logging_array = array();
+	}
+
+	/**
+	 * Start the logging array.
+	 */
+	public function end_logging( $oject_id = false ) {
+		if ( ! empty( $this->logging_array ) ) {
+			$log_message = '';
+			foreach ( $this->logging_array as $log ) {
+				$log_message[] = '<h2>' . $log['message'] . ' ' . $log['type'] . '</h2>';
+				$log_message[] = [
+					'response'   => $log['message'],
+					'submission' => $log['submission'],
+					'details'    => $log['details'],
+				];
+			}
+
+			WP_Logging::add(
+				'Submission for ' . $this->module . ' ' . $oject_id . ': ',
+				wp_json_encode( $log_message ),
+				0,
+				''
+			);
+		}
 	}
 
 	/**
@@ -228,7 +259,7 @@ class CF_Processors {
 	 * @return null|array Array containining id if successfull|null response on fail.
 	 */
 	public function do_submission() {
-
+		$this->start_logging();
 		/**
 		 * TODO: This is where we check to see if we should submit this info or not.
 		 */
@@ -289,6 +320,8 @@ class CF_Processors {
 		}
 
 		do_action( 'lsx_cf_zoho_create_entry_complete', $object_id, $this->config, $this->form );
+
+		$this->end_logging( $object_id );
 
 		return [
 			'id' => $object_id,
