@@ -1,5 +1,9 @@
 ## Changelog
 
+# 2.1.0
+* Dev - Added in a filter to allow the attaching of files from the upload field to the processor running.
+* Dev - Added in a form processing notification using the jquery.blockUI library
+
 # 2.0.0
 * Dev - Upgraded the API version to 2.0
 * Dev - Renamed 'lsx_cf_zoho_create_entry' hook to 'process_zoho_submission' as the old hook passes a different $object array which will probably break any code hooking this.

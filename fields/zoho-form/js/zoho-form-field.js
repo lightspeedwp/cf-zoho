@@ -125,6 +125,7 @@ var CF_ZOHO_FIELD = {
         } else {
             jQuery('.caldera-form-page[data-formpage="1"] .zoho-form-field-validation input').prop('checked', 'checked');
         }
+        jQuery('body').unblock();
     },
 
     increase_limit: function() {

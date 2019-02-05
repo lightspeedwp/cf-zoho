@@ -94,5 +94,32 @@ final class CF_Zoho {
 
 		$this->pre_populate = Pre_Populate::init();
 		add_filter( 'caldera_forms_render_pre_get_entry', [ $this->pre_populate, 'pre_populate_form' ], 10, 2 );
+
+		add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 1999 );
 	}
+
+	/**
+	 * Enqueues the parent and the child theme styles.
+	 *
+	 * @package    giltedgeafrica-lsx-child
+	 * @subpackage setup
+	 */
+	public function scripts() {
+		wp_enqueue_script( 'blockUI', LSX_CFZ_URL . '/assets/js/jquery.blockUI.js', array( 'jquery' ), LSX_CFZ_VERSION, true );
+		wp_enqueue_script( 'lsx-cf-zoho-js', LSX_CFZ_URL . '/assets/js/lsx-cf-zoho.js', array( 'blockUI' ), LSX_CFZ_VERSION, true );
+
+		$zoho_args =
+			array(
+				'blockMessage' => __( 'Please wait while we capture your details', 'lsx-cf-zoho' ),
+				'headerSelector'   => '.header-wrap',
+			);
+		$zoho_args = apply_filters( 'lsx_cf_zoho_js_args', $zoho_args );
+		wp_localize_script(
+			'lsx-cf-zoho-js',
+			'lsxCfZohoArgs',
+			$zoho_args
+		);
+
+	}
+
 }
