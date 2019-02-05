@@ -146,7 +146,15 @@ class Pre_Populate {
 		if ( ! is_wp_error( $response ) && is_array( $response ) && isset( $response['data'] ) && ! empty( $response['data'] ) && isset( $response['data'][0] ) ) {
 			$this->filter_entry( $this->response['data'][0] );
 			$this->response = apply_filters( 'lsx_cf_zoho_pre_populate_filter_entry' , $this->response['data'][0], $key, $get );
-			$this->filter_entry( $this->response['data'][0] );
+			if ( ! is_wp_error( $response ) ) {
+				$this->filter_entry( $this->response['data'][0] );
+			} else {
+				if ( null === $this->response ) {
+					$this->log( 'Null Response', $this->response, 'Pre Populate Error', 0, 'error' );
+				} else {
+					$this->log( $this->response->get_error_message(), $this->response, 'Pre Populate Error', 0, 'error' );
+				}
+			}
 		} else {
 			if ( null === $this->response ) {
 				$this->log( 'Null Response', $this->response, 'Pre Populate Error', 0, 'error' );
