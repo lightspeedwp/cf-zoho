@@ -55,12 +55,16 @@ var lsx_cf_zoho = Object.create( null );
         });
     };
 
-    lsx_cf_zoho.unblockForms = function() {
+    lsx_cf_zoho.unblockFormsOnClose = function() {
         $( document ).on( 'click', '.alert.alert-success .close', function (event, data ) {
             //$('.caldera_forms_form').each( function() {
                 $('body').unblock();
             //});
         });
+    };
+
+    lsx_cf_zoho.unblockForms = function() {
+        $('body').unblock();
     };
 
     lsx_cf_zoho.centerMessage = function ( messageDiv ) {
@@ -84,7 +88,7 @@ var lsx_cf_zoho = Object.create( null );
     $document.ready( function() {
         lsx_cf_zoho.unblockOnError();
         lsx_cf_zoho.blockOnSubmit();
-        lsx_cf_zoho.unblockForms();
+        lsx_cf_zoho.unblockFormsOnClose();
     } );
 
 } )( jQuery, window, document );
