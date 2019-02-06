@@ -64,6 +64,7 @@ var lsx_cf_zoho = Object.create( null );
     };
 
     lsx_cf_zoho.unblockForms = function() {
+        console.log('testerfsdfsdf');
         $('body').unblock();
     };
 

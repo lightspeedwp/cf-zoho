@@ -756,6 +756,8 @@ class CF_Processors {
 			}
 			$out['return_message'] = '<div data-entry-id="' . $out['data']['cf_id'] . '" class="alert alert-success fade in">' . $return_message . '<a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a></div>';
 		}
+
+		$out['html'] .= '<script>lsx_cf_zoho.unblockForms();</script>';
 		return $out;
 	}
 
