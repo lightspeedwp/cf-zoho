@@ -18,12 +18,7 @@ var lsx_cf_zoho = Object.create( null );
 
     lsx_cf_zoho.unblockOnError = function() {
         $( document ).on(  'cf.validate.FormError', function( event, obj ){
-            //if ( false == obj.inst.validationResult ) {
-                //$('body').each( function() {
-                    console.log('unblocking');
-                    $('body').unblock();
-                //});
-            //}
+            $('body').unblock();
         });
     };
 
@@ -64,7 +59,6 @@ var lsx_cf_zoho = Object.create( null );
     };
 
     lsx_cf_zoho.unblockForms = function() {
-        console.log('testerfsdfsdf');
         $('body').unblock();
     };
 
