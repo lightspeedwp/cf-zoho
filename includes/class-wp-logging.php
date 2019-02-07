@@ -36,6 +36,8 @@ class WP_Logging {
 		// make a cron job for this hook to start pruning
 		add_action( 'wp_logging_prune_routine', array( $this, 'prune_logs' ) );
 
+		add_filter( 'the_content', array( $this, 'format_log' ), 400, 1 );
+
 	}
 
 	/**
@@ -452,6 +454,35 @@ class WP_Logging {
 		$logs = new \WP_Query( $query_args );
 
 		return (int) $logs->post_count;
+	}
+
+	/**
+	 * Formats the content;
+	 * @param $content
+	 *
+	 * @return string
+	 */
+	public function format_log( $content ) {
+		global $post;
+		if ( 'wp_log' === get_post_type() && is_main_query() ) {
+			$new_content = '';
+			$content_array = json_decode( $post->post_content );
+			foreach ( $content_array as $values ){
+				echo 'test';
+				print_r('<pre>');
+				print_r( $values );
+				print_r('</pre>');
+				if ( is_string( $values ) ) {
+					$new_content .= $values;
+				} else {
+					$new_content .= '<pre>' . print_r( $values, true ) . '</pre>';
+				}
+			}
+			$content = $new_content;
+		}
+
+		$content = 'tites';
+		return $content;
 	}
 }
 
