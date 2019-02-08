@@ -480,8 +480,6 @@ class WP_Logging {
 			}
 			$content = $new_content;
 		}
-
-		$content = 'tites';
 		return $content;
 	}
 }
