@@ -35,12 +35,12 @@ var CF_ZOHO_FIELD = {
                     jQuery( '#' + parent_field ).parent('div').find('.alert-wrapper').append( obj.return_message );
                 }
 
-
-
                 this.close_modal();
                 this.increase_limit();
                 this.check_limit();
             }
+        } else if ( obj.status === 'error' ) {
+            jQuery('body').unblock();
         }
     },
 
