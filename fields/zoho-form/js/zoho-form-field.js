@@ -61,6 +61,7 @@ var CF_ZOHO_FIELD = {
                     if ( 1 < modal_counter ) {
                         jQuery(this).find('button.caldera-forms-modal').addClass('hidden');
                     }
+                    jQuery(this).removeClass('hidden');
 
                     jQuery( '#' + field_id ).after( jQuery(this).html() );
                     jQuery(this).remove();
