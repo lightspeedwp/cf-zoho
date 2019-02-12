@@ -149,6 +149,8 @@ class Field {
 	 * Outputs the modals in the footer
 	 */
 	public function output_modals() {
+		$this->modals = apply_filters( 'lsx_cf_zoho_before_modal_output', $this->modals );
+
 		if ( ! empty( $this->modals ) && is_array( $this->modals ) ) {
 			foreach ( $this->modals as $form_id => $values ) {
 
