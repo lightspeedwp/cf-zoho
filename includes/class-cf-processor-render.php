@@ -251,6 +251,7 @@ class CF_Processor_Render {
 		'Vendor Name',
 		'What Id',
 		'Who Id',
+		'Territories'
 	];
 
 	/**

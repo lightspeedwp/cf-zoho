@@ -119,7 +119,5 @@ final class CF_Zoho {
 			'lsxCfZohoArgs',
 			$zoho_args
 		);
-
 	}
-
 }
