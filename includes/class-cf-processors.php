@@ -778,11 +778,11 @@ class CF_Processors {
 			$this->check_for_files( $mail, $data, $form );
 
 			//Update the trip and attach the PDF
-			if ( ! empty( $transdata['pdf_attachment'] ) ) {
+			/*if ( ! empty( $transdata['pdf_attachment'] ) ) {
 				foreach ( $transdata['pdf_attachment'] as $file_path ) {
 					$this->upload_file( $file_path );
 				}
-			}
+			}*/
 			$mail = apply_filters( 'lsx_cf_zoho_mail_attachment_check', $mail, $this->zoho_id, $data, $form, $this );
 			$this->end_logging( $this->zoho_id, 'File Upload' );
 		}
@@ -855,7 +855,7 @@ class CF_Processors {
 
 		if ( is_wp_error( $response ) ) {
 
-			$this->log( $response->get_error_message(), $body, 'WordPress Error', 0, 'error' );
+			$this->log( $response->get_error_message(), $body, 'WordPress Error', 0, 'error-wp' );
 
 			return [
 				'note' => $response->get_error_message(),
@@ -865,7 +865,7 @@ class CF_Processors {
 
 		if ( ! isset( $response['data'][0]['code'] ) || 'SUCCESS' !== $response['data'][0]['code'] ) {
 
-			$this->log( $response['data'][0]['message'], $body, print_r( $response, true ), 0, 'error' );
+			$this->log( $response['data'][0]['message'], $body, array( print_r( $response, true ), $path ), 0, 'error-zoho' );
 
 			return [
 				'note' => print_r( $response, true ),
@@ -874,7 +874,7 @@ class CF_Processors {
 		}
 
 		$object_id = $response['data'][0]['details']['id'];
-		$this->log( $response['data'][0]['message'], $body, $response['data'][0]['details'], $object_id, 'uploaded' );
+		$this->log( $response['data'][0]['message'], $body, array( print_r( $response['data'][0]['details'], true ), $path ), $object_id, 'uploaded' );
 	}
 
 	/**
