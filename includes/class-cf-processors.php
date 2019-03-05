@@ -889,6 +889,7 @@ class CF_Processors {
 		if ( ! empty( $this->additional_mails ) ) {
 			global $form;
 			$saved_form = $form;
+			$saved_id = $this->zoho_id;
 
 			remove_filter('caldera_forms_send_email', array(
 				$this,
@@ -905,12 +906,14 @@ class CF_Processors {
 
 			foreach ( $this->additional_mails as $entry_id => $values ) {
 				$form = $values['form'];
+				$this->zoho_id = $values['zoho_id'];
+
 				\Caldera_Forms_Save_Final::do_mailer( $values['form'], $entry_id );
 				do_action( 'lsx_cf_zoho_additional_mail_check', $entry_id, $values );
 				$this->log( $entry_id . ' Email Sent', $values, 'Email Sent', 0, 'email' );
 			}
-
 			$form = $saved_form;
+			$this->zoho_id = $saved_id;
 		}
 	}
 }
