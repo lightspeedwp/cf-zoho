@@ -796,7 +796,7 @@ class CF_Processors {
 		global $transdata;
 
 		if ( '' !== $this->zoho_id ) {
-			$mail = $this->mail;
+			//$mail = $this->mail;
 
 			$this->start_logging();
 			$this->check_for_files( $mail, $data, $form );
