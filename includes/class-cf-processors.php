@@ -55,6 +55,12 @@ class CF_Processors {
 	private $zoho_id = '';
 
 	/**
+	 * Contains the submitted email
+	 * @var string
+	 */
+	public $mail = '';
+
+	/**
 	 * @var zohoapi\Post
 	 */
 	public $post = '';
@@ -275,6 +281,11 @@ class CF_Processors {
 			$this,
 			'filter_ajax_return',
 		), 10, 2 );
+
+		add_filter( 'caldera_forms_mailer', array(
+			$this,
+			'save_mail_fix',
+		), 1, 1 );
 
 		add_filter( 'caldera_forms_mailer', array(
 			$this,
@@ -762,6 +773,16 @@ class CF_Processors {
 	}
 
 	/**
+	 * @param $mail
+	 * @param $data
+	 * @param $form
+	 */
+	public function save_mail_fix( $mail ) {
+		$this->mail = $mail;
+		return $mail;
+	}
+
+	/**
 	 * Prepare upload PDF attachments to zoho.
 	 * Attach passports to email
 	 *
@@ -773,7 +794,10 @@ class CF_Processors {
 	 */
 	public function mail_attachment_check( $mail, $data, $form ) {
 		global $transdata;
+
 		if ( '' !== $this->zoho_id ) {
+			$mail = $this->mail;
+
 			$this->start_logging();
 			$this->check_for_files( $mail, $data, $form );
 
@@ -810,6 +834,7 @@ class CF_Processors {
 				}
 			}
 		}
+		return $mail;
 	}
 
 	/**
@@ -915,5 +940,7 @@ class CF_Processors {
 			$form = $saved_form;
 			$this->zoho_id = $saved_id;
 		}
+
+		return $mail;
 	}
 }
