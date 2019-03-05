@@ -887,25 +887,30 @@ class CF_Processors {
 	public function additional_mail_check( $mail, $data, $form, $method ) {
 		$this->log( 'Additional Mails', $this->additional_mails, 'Additional Mails', 0, 'email' );
 		if ( ! empty( $this->additional_mails ) ) {
+			global $form;
+			$saved_form = $form;
 
 			remove_filter('caldera_forms_send_email', array(
 				$this,
 				'stagger_mailer',
 			), 1);
-			remove_filter( 'caldera_forms_mailer', array(
+			/*remove_filter( 'caldera_forms_mailer', array(
 				$this,
 				'mail_attachment_check',
-			), 11 );
+			), 11 );*/
 			remove_action( 'caldera_forms_mailer_complete', array(
 				$this,
 				'additional_mail_check',
 			), 11 );
 
 			foreach ( $this->additional_mails as $entry_id => $values ) {
+				$form = $values['form'];
 				\Caldera_Forms_Save_Final::do_mailer( $values['form'], $entry_id );
 				do_action( 'lsx_cf_zoho_additional_mail_check', $entry_id, $values );
 				$this->log( $entry_id . ' Email Sent', $values, 'Email Sent', 0, 'email' );
 			}
+
+			$form = $saved_form;
 		}
 	}
 }
