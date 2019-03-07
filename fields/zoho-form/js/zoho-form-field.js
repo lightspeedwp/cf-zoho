@@ -28,7 +28,7 @@ var CF_ZOHO_FIELD = {
                 to_save += obj.data.cf_id;
                 jQuery( '#' + parent_field ).val( to_save );
 
-                jQuery( '.caldera-forms-modal.modal-open' ).removeClass('modal-open').addClass('hidden').addClass('submitted');
+                //jQuery( '.caldera-forms-modal.modal-open' ).removeClass('modal-open').addClass('hidden').addClass('submitted');
 
                 console.log( obj.return_message );
                 if ( undefined !== obj.return_message && null !== obj.return_message && '' !== obj.return_message ) {
@@ -116,15 +116,17 @@ var CF_ZOHO_FIELD = {
     check_limit: function() {
         var count = this.field.attr('data-count');
         var limit = this.field.attr('data-limit');
-        if ( parseInt( count ) <= parseInt( limit ) ) {
+        /*if ( parseInt( count ) <= parseInt( limit ) ) {
             jQuery('button.caldera-forms-modal.hidden:not(.submitted)').first().removeClass('hidden');
-        }
+        }*/
 
         console.log('triggering the limit');
         if ( parseInt( count ) < parseInt( limit ) ) {
             jQuery('.caldera-form-page[data-formpage="1"] .zoho-form-field-validation input').prop('checked', false);
+            jQuery( 'button.caldera-forms-modal' ).removeClass('modal-open').removeClass('hidden').removeClass('submitted');
         } else {
             jQuery('.caldera-form-page[data-formpage="1"] .zoho-form-field-validation input').prop('checked', 'checked');
+            jQuery( 'button.caldera-forms-modal' ).removeClass('modal-open').addClass('hidden').addClass('submitted');
         }
         jQuery('body').unblock();
     },

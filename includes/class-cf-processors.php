@@ -382,7 +382,7 @@ class CF_Processors {
 
 		if ( ! isset( $response['data'][0]['code'] ) || ( 'SUCCESS' !== $response['data'][0]['code'] && 'DUPLICATE_DATA' !== $response['data'][0]['code'] ) ) {
 
-			$this->log( $response['data'][0]['message'], array( 'body' => $body, 'response' => $response ), 'Zoho Error', 0, 'error' );
+			$this->log( $response['data'][0]['message'], array( 'path' => $path, 'body' => $body, 'response' => $response ), 'Zoho Error', 0, 'error' );
 
 			return [
 				'note' => print_r( $response['data'][0]['message'] ) . ' - ' . $path,
