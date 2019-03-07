@@ -612,7 +612,12 @@ class CF_Processors {
 	public function do_side_request( $value ) {
 		$return = $value;
 		$entry = $this->get_entry_meta( $value );
+
+		$this->log( 'Entry Meta Unserialized', print_r($entry,true), '', 0, 'side-request-unserialized' );
+
 		$entry = maybe_unserialize( $entry );
+
+		$this->log( 'Entry Meta', print_r($entry,true), '', 0, 'side-request-meta' );
 
 		if ( is_array( $entry ) ) {
 			foreach ( $entry as $module => $data ) {
@@ -625,6 +630,7 @@ class CF_Processors {
 					$object_id = $this->do_request( $path, $data, $data );
 
 					if ( ! is_wp_error( $object_id ) ) {
+						$this->log( 'POST FIELDS', print_r($_POST,true), print_r($_POST,true), 0, 'side-request-error' );
 						$this->maybe_register_mailer( $return, $object_id, $module );
 						$return = $object_id;
 
