@@ -836,7 +836,7 @@ class CF_Processors {
 				$url_paths = explode( '/wp-content/', $data[ $field['ID'] ] );
 				if ( is_array( $url_paths ) && isset( $url_paths[1] ) ) {
 					$file_path .= $url_paths[1];
-					$this->upload_file( $file_path );
+					$this->upload_file( $file_path, false, false, $form );
 				}
 			}
 		}
@@ -848,9 +848,10 @@ class CF_Processors {
 	 * @param $file_path string
 	 * @param $forced_id boolean
 	 * @param $forced_module boolean
+	 * @param $form array | boolean
 	 * @return void | array
 	 */
-	public function upload_file( $file_path, $forced_id = false, $forced_module = false ) {
+	public function upload_file( $file_path, $forced_id = false, $forced_module = false, $form = false ) {
 
 		$zoho_id = $this->zoho_id;
 		if ( false !== $forced_id ) {
@@ -862,7 +863,7 @@ class CF_Processors {
 			$module = $forced_module;
 		}
 
-		$should_skip = apply_filters( 'lsx_cf_zoho_skip_file_upload', false, $module, $zoho_id );
+		$should_skip = apply_filters( 'lsx_cf_zoho_skip_file_upload', false, $module, $zoho_id, $form );
 		if ( true === $should_skip ) {
 			return;
 		}
