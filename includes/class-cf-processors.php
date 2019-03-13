@@ -441,7 +441,13 @@ class CF_Processors {
 		//Check for the Layout and change it to an array.
 		if ( isset( $object[ 'Layout' ] ) && '' !== $object[ 'Layout' ] ) {
 			$layout = $object[ 'Layout' ];
-			$object[ 'Layout' ] = array( 'id' => $layout );
+			$layout = explode( '|', $layout );
+			if ( is_array( $layout ) && 2 <= count( $layout ) ) {
+				$object[ 'Layout' ] = array(
+					'name' => $layout[0],
+					'id' => $layout[1],
+				);
+			}
 		}
 
 		return $object;

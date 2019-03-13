@@ -36,6 +36,10 @@ In order for this plugin to work at efficient speeds, Zoho CRM fields and users 
 * Date fields need to be set in the format yyyy-mm-dd otherwise they will fail.
 * The date magic tag can be used in the following format "{date:Y-m-d}"
 
+== Processor Configuration ==
+
+* When setting a "Layout" you will need to include the name and the ID separated by a | symbol.  The name goes first, and then the ID. e.g "Direct|11111111111"
+
 == Upgrade Notice ==
 
 If you are upgrading from version 1.1.2 or earlier, you will need to give the plugin access to Zoho as per the LSX CF Zoho Options page. All other settings should be retained from the previous version of the plugin.
