@@ -31,6 +31,12 @@ Go to `https://accounts.zoho.eu/developerconsole` or `https://accounts.zoho.com/
 
 In order for this plugin to work at efficient speeds, Zoho CRM fields and users data are cached. If you have added new users or fields to your Zoho CRM, go to the LSX CF Zoho Options page, check the "Flush Cache" checkbox and click the "Save Settings" button. This will flush all cached settings. Next time you edit a processor, new fields and/or users will be displayed.
 
+== Field Formatting ==
+
+* Date fields need to be set in the format yyyy-mm-dd otherwise they will fail.
+* The date magic tag can be used in the following format "{date:Y-m-d}"
+
 == Upgrade Notice ==
 
 If you are upgrading from version 1.1.2 or earlier, you will need to give the plugin access to Zoho as per the LSX CF Zoho Options page. All other settings should be retained from the previous version of the plugin.
+
