@@ -47,6 +47,10 @@
 
 		<?php foreach ( $section['fields'] as $field_num => $field ) : ?>
 
+			<?php $field = apply_filters( 'lsx_cf_zoho_processor_field_render', $field ); ?>
+
+			<?php if ( 'Contact Owner' === $field['field_label'] ) { $field['val'] = ''; } ?>
+
 			<?php $key = sanitize_key( $field['field_label'] ); ?>
 
 			<?php if ( ! empty( $field['val'] ) ) : ?>
