@@ -422,7 +422,7 @@ class CF_Processors {
 				$value = $this->get_form_value( $field );
 
 				$value = trim( $value );
-				if ( '' === $value || '-None-' === $value || '--None--' === $value || false === $value ) {
+				if ( '-None-' === $value || '--None--' === $value || false === $value ) {
 					continue;
 				}
 				$label = str_replace( ' ', '_', $field['field_label'] );
