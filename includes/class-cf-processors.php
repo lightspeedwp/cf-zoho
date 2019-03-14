@@ -451,6 +451,18 @@ class CF_Processors {
 			}
 		}
 
+		//Check for the Layout and change it to an array.
+		if ( isset( $object[ 'Owner' ] ) && '' !== $object[ 'Owner' ] ) {
+			$layout = $object[ 'Owner' ];
+			$layout = explode( '|', $layout );
+			if ( is_array( $layout ) && 2 <= count( $layout ) ) {
+				$object[ 'Owner' ] = array(
+					'name' => $layout[0],
+					'id' => $layout[1],
+				);
+			}
+		}
+
 		return $object;
 	}
 
