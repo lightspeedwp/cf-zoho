@@ -151,15 +151,11 @@ class Pre_Populate {
 			} else {
 				if ( null === $this->response ) {
 					$this->log( 'Null Response', $this->response, 'Pre Populate Error', 0, 'error' );
-				} else {
-					//$this->log( $this->response->get_error_message(), $this->response, 'Pre Populate Error', 0, 'error' );
 				}
 			}
 		} else {
 			if ( null === $this->response ) {
 				$this->log( 'Null Response', $this->response, 'Pre Populate Error', 0, 'error' );
-			} else {
-				//$this->log( $this->response->get_error_message(), $this->response, 'Pre Populate Error', 0, 'error' );
 			}
 		}
 	}

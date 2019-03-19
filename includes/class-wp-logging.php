@@ -468,10 +468,9 @@ class WP_Logging {
 			$new_content = '';
 			$content_array = json_decode( $post->post_content );
 			foreach ( $content_array as $values ){
-				echo 'test';
-				print_r('<pre>');
+				print_r('<pre>' );
 				print_r( $values );
-				print_r('</pre>');
+				print_r('</pre>' );
 				if ( is_string( $values ) ) {
 					$new_content .= $values;
 				} else {

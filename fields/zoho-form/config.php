@@ -1,7 +1,7 @@
 <div class="caldera-config-group">
-	<label><?php _e('Required', 'lsx-cf-zoho'); ?></label>
+	<label><?php esc_html_e( 'Required', 'lsx-cf-zoho' ); ?></label>
 	<div class="caldera-config-field">
-		<label><input type="checkbox" class="field-config {{_id}}_required" name="{{_name}}[required]" value="1" {{#if required}}checked="checked"{{/if}}> <?php _e('Required', 'lsx-cf-zoho'); ?></label>
+		<label><input type="checkbox" class="field-config {{_id}}_required" name="{{_name}}[required]" value="1" {{#if required}}checked="checked"{{/if}}> <?php esc_html_e( 'Required', 'lsx-cf-zoho' ); ?></label>
 	</div>
 </div>
 

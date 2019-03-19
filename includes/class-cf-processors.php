@@ -382,7 +382,16 @@ class CF_Processors {
 
 		if ( ! isset( $response['data'][0]['code'] ) || ( 'SUCCESS' !== $response['data'][0]['code'] && 'DUPLICATE_DATA' !== $response['data'][0]['code'] ) ) {
 
-			$this->log( $response['data'][0]['message'], array( 'path' => $path, 'body' => $body, 'response' => $response ), 'Zoho Error', 0, 'error' );
+			$this->log(
+				$response['data'][0]['message'],
+				array(
+					'path' => $path,
+					'body' => $body,
+					'response' => $response,
+					),
+				'Zoho Error',
+				0,
+				'error');
 
 			return [
 				'note' => print_r( $response['data'][0]['message'] ) . ' - ' . $path,
@@ -440,11 +449,11 @@ class CF_Processors {
 		}
 
 		//Check for the Layout and change it to an array.
-		if ( isset( $object[ 'Layout' ] ) && '' !== $object[ 'Layout' ] ) {
-			$layout = $object[ 'Layout' ];
+		if ( isset( $object['Layout'] ) && '' !== $object['Layout'] ) {
+			$layout = $object['Layout'];
 			$layout = explode( '|', $layout );
 			if ( is_array( $layout ) && 2 <= count( $layout ) ) {
-				$object[ 'Layout' ] = array(
+				$object['Layout'] = array(
 					'name' => $layout[0],
 					'id' => $layout[1],
 				);
@@ -452,11 +461,11 @@ class CF_Processors {
 		}
 
 		//Check for the Layout and change it to an array.
-		if ( isset( $object[ 'Owner' ] ) && '' !== $object[ 'Owner' ] ) {
-			$layout = $object[ 'Owner' ];
+		if ( isset( $object['Owner'] ) && '' !== $object['Owner'] ) {
+			$layout = $object['Owner'];
 			$layout = explode( '|', $layout );
 			if ( is_array( $layout ) && 2 <= count( $layout ) ) {
-				$object[ 'Owner' ] = array(
+				$object['Owner'] = array(
 					'name' => $layout[0],
 					'id' => $layout[1],
 				);
@@ -591,21 +600,6 @@ class CF_Processors {
 				}
 			}
 
-			/*if ( '' !== $value ) {
-				$values = explode( ',', $value );
-				if ( ! is_array( $values ) ) {
-					$values = array( $values );
-				}
-				foreach ( $values as $entryid ) {
-					if ( ! in_array( $entryid, $this->requests_completed ) ) {
-						$return = $this->do_side_request( $entryid );
-						$this->update_entry( $entryid, $return );
-						$new_values[] = $return;
-						$this->requests_completed[] = $entryid;
-					}
-				}
-			}*/
-
 			if ( ! empty( $new_values ) ) {
 				$new_values = implode( ',', $new_values );
 				$value = $new_values;
@@ -632,11 +626,11 @@ class CF_Processors {
 		$return = $value;
 		$entry = $this->get_entry_meta( $value );
 
-		$this->log( 'Entry Meta Unserialized', print_r($entry,true), '', 0, 'side-request-unserialized' );
+		$this->log( 'Entry Meta Unserialized', print_r( $entry,true ), '', 0, 'side-request-unserialized' );
 
 		$entry = maybe_unserialize( $entry );
 
-		$this->log( 'Entry Meta', print_r($entry,true), '', 0, 'side-request-meta' );
+		$this->log( 'Entry Meta', print_r( $entry,true ), '', 0, 'side-request-meta' );
 
 		if ( is_array( $entry ) ) {
 			foreach ( $entry as $module => $data ) {
