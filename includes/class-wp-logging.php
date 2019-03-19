@@ -467,10 +467,10 @@ class WP_Logging {
 		if ( 'wp_log' === get_post_type() && is_main_query() ) {
 			$new_content = '';
 			$content_array = json_decode( $post->post_content );
-			foreach ( $content_array as $values ){
-				print_r('<pre>' );
+			foreach ( $content_array as $values ) {
+				print_r( '<pre>' );
 				print_r( $values );
-				print_r('</pre>' );
+				print_r( '</pre>' );
 				if ( is_string( $values ) ) {
 					$new_content .= $values;
 				} else {
