@@ -382,16 +382,12 @@ class CF_Processors {
 
 		if ( ! isset( $response['data'][0]['code'] ) || ( 'SUCCESS' !== $response['data'][0]['code'] && 'DUPLICATE_DATA' !== $response['data'][0]['code'] ) ) {
 
-			$this->log(
-				$response['data'][0]['message'],
-				array(
-					'path' => $path,
-					'body' => $body,
-					'response' => $response,
-					),
-				'Zoho Error',
-				0,
-				'error');
+			$error_response = array(
+				'path' => $path,
+				'body' => $body,
+				'response' => $response,
+			);
+			$this->log( $response['data'][0]['message'], $error_response, 'Zoho Error', 0, 'error' );
 
 			return [
 				'note' => print_r( $response['data'][0]['message'] ) . ' - ' . $path,
@@ -582,11 +578,9 @@ class CF_Processors {
 
 		$zoho_field = $this->is_zoho_form_field( $this->config[ $key ] );
 		if ( false !== $zoho_field ) {
-
 			$new_values = array();
-
-			if ( isset( $_POST[ $zoho_field ] ) ) {
-				$values = explode( ',', $_POST[ $zoho_field ] );
+			if ( isset( $value ) ) {
+				$values = explode( ',', $value );
 				if ( ! is_array( $values ) ) {
 					$values = array( $values );
 				}
@@ -643,7 +637,7 @@ class CF_Processors {
 					$object_id = $this->do_request( $path, $data, $data );
 
 					if ( ! is_wp_error( $object_id ) ) {
-						$this->log( 'POST FIELDS', print_r($_POST,true), print_r($_POST,true), 0, 'side-request-error' );
+						$this->log( 'POST FIELDS', $data, print_r( $data,true ), 0, 'side-request-error' );
 						$this->maybe_register_mailer( $return, $object_id, $module );
 						$return = $object_id;
 

@@ -3,6 +3,8 @@
 # 2.1.0
 * Dev - Added in a filter to allow the attaching of files from the upload field to the processor running.
 * Dev - Added in a form processing notification using the jquery.blockUI library
+* Fix - Fixed various formatting issues when sending a request to Zoho
+* Dev - Added in 2 new sections to the readme.txt for help on form configuration
 
 # 2.0.0
 * Dev - Upgraded the API version to 2.0
