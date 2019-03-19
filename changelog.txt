@@ -1,6 +1,6 @@
 ## Changelog
 
-# 2.1.0
+# 2.0.1
 * Dev - Added in a filter to allow the attaching of files from the upload field to the processor running.
 * Dev - Added in a form processing notification using the jquery.blockUI library
 * Fix - Fixed various formatting issues when sending a request to Zoho
