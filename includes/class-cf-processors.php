@@ -398,7 +398,7 @@ class CF_Processors {
 		$object_id = $response['data'][0]['details']['id'];
 
 		//TODO THIS IS WHERE THE EXTRA FILTER GOES
-		$this->log( $response['data'][0]['message'], $object, $response['data'][0]['details'], $object_id, 'do_request' );
+		$this->log( $response['data'][0]['message'], $body, $response['data'][0]['details'], $object_id, 'do_request' );
 
 		return $object_id;
 	}

@@ -1,5 +1,8 @@
 ## Changelog
 
+# 2.0.2
+* Dev - Added in a setting so you have the choice to enable the jQuery BlockUI js or not.
+
 # 2.0.1
 * Dev - Added in a filter to allow the attaching of files from the upload field to the processor running.
 * Dev - Added in a form processing notification using the jquery.blockUI library

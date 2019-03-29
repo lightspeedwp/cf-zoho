@@ -171,19 +171,28 @@ class Settings {
 			[ $this, 'lsx_cf_zoho_settings_field_cb' ],
 			'lsx_cf_zoho'
 		);
+
+		// Enable Debug
+		add_settings_section(
+			'lsx_cf_zoho_enable_form_blocker',
+			__( 'Enable BlockUI.js', 'lsx-cf-zoho' ),
+			[ $this, 'lsx_cf_zoho_settings_field_cb' ],
+			'lsx_cf_zoho'
+		);
 	}
 
 	/**
 	 * Section templates.
 	 */
 	private $templates = [
-		'lsx_cf_zoho_section_developers' => 'settings-section.php',
-		'lsx_cf_zoho_section_api_keys'   => 'settings-api.php',
-		'lsx_cf_zoho_url'                => 'settings-url.php',
-		'lsx_cf_zoho_client_id'          => 'settings-client-id.php',
-		'lsx_cf_zoho_client_secret'      => 'settings-client-secret.php',
-		'flush_transients'              => 'settings-flush-transients.php',
-		'lsx_cf_zoho_enable_debug'       => 'settings-enable-debug.php',
+		'lsx_cf_zoho_section_developers'  => 'settings-section.php',
+		'lsx_cf_zoho_section_api_keys'    => 'settings-api.php',
+		'lsx_cf_zoho_url'                 => 'settings-url.php',
+		'lsx_cf_zoho_client_id'           => 'settings-client-id.php',
+		'lsx_cf_zoho_client_secret'       => 'settings-client-secret.php',
+		'flush_transients'                => 'settings-flush-transients.php',
+		'lsx_cf_zoho_enable_debug'        => 'settings-enable-debug.php',
+		'lsx_cf_zoho_enable_form_blocker' => 'settings-enable-block-form.php',
 	];
 
 	/**

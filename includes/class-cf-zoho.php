@@ -105,19 +105,20 @@ final class CF_Zoho {
 	 * @subpackage setup
 	 */
 	public function scripts() {
-		wp_enqueue_script( 'blockUI', LSX_CFZ_URL . '/assets/js/jquery.blockUI.js', array( 'jquery' ), LSX_CFZ_VERSION, true );
-		wp_enqueue_script( 'lsx-cf-zoho-js', LSX_CFZ_URL . '/assets/js/lsx-cf-zoho.js', array( 'blockUI' ), LSX_CFZ_VERSION, true );
-
-		$zoho_args =
-			array(
-				'blockMessage' => __( 'Please wait while we capture your details', 'lsx-cf-zoho' ),
-				'headerSelector'   => '.header-wrap',
+		if ( true === (bool) $this->settings->options->get_option( 'lsx_cf_zoho_enable_form_blocker' ) ) {
+			wp_enqueue_script( 'blockUI', LSX_CFZ_URL . '/assets/js/jquery.blockUI.js', array( 'jquery' ), LSX_CFZ_VERSION, true );
+			wp_enqueue_script( 'lsx-cf-zoho-js', LSX_CFZ_URL . '/assets/js/lsx-cf-zoho.js', array( 'blockUI' ), LSX_CFZ_VERSION, true );
+			$zoho_args =
+				array(
+					'blockMessage' => __( 'Please wait while we capture your details', 'lsx-cf-zoho' ),
+					'headerSelector'   => '.header-wrap',
+				);
+			$zoho_args = apply_filters( 'lsx_cf_zoho_js_args', $zoho_args );
+			wp_localize_script(
+				'lsx-cf-zoho-js',
+				'lsxCfZohoArgs',
+				$zoho_args
 			);
-		$zoho_args = apply_filters( 'lsx_cf_zoho_js_args', $zoho_args );
-		wp_localize_script(
-			'lsx-cf-zoho-js',
-			'lsxCfZohoArgs',
-			$zoho_args
-		);
+		}
 	}
 }
