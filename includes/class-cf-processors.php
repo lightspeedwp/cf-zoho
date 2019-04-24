@@ -8,6 +8,7 @@
 namespace lsx_cf_zoho\includes;
 
 use lsx_cf_zoho\includes\zohoapi;
+use lsx_cf_zoho\admin;
 
 /**
  * Processors Class.
@@ -53,6 +54,12 @@ class CF_Processors {
 	 * @var string
 	 */
 	private $zoho_id = '';
+
+	/**
+	 * Holds the Fields class
+	 * @var \lsx_cf_zoho\admin\Settings()
+	 */
+	var $settings;
 
 	/**
 	 * Contains the submitted email
@@ -270,6 +277,7 @@ class CF_Processors {
 	 */
 	public function do_submission() {
 		$this->start_logging();
+		$this->settings = new admin\Settings();
 		/**
 		 * TODO: This is where we check to see if we should submit this info or not.
 		 */
@@ -579,6 +587,9 @@ class CF_Processors {
 		$zoho_field = $this->is_zoho_form_field( $this->config[ $key ] );
 		if ( false !== $zoho_field ) {
 			$new_values = array();
+			//if ( isset( $_POST[ $zoho_field ] ) ) {
+				//$values = explode( ',', $_POST[ $zoho_field ] );
+
 			if ( isset( $value ) ) {
 				$values = explode( ',', $value );
 				if ( ! is_array( $values ) ) {
@@ -781,7 +792,9 @@ class CF_Processors {
 			$out['return_message'] = '<div data-entry-id="' . $out['data']['cf_id'] . '" class="alert alert-success fade in">' . $return_message . '<a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a></div>';
 		}
 
-		$out['html'] .= '<script>lsx_cf_zoho.unblockForms();</script>';
+		if ( true === (bool) $this->settings->options->get_option( 'lsx_cf_zoho_enable_form_blocker' ) ) {
+			$out['html'] .= '<script>lsx_cf_zoho.unblockForms();</script>';
+		}
 		return $out;
 	}
 

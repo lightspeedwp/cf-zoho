@@ -1,5 +1,8 @@
 ## Changelog
 
+# 2.0.3
+* Fix - Added in a conditional setting to only add the form unblocker if its active.
+
 # 2.0.2
 * Dev - Added in a setting so you have the choice to enable the jQuery BlockUI js or not.
 
