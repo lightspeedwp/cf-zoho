@@ -8,6 +8,7 @@
 namespace lsx_cf_zoho\includes;
 
 use lsx_cf_zoho\includes\zohoapi;
+use lsx_cf_zoho\admin;
 
 /**
  * Processors Class.
@@ -82,6 +83,12 @@ class CF_Processors {
 	 * @var array
 	 */
 	public $logging_array = array();
+	
+	/**
+	 * Holds the Fields class
+	 * @var \lsx_cf_zoho\admin\Settings()
+	 */
+	var $settings;	
 
 	/**
 	 * Registers our processors with Caldera Forms.
@@ -781,7 +788,9 @@ class CF_Processors {
 			$out['return_message'] = '<div data-entry-id="' . $out['data']['cf_id'] . '" class="alert alert-success fade in">' . $return_message . '<a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a></div>';
 		}
 
-		$out['html'] .= '<script>lsx_cf_zoho.unblockForms();</script>';
+		if ( true === (bool) $this->settings->options->get_option( 'lsx_cf_zoho_enable_form_blocker' ) ) {
+			$out['html'] .= '<script>lsx_cf_zoho.unblockForms();</script>';
+		}
 		return $out;
 	}
 
