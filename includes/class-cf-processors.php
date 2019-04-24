@@ -89,6 +89,12 @@ class CF_Processors {
 	 * @var array
 	 */
 	public $logging_array = array();
+	
+	/**
+	 * Holds the Fields class
+	 * @var \lsx_cf_zoho\admin\Settings()
+	 */
+	var $settings;	
 
 	/**
 	 * Registers our processors with Caldera Forms.
