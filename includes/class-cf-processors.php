@@ -428,6 +428,9 @@ class CF_Processors {
 			$fields = $this->get_module_fields();
 		}
 
+		$fields       = apply_filters( 'lsx_cf_zoho_object_fields', $fields, $this->module, $this->form );
+		$this->config = apply_filters( 'lsx_cf_zoho_processor_config', $this->config, $this->module, $this->form );
+
 		foreach ( $fields as $section ) {
 
 			foreach ( $section['fields'] as $field ) {
@@ -452,7 +455,7 @@ class CF_Processors {
 			}
 		}
 
-		//Check for the Layout and change it to an array.
+		// Check for the Layout and change it to an array.
 		if ( isset( $object['Layout'] ) && '' !== $object['Layout'] ) {
 			$layout = $object['Layout'];
 			$layout = explode( '|', $layout );
@@ -464,7 +467,7 @@ class CF_Processors {
 			}
 		}
 
-		//Check for the Layout and change it to an array.
+		// Check for the Layout and change it to an array.
 		if ( isset( $object['Owner'] ) && '' !== $object['Owner'] ) {
 			$layout = $object['Owner'];
 			$layout = explode( '|', $layout );
