@@ -77,7 +77,7 @@ class CF_Processors {
 	 * @var array
 	 */
 	public $requests_completed = array();
-	
+
 	/**
 	 * Records the extra side requests and their modules.
 	 * @var array

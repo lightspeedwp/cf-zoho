@@ -56,7 +56,7 @@ class Tokens {
 	 *
 	 * @var string.
 	 */
-	private $api_domain = 'https://crmsandbox.zoho.com';	
+	private $api_domain = 'https://crmsandbox.zoho.com';
 
 	/**
 	 * Getter for $api_domain.
