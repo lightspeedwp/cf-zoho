@@ -95,7 +95,7 @@ final class CF_Zoho {
 		$this->pre_populate = Pre_Populate::init();
 		add_filter( 'caldera_forms_render_pre_get_entry', [ $this->pre_populate, 'pre_populate_form' ], 10, 2 );
 
-		add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 1999 );
+		add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 5 );
 	}
 
 	/**
