@@ -825,9 +825,8 @@ class CF_Processors {
 		global $transdata;
 
 		if ( '' !== $this->zoho_id ) {
-			//$mail = $this->mail;
-
 			$this->start_logging();
+			$mail = apply_filters( 'lsx_cf_zoho_mail_attachment_check', $mail, $this->zoho_id, $data, $form, $this );
 			$this->check_for_files( $mail, $data, $form );
 
 			//Update the trip and attach the PDF
@@ -836,7 +835,6 @@ class CF_Processors {
 					$this->upload_file( $file_path );
 				}
 			}*/
-			$mail = apply_filters( 'lsx_cf_zoho_mail_attachment_check', $mail, $this->zoho_id, $data, $form, $this );
 			$this->end_logging( $this->zoho_id, 'File Upload' );
 		}
 		return $mail;
@@ -859,7 +857,12 @@ class CF_Processors {
 				$url_paths = explode( '/wp-content/', $data[ $field['ID'] ] );
 				if ( is_array( $url_paths ) && isset( $url_paths[1] ) ) {
 					$file_path .= $url_paths[1];
-					$this->upload_file( $file_path, false, false, $form );
+					$module_id = false;
+					$module_id = apply_filters( 'lsx_cf_zoho_file_upload_module_id', $module_id, $form );
+
+					$module_name = false;
+					$module_name = apply_filters( 'lsx_cf_zoho_file_upload_module_name', $module_name, $form );
+					$this->upload_file( $file_path, $module_id, $module_name, $form );
 				}
 			}
 		}
