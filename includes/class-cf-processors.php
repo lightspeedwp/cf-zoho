@@ -20,28 +20,28 @@ class CF_Processors {
 	 *
 	 * @var array.
 	 */
-	private $config = [];
+	public $config = [];
 
 	/**
 	 * The current form being processed.
 	 *
 	 * @var array.
 	 */
-	private $form = [];
+	public $form = [];
 
 	/**
 	 * Module name.
 	 *
 	 * @var string.
 	 */
-	private $module = '';
+	public $module = '';
 
 	/**
 	 * Contains any additional mails that need to be sent out.
 	 *
 	 * @var array.
 	 */
-	private $additional_mails = array();
+	public $additional_mails = array();
 
 	/**
 	 * Contains the object built and stored.
@@ -375,12 +375,13 @@ class CF_Processors {
 	public function do_request( $path, $body, $object, $has_attachments = false, $method = 'POST' ) {
 		$post     = new zohoapi\Post();
 		$this->post = $post;
+		$this->log( $path, $body, $path, 0, 'do-request-data' );
 
 		$response = $post->request( $path, $body, false, $has_attachments, $method );
 
 		if ( is_wp_error( $response ) ) {
 
-			$this->log( $response->get_error_message(), $object, 'WordPress Error', 0, 'error' );
+			$this->log( $response->get_error_message(), $response, 'WordPress Error', 0, 'do-request-error' );
 
 			return [
 				'note' => $response->get_error_message(),
@@ -634,11 +635,8 @@ class CF_Processors {
 		$return = $value;
 		$entry = $this->get_entry_meta( $value );
 
-		$this->log( 'Entry Meta Unserialized', print_r( $entry,true ), '', 0, 'side-request-unserialized' );
-
+		$this->log( 'Entry Meta Unserialized', print_r( $entry,true ), 'Do Side Request Meta', 0, 'side-request-meta' );
 		$entry = maybe_unserialize( $entry );
-
-		$this->log( 'Entry Meta', print_r( $entry,true ), '', 0, 'side-request-meta' );
 
 		if ( is_array( $entry ) ) {
 			foreach ( $entry as $module => $data ) {
@@ -651,10 +649,10 @@ class CF_Processors {
 					$object_id = $this->do_request( $path, $data, $data );
 
 					if ( ! is_wp_error( $object_id ) ) {
-						$this->log( 'POST FIELDS', $data, print_r( $data,true ), 0, 'side-request-error' );
 						$this->maybe_register_mailer( $return, $object_id, $module );
 						$return = $object_id;
 
+						$this->log( 'Que Contact Role', $return, 'Que Contact Role', 0, 'request-list-addition' );
 						//This registers the module to be linked.
 						$this->requests_list[ $module ][] = $return;
 					} else {
