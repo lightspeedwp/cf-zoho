@@ -96,6 +96,10 @@ final class CF_Zoho {
 		add_filter( 'caldera_forms_render_pre_get_entry', [ $this->pre_populate, 'pre_populate_form' ], 10, 2 );
 
 		add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 5 );
+		add_filter( 'caldera_forms_ajax_return', array(
+			$this,
+			'filter_ajax_return',
+		), 10, 2 );
 	}
 
 	/**
@@ -120,5 +124,19 @@ final class CF_Zoho {
 				$zoho_args
 			);
 		}
+	}
+
+	/**
+	 * Filter the ajax return and maybe add our output
+	 * @param $out
+	 * @param $form
+	 *
+	 * @return mixed
+	 */
+	public function filter_ajax_return( $out, $form ) {
+		if ( true === (bool) $this->settings->options->get_option( 'lsx_cf_zoho_enable_form_blocker' ) ) {
+			$out['html'] .= '<script>lsx_cf_zoho.unblockForms();</script>';
+		}
+		return $out;
 	}
 }
