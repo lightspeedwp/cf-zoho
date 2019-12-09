@@ -2,6 +2,7 @@
 
 ### 2.0.4 (in development)
 * Fix - Changed the form variables from "private" to "public"
+* Dev - Moved the form "unblock" function into its own class and out of the processor.
 
 ### 2.0.3
 * Fix - Added in a conditional setting to only add the form unblocker if its active.
