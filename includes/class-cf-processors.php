@@ -285,6 +285,7 @@ class CF_Processors {
 			$this,
 			'stagger_mailer',
 		), 1, 2);
+
 		add_filter( 'caldera_forms_ajax_return', array(
 			$this,
 			'filter_ajax_return',
@@ -796,6 +797,8 @@ class CF_Processors {
 		if ( true === (bool) $this->settings->options->get_option( 'lsx_cf_zoho_enable_form_blocker' ) ) {
 			$out['html'] .= '<script>lsx_cf_zoho.unblockForms();</script>';
 		}
+		$out['html'] .= print_r( $this->settings->options->get_option( 'lsx_cf_zoho_enable_form_blocker' ), true );
+		$out['html'] . 'Submission Test';
 		return $out;
 	}
 
