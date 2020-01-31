@@ -2,6 +2,7 @@
 
 ### 2.0.4 (in development)
 * Fix - Changed the form variables from "private" to "public"
+* Dev - Added in a filter to allow skipping of the zoho request. 'lsx_cf_zoho_skip_do_request'
 
 ### 2.0.3
 * Fix - Added in a conditional setting to only add the form unblocker if its active.

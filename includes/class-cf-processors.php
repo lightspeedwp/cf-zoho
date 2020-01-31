@@ -335,8 +335,14 @@ class CF_Processors {
 		if ( isset( $this->config['_return_information'] ) && ( true === $this->config['_return_information'] || 'true' === $this->config['_return_information'] || 1 === $this->config['_return_information'] ) ) {
 			$object_id = $this->capture_info( $this->module, $body, $object );
 		} else {
-			$object_id = $this->do_request( $path, $body, $object );
-			$this->zoho_id = $object_id;
+			if ( false === apply_filters( 'lsx_cf_zoho_skip_do_request', false, $this->form ) ) {
+				$object_id = $this->do_request( $path, $body, $object );
+				$this->zoho_id = $object_id;
+			} else {
+				$object_id = false;
+				$this->zoho_id = $object_id;
+				$this->log( 'Zoho Skipped', 'Zoho Skipped', 'Zoho Skipped', 0, 'zoho-skipped' );
+			}
 
 			//This is where the actions are run to link the items.
 			do_action( 'lsx_cf_zoho_do_submission_complete', $object_id, $this->module, $this->requests_list, $this );
