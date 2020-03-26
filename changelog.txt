@@ -11,6 +11,7 @@
 - Changed the form variables from "private" to "public"
 
 ### Security
+- Updating npm packages.
 - General testing to ensure compatibility with latest WordPress version (5.4).
 - General testing to ensure compatibility with latest LSX Theme version (2.7).
 
