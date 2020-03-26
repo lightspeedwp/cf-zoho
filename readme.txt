@@ -2,9 +2,9 @@
 Contributors: feedmymedia, matttrustmytravel
 Tags: Caldera Forms, zoho
 Requires at least: 4.8
-Tested up to: 5.0.3
+Tested up to: 5.4
 Requires PHP: 7.0
-Stable tag: 2.0.3
+Stable tag: 2.0.4
 License: GPLv3.0+
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -39,8 +39,3 @@ In order for this plugin to work at efficient speeds, Zoho CRM fields and users 
 == Processor Configuration ==
 
 * When setting a "Layout" you will need to include the name and the ID separated by a | symbol.  The name goes first, and then the ID. e.g "Direct|11111111111"
-
-== Upgrade Notice ==
-
-If you are upgrading from version 1.1.2 or earlier, you will need to give the plugin access to Zoho as per the LSX CF Zoho Options page. All other settings should be retained from the previous version of the plugin.
-

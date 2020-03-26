@@ -6,7 +6,7 @@
  * Plugin Name:       LSX Zoho CRM Addon for Caldera Forms
  * Plugin URI:        https://github.com/lightspeeddevelopment/cf-zoho
  * Description:       Caldera Forms is one of a kind WordPress form builder. With its user friendly drag and drop interface, it’s simple to create forms for your WordPress site that look awesome on any device. Caldera also comes with a range of add-ons, like integration with the Zoho CRM platform, which allows users to automate their day-to-day business activities allowing them to focus on selling without having to worry about digging through data. Use the extension to track your sales activities and gain complete understanding of your sales cycle.
- * Version:           2.0.3
+ * Version:           2.0.4
  * Author:            LightSpeed
  * Author URI:        https://www.lsdev.biz/
  * Contributors       feedmycode, matttrustmytravel
@@ -25,7 +25,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Currently plugin version.
  */
-define( 'LSX_CFZ_VERSION', '2.0.3' );
+define( 'LSX_CFZ_VERSION', '2.0.4' );
 define( 'LSX_CFZ_ABSPATH', dirname( __FILE__ ) . '/' );
 
 define( 'LSX_CFZ_TEMPLATE_PATH', LSX_CFZ_ABSPATH . 'templates/' );
