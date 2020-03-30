@@ -1,7 +1,7 @@
 # Change log
 
 
-## [Unreleased] - Minor version 2.0.4
+## [[2.0.4]](https://github.com/lightspeeddevelopment/cf-zoho/releases/tag/2.0.4) - 2020-03-30
 
 ### Added
 - Added in a filter to allow skipping of the zoho request. 'lsx_cf_zoho_skip_do_request'
