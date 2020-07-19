@@ -21,7 +21,7 @@
     "gulp-sort": "^2.0.0",
     "gulp-wp-pot": "^2.3.2",
     "kind-of": "^6.0.3",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "minimatch": "^3.0.2",
     "minimist": "^1.2.3"
   }
