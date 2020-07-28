@@ -1,5 +1,9 @@
 # Change log
 
+## [[2.0.5]](https://github.com/lightspeeddevelopment/cf-zoho/releases/tag/2.0.5) - Unreleased
+
+### Fixed
+- [#11](https://github.com/lightspeeddevelopment/cf-zoho/issues/11) Changed the "duplicate email" field to an array instead of a string.
 
 ## [[2.0.4]](https://github.com/lightspeeddevelopment/cf-zoho/releases/tag/2.0.4) - 2020-03-30
 

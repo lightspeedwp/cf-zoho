@@ -311,7 +311,7 @@ class CF_Processors {
 
 		if ( isset( $this->config['_allow_duplicates'] ) && 'update' === $this->config['_allow_duplicates'] ) {
 			$path                            .= '/upsert';
-			$object['duplicate_check_fields'] = 'Email';
+			$object['duplicate_check_fields'] = array( 'Email' );
 		}
 
 		$trigger = [];
@@ -598,11 +598,9 @@ class CF_Processors {
 		$zoho_field = $this->is_zoho_form_field( $this->config[ $key ] );
 		if ( false !== $zoho_field ) {
 			$new_values = array();
-			if ( isset( $_POST[ $zoho_field ] ) ) {
-				$values = explode( ',', $_POST[ $zoho_field ] );
+			if ( isset( $_POST[ $zoho_field ] ) ) { // @codingStandardsIgnoreLine
+				$values = explode( ',', $_POST[ $zoho_field ] ); // @codingStandardsIgnoreLine
 
-			//if ( isset( $value ) ) {
-				//$values = explode( ',', $value );
 				if ( ! is_array( $values ) ) {
 					$values = array( $values );
 				}
