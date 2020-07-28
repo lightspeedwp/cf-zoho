@@ -598,11 +598,9 @@ class CF_Processors {
 		$zoho_field = $this->is_zoho_form_field( $this->config[ $key ] );
 		if ( false !== $zoho_field ) {
 			$new_values = array();
-			if ( isset( $_POST[ $zoho_field ] ) ) { // phpcs:ignore
-				$values = explode( ',', $_POST[ $zoho_field ] ); // phpcs:ignore
+			if ( isset( $_POST[ $zoho_field ] ) ) { // @codingStandardsIgnoreLine
+				$values = explode( ',', $_POST[ $zoho_field ] ); // @codingStandardsIgnoreLine
 
-			//if ( isset( $value ) ) {
-				//$values = explode( ',', $value );
 				if ( ! is_array( $values ) ) {
 					$values = array( $values );
 				}
