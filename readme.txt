@@ -1,5 +1,5 @@
 === LSX Zoho CRM Addon for Caldera Forms ===
-Contributors: feedmymedia, matttrustmytravel, eleshar, krugazul, virginialsdev, deon80, jaab1985, jacquesvdh, ignusvermaak, garthlsdev
+Contributors: feedmymedia, lightspeedwp, eleshar, krugazul, virginialsdev, deon80, jaab1985, jacquesvdh, ignusvermaak, garthlsdev, matttrustmytravel
 Tags: Caldera Forms, zoho, crm
 Requires at least: 4.8
 Tested up to: 5.4
