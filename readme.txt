@@ -1,6 +1,6 @@
 === LSX Zoho CRM Addon for Caldera Forms ===
-Contributors: feedmymedia, matttrustmytravel
-Tags: Caldera Forms, zoho
+Contributors: feedmymedia, matttrustmytravel, eleshar, krugazul, virginialsdev, deon80, jaab1985, jacquesvdh, ignusvermaak, garthlsdev
+Tags: Caldera Forms, zoho, crm
 Requires at least: 4.8
 Tested up to: 5.4
 Requires PHP: 7.0
@@ -8,7 +8,7 @@ Stable tag: 2.0.4
 License: GPLv3.0+
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Plugin to add processors for Zoho leads, contacts and tasks to the Caldera Forms plugin.
+Integrate Caldera Forms with Zoho CRM on your WordPress website.
 
 == Description ==
 Caldera Forms is one of a kind WordPress form builder. With its user friendly drag and drop interface, it’s simple to create forms for your WordPress site that look awesome on any device. Caldera also comes with a range of add-ons, like integration with the Zoho CRM platform, which allows users to automate their day-to-day business activities allowing them to focus on selling without having to worry about digging through data. Use the extension to track your sales activities and gain complete understanding of your sales cycle.
