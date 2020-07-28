@@ -4,6 +4,7 @@
 
 ### Fixed
 - [#11](https://github.com/lightspeeddevelopment/cf-zoho/issues/11) Changed the "duplicate email" field to an array instead of a string.
+- Changed the functions and variables to public, to allow 3rd party plugins access to the posted info.
 
 ## [[2.0.4]](https://github.com/lightspeeddevelopment/cf-zoho/releases/tag/2.0.4) - 2020-03-30
 
