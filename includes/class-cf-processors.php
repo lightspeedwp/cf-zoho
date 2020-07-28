@@ -47,13 +47,13 @@ class CF_Processors {
 	 * Contains the object built and stored.
 	 * @var array
 	 */
-	private $body = array();
+	public $body = array();
 
 	/**
 	 * Contains the submitted Zoho ID
 	 * @var string
 	 */
-	private $zoho_id = '';
+	public $zoho_id = '';
 
 	/**
 	 * Holds the Fields class
@@ -598,11 +598,11 @@ class CF_Processors {
 		$zoho_field = $this->is_zoho_form_field( $this->config[ $key ] );
 		if ( false !== $zoho_field ) {
 			$new_values = array();
-			//if ( isset( $_POST[ $zoho_field ] ) ) {
-				//$values = explode( ',', $_POST[ $zoho_field ] );
+			if ( isset( $_POST[ $zoho_field ] ) ) {
+				$values = explode( ',', $_POST[ $zoho_field ] );
 
-			if ( isset( $value ) ) {
-				$values = explode( ',', $value );
+			//if ( isset( $value ) ) {
+				//$values = explode( ',', $value );
 				if ( ! is_array( $values ) ) {
 					$values = array( $values );
 				}
@@ -671,7 +671,7 @@ class CF_Processors {
 		return $return;
 	}
 
-	private function get_entry_meta( $entry_id ) {
+	public function get_entry_meta( $entry_id ) {
 		global $wpdb;
 
 		$entry_meta_data = $wpdb->get_results(
@@ -691,7 +691,7 @@ class CF_Processors {
 		return $return;
 	}
 
-	private function get_entry_form_id( $entry_id ) {
+	public function get_entry_form_id( $entry_id ) {
 		global $wpdb;
 
 		$entry_data = $wpdb->get_results(
