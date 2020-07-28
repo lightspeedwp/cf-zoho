@@ -321,7 +321,9 @@ class CF_Processors {
 		}
 
 		if ( ! empty( $this->config['_workflow_mode'] ) ) {
-			$trigger[] = 'workflow';
+			$trigger[]                        = 'workflow';
+			$path                            .= '/upsert';
+			$object['duplicate_check_fields'] = 'Email';
 		}
 
 		$body = [
