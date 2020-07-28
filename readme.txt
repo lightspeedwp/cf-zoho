@@ -39,3 +39,4 @@ In order for this plugin to work at efficient speeds, Zoho CRM fields and users 
 == Processor Configuration ==
 
 * When setting a "Layout" you will need to include the name and the ID separated by a | symbol.  The name goes first, and then the ID. e.g "Direct|11111111111"
+* When using the "Workflow" mode, the processor will automatically be set to check for duplicate entries, otherwise the request fails.
