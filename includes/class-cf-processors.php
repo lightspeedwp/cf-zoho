@@ -311,7 +311,7 @@ class CF_Processors {
 
 		if ( isset( $this->config['_allow_duplicates'] ) && 'update' === $this->config['_allow_duplicates'] ) {
 			$path                            .= '/upsert';
-			$object['duplicate_check_fields'] = 'Email';
+			$object['duplicate_check_fields'] = array( 'Email' );
 		}
 
 		$trigger = [];
@@ -321,9 +321,7 @@ class CF_Processors {
 		}
 
 		if ( ! empty( $this->config['_workflow_mode'] ) ) {
-			$trigger[]                        = 'workflow';
-			$path                            .= '/upsert';
-			$object['duplicate_check_fields'] = 'Email';
+			$trigger[] = 'workflow';
 		}
 
 		$body = [
