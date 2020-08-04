@@ -4,7 +4,7 @@ Tags: Caldera Forms, zoho, crm
 Requires at least: 4.8
 Tested up to: 5.4
 Requires PHP: 7.0
-Stable tag: 2.0.5
+Stable tag: 2.0.6
 License: GPLv3.0+
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
