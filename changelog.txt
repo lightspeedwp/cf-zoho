@@ -1,6 +1,20 @@
 # Change log
 
-## [[2.0.5]](https://github.com/lightspeeddevelopment/cf-zoho/releases/tag/2.0.5) - Unreleased
+## [[2.0.7]](https://github.com/lightspeeddevelopment/cf-zoho/releases/tag/2.0.7) - 2020-08-14
+
+### Added
+- A Fallback request to handle an API key timeout error, it will only trigger for this error.
+
+### Updated
+- Tested with [Caldera Forms 1.9.2](https://wordpress.org/plugins/caldera-forms/)
+- Tested with [WordPress 5.5](https://wordpress.org/)
+
+## [[2.0.6]](https://github.com/lightspeeddevelopment/cf-zoho/releases/tag/2.0.6) - 2020-07-29
+
+### Added
+- Added in an error message which outputs the Zoho error when a request fails.
+
+## [[2.0.5]](https://github.com/lightspeeddevelopment/cf-zoho/releases/tag/2.0.5) - 2020-07-30
 
 ### Fixed
 - [#11](https://github.com/lightspeeddevelopment/cf-zoho/issues/11) Changed the "duplicate email" field to an array instead of a string.
