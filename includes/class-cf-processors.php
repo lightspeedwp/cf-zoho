@@ -393,6 +393,12 @@ class CF_Processors {
 			return $response->get_error_message();
 		}
 
+		// Fallback request.
+		if ( isset( $response['data'][0]['code'] ) && 'INVALID_DATA' === (string) $response['data'][0]['code'] && isset( $response['data'][0]['details']['expected_data_type'] ) && 'jsonobject' === (string) $response['data'][0]['details']['expected_data_type'] ) {
+			$this->log( $path, $body, $path, 0, 'fallback-request' );
+			$response = $post->request( $path, $body, false, $has_attachments, $method );
+		}
+
 		if ( ! isset( $response['data'][0]['code'] ) || ( 'SUCCESS' !== $response['data'][0]['code'] && 'DUPLICATE_DATA' !== $response['data'][0]['code'] ) ) {
 
 			$error_response = array(
