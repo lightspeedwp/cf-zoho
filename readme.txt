@@ -2,9 +2,9 @@
 Contributors: feedmymedia, lightspeedwp, eleshar, krugazul, virginialsdev, deon80, jaab1985, jacquesvdh, ignusvermaak, garthlsdev, matttrustmytravel
 Tags: Caldera Forms, zoho, crm
 Requires at least: 4.8
-Tested up to: 5.4
+Tested up to: 5.5
 Requires PHP: 7.0
-Stable tag: 2.0.7
+Stable tag: 2.0.6
 License: GPLv3.0+
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
