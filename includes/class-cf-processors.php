@@ -387,14 +387,12 @@ class CF_Processors {
 		$response = $post->request( $path, $body, false, $has_attachments, $method );
 
 		if ( is_wp_error( $response ) ) {
-
 			$this->log( $response->get_error_message(), $response, 'WordPress Error', 0, 'do-request-error' );
-
 			return $response->get_error_message();
 		}
 
 		// Fallback request.
-		if ( isset( $response['data'][0]['code'] ) && 'INVALID_DATA' === (string) $response['data'][0]['code'] && isset( $response['data'][0]['details']['expected_data_type'] ) && 'jsonobject' === (string) $response['data'][0]['details']['expected_data_type'] ) {
+		if ( isset( $response['code'] ) && 'INVALID_DATA' === (string) $response['code'] && isset( $response['details']['expected_data_type'] ) && 'jsonobject' === (string) $response['details']['expected_data_type'] ) {
 			$this->log( $path, $body, $path, 0, 'fallback-request' );
 			$response = $post->request( $path, $body, false, $has_attachments, $method );
 		}
@@ -413,8 +411,8 @@ class CF_Processors {
 
 		$object_id = $response['data'][0]['details']['id'];
 
-		//TODO THIS IS WHERE THE EXTRA FILTER GOES
-		$this->log( $response['data'][0]['message'], $body, $response['data'][0]['details'], $object_id, 'do_request' );
+		// TODO THIS IS WHERE THE EXTRA FILTER GOES.
+		$this->log( $response, $body, 'Successful Response', $object_id, 'do_request' );
 
 		return $object_id;
 	}
