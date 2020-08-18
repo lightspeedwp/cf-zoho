@@ -1,0 +1,19 @@
+{
+    "name": "lightspeeddevelopment/cf-zoho",
+    "description": "LSX Zoho CRM Addon for Caldera Forms",
+    "type": "wordpress-plugin",
+    "require": {
+        "php": ">=7.2",
+        "composer/installers": "^1.7.0"
+    },
+    "license": "GPL-3.0-or-later",
+    "minimum-stability": "dev",
+    "require-dev": {
+        "phpunit/phpunit": "^8.5.8",
+        "wp-coding-standards/wpcs": "^2.1",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
+        "phpcompatibility/php-compatibility": "^9.3.5",
+        "phpcompatibility/phpcompatibility-wp": "^2.1.0",
+        "phpstan/phpstan": "^0.12.37"
+    }
+}
