@@ -48,7 +48,7 @@ class Settings {
 			'LSX CF Zoho',
 			'manage_options',
 			'lsx_cf_zoho',
-			[ $this, 'lsx_cf_zoho_settings_page_html' ]
+			array( $this, 'lsx_cf_zoho_settings_page_html' )
 		);
 	}
 
@@ -88,7 +88,7 @@ class Settings {
 		add_settings_section(
 			'lsx_cf_zoho_section_developers',
 			__( 'Registering a Zoho app for use with the Caldera Forms Zoho plugin', 'lsx-cf-zoho' ),
-			[ $this, 'lsx_cf_zoho_settings_field_cb' ],
+			array( $this, 'lsx_cf_zoho_settings_field_cb' ),
 			'lsx_cf_zoho'
 		);
 
@@ -96,7 +96,7 @@ class Settings {
 		add_settings_section(
 			'lsx_cf_zoho_section_api_keys',
 			__( 'API Settings', 'lsx-cf-zoho' ),
-			[ $this, 'lsx_cf_zoho_settings_field_cb' ],
+			array( $this, 'lsx_cf_zoho_settings_field_cb' ),
 			'lsx_cf_zoho'
 		);
 
@@ -104,63 +104,63 @@ class Settings {
 		add_settings_field(
 			'lsx_cf_zoho_url',
 			__( 'ZOHO Oauth URL', 'lsx-cf-zoho' ),
-			[ $this, 'lsx_cf_zoho_settings_field_cb' ],
+			array( $this, 'lsx_cf_zoho_settings_field_cb' ),
 			'lsx_cf_zoho',
 			'lsx_cf_zoho_section_api_keys',
-			[
+			array(
 				'label_for'          => 'lsx_cf_zoho_url',
 				'class'              => 'lsx_cf_zoho_row',
 				'lsx_cf_zoho_custom_data' => 'custom',
-			]
+			)
 		);
 
 		// Client ID.
 		add_settings_field(
 			'lsx_cf_zoho_client_id',
 			__( 'ZOHO Client ID', 'lsx-cf-zoho' ),
-			[ $this, 'lsx_cf_zoho_settings_field_cb' ],
+			array( $this, 'lsx_cf_zoho_settings_field_cb' ),
 			'lsx_cf_zoho',
 			'lsx_cf_zoho_section_api_keys',
-			[
+			array(
 				'label_for'          => 'lsx_cf_zoho_client_id',
 				'class'              => 'lsx_cf_zoho_row',
 				'lsx_cf_zoho_custom_data' => 'custom',
-			]
+			)
 		);
 
 		// Client Secret.
 		add_settings_field(
 			'lsx_cf_zoho_client_secret',
 			__( 'ZOHO Client Secret', 'lsx-cf-zoho' ),
-			[ $this, 'lsx_cf_zoho_settings_field_cb' ],
+			array( $this, 'lsx_cf_zoho_settings_field_cb' ),
 			'lsx_cf_zoho',
 			'lsx_cf_zoho_section_api_keys',
-			[
+			array(
 				'label_for'          => 'lsx_cf_zoho_client_secret',
 				'class'              => 'lsx_cf_zoho_row',
 				'lsx_cf_zoho_custom_data' => 'custom',
-			]
+			)
 		);
 
 		// Tokens.
 		add_settings_field(
 			'lsx_cf_zoho_tokens',
 			__( 'Generate Tokens', 'lsx-cf-zoho' ),
-			[ $this, 'lsx_cf_zoho_tokens_cb' ],
+			array( $this, 'lsx_cf_zoho_tokens_cb' ),
 			'lsx_cf_zoho',
 			'lsx_cf_zoho_section_api_keys',
-			[
+			array(
 				'label_for'          => 'lsx_cf_zoho_tokens',
 				'class'              => 'lsx_cf_zoho_row',
 				'lsx_cf_zoho_custom_data' => 'custom',
-			]
+			)
 		);
 
 		// Flush transients.
 		add_settings_section(
 			'flush_transients',
 			__( 'Flush Transients', 'lsx-cf-zoho' ),
-			[ $this, 'lsx_cf_zoho_settings_field_cb' ],
+			array( $this, 'lsx_cf_zoho_settings_field_cb' ),
 			'lsx_cf_zoho'
 		);
 
@@ -168,7 +168,7 @@ class Settings {
 		add_settings_section(
 			'lsx_cf_zoho_enable_debug',
 			__( 'Enable Debug', 'lsx-cf-zoho' ),
-			[ $this, 'lsx_cf_zoho_settings_field_cb' ],
+			array( $this, 'lsx_cf_zoho_settings_field_cb' ),
 			'lsx_cf_zoho'
 		);
 
@@ -176,7 +176,7 @@ class Settings {
 		add_settings_section(
 			'lsx_cf_zoho_enable_form_blocker',
 			__( 'Enable BlockUI.js', 'lsx-cf-zoho' ),
-			[ $this, 'lsx_cf_zoho_settings_field_cb' ],
+			array( $this, 'lsx_cf_zoho_settings_field_cb' ),
 			'lsx_cf_zoho'
 		);
 	}
@@ -184,7 +184,7 @@ class Settings {
 	/**
 	 * Section templates.
 	 */
-	private $templates = [
+	private $templates = array(
 		'lsx_cf_zoho_section_developers'  => 'settings-section.php',
 		'lsx_cf_zoho_section_api_keys'    => 'settings-api.php',
 		'lsx_cf_zoho_url'                 => 'settings-url.php',
@@ -193,7 +193,7 @@ class Settings {
 		'flush_transients'                => 'settings-flush-transients.php',
 		'lsx_cf_zoho_enable_debug'        => 'settings-enable-debug.php',
 		'lsx_cf_zoho_enable_form_blocker' => 'settings-enable-block-form.php',
-	];
+	);
 
 	/**
 	 * Settings field callback.
@@ -225,14 +225,14 @@ class Settings {
 		 * NB You can set scope to ZohoCRM.modules.leads.CREATE,ZohoCRM.modules.contacts.CREATE,ZohoCRM.modules.tasks.CREATE,
 		 * however the response to this does not appear to include a refresh token.
 		 */
-		$params = [
+		$params = array(
 			'scope'         => 'ZohoCRM.settings.all,ZohoCRM.users.all,ZohoCRM.modules.all',
 			'client_id'     => $this->options->get_option( 'lsx_cf_zoho_client_id' ),
 			'state'         => wp_create_nonce( 'zohotoken' ),
 			'response_type' => 'code',
 			'redirect_uri'  => lsx_cf_zoho_redirect_url(),
 			'access_type'   => 'offline',
-		];
+		);
 
 		foreach ( $params as $key => $value ) {
 			$url = add_query_arg( $key, $value, $url );

@@ -29,24 +29,28 @@ class Pre_Populate {
 
 	/**
 	 * Holds the current form being populated.
+	 *
 	 * @var array
 	 */
 	public $form = array();
 
 	/**
 	 * Holds the current entry populated.
+	 *
 	 * @var array
 	 */
 	public $entry = array();
 
 	/**
 	 * Only allow the primary form to be pre populated.
+	 *
 	 * @var array
 	 */
 	public $has_output = false;
 
 	/**
 	 * The Arguments for the JS
+	 *
 	 * @var array
 	 */
 	public $args = array();
@@ -91,15 +95,19 @@ class Pre_Populate {
 
 	/**
 	 * Returns the array keys for the modules supported
+	 *
 	 * @return array
 	 */
 	public function get_modules() {
-		$this->modules = apply_filters( 'lsx_cf_zoho_pre_populate_get_module_label', array(
-			'cid',
-			'tid',
-			'lid',
-			'pid',
-		) );
+		$this->modules = apply_filters(
+			'lsx_cf_zoho_pre_populate_get_module_label',
+			array(
+				'cid',
+				'tid',
+				'lid',
+				'pid',
+			)
+		);
 		return $this->modules;
 	}
 
@@ -125,7 +133,7 @@ class Pre_Populate {
 				$module_label = esc_html__( 'Deals', 'lsx-cf-zoho' );
 				break;
 
-			default :
+			default:
 				break;
 		}
 		$module_label = apply_filters( 'lsx_cf_zoho_pre_populate_get_module_label', $module_label );
@@ -134,6 +142,7 @@ class Pre_Populate {
 
 	/**
 	 * Gets the Resource from Zoho
+	 *
 	 * @param $key string
 	 * @param $value string
 	 */
@@ -145,7 +154,7 @@ class Pre_Populate {
 
 		if ( ! is_wp_error( $response ) && is_array( $response ) && isset( $response['data'] ) && ! empty( $response['data'] ) && isset( $response['data'][0] ) ) {
 			$this->filter_entry( $this->response['data'][0] );
-			$this->response = apply_filters( 'lsx_cf_zoho_pre_populate_filter_entry' , $this->response['data'][0], $key, $get );
+			$this->response = apply_filters( 'lsx_cf_zoho_pre_populate_filter_entry', $this->response['data'][0], $key, $get );
 			if ( ! is_wp_error( $response ) ) {
 				$this->filter_entry( $this->response['data'][0] );
 			} else {
@@ -170,7 +179,7 @@ class Pre_Populate {
 			foreach ( $data as $item_key => $item_value ) {
 				$keys = array();
 
-				//Make sure we account for the arrays.
+				// Make sure we account for the arrays.
 				switch ( $item_key ) {
 					case 'Created_By':
 						foreach ( $item_value as $sub_key => $sub_value ) {
@@ -185,7 +194,7 @@ class Pre_Populate {
 						break;
 				}
 
-				//Run through each of the keys
+				// Run through each of the keys
 				if ( ! empty( $keys ) ) {
 					foreach ( $keys as $index => $value ) {
 						$field = \Caldera_Forms_Field_Util::get_field_by_slug( $index, $this->form );
@@ -231,11 +240,11 @@ class Pre_Populate {
 	 */
 	public function log( $message, $submission, $details, $id, $type ) {
 
-		$submission = [
+		$submission = array(
 			'response'   => $message,
 			'submission' => $submission,
 			'details'    => $details,
-		];
+		);
 
 		WP_Logging::add(
 			'Submission for pre populate form: ' . $type,

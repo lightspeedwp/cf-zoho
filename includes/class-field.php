@@ -14,6 +14,7 @@ class Field {
 
 	/**
 	 * Holds the modals that are outputted in the footer of the page
+	 *
 	 * @var array
 	 */
 	var $modals = array();
@@ -45,23 +46,38 @@ class Field {
 	 */
 	public function setup() {
 
-		//Replace existing recaptcha field
+		// Replace existing recaptcha field
 		add_filter( 'caldera_forms_get_field_types', array( $this, 'add_field' ), 25 );
 
-		add_filter( 'caldera_forms_get_field_types', array(
-			$this,
-			'add_field',
-		), 25, 1 );
+		add_filter(
+			'caldera_forms_get_field_types',
+			array(
+				$this,
+				'add_field',
+			),
+			25,
+			1
+		);
 
-		add_filter( 'wp_kses_allowed_html', array(
-			$this,
+		add_filter(
 			'wp_kses_allowed_html',
-		), 10, 2 );
+			array(
+				$this,
+				'wp_kses_allowed_html',
+			),
+			10,
+			2
+		);
 
-		add_filter( 'caldera_forms_field_attributes', array(
-			$this,
-			'field_attrs',
-		), 10, 3 );
+		add_filter(
+			'caldera_forms_field_attributes',
+			array(
+				$this,
+				'field_attrs',
+			),
+			10,
+			3
+		);
 	}
 
 	/**
@@ -88,7 +104,7 @@ class Field {
 				),
 			),
 			'scripts' => array(
-				LSX_CFZ_FIELDS_URL . 'zoho-form/js/zoho-form-field.js'
+				LSX_CFZ_FIELDS_URL . 'zoho-form/js/zoho-form-field.js',
 			),
 		);
 
@@ -102,14 +118,14 @@ class Field {
 	 * @since 0.1.0
 	 *
 	 * @param string $value Field value, should be empty
-	 * @param array $field Field config
-	 * @param array $form Form config
+	 * @param array  $field Field config
+	 * @param array  $form Form config
 	 *
 	 * @return \WP_Error|boolean
 	 */
 	public function handler( $value, $field, $form ) {
 
-		if ( isset( $field['config']['required'] ) && '' !== $field['config']['required']  && '' === $value ) {
+		if ( isset( $field['config']['required'] ) && '' !== $field['config']['required'] && '' === $value ) {
 			return new \WP_Error( 'error', apply_filters( 'lsx_cf_zoho_form_field_error_empty_message', __( 'This field is required.', 'lsx-cf-zoho' ) ) );
 		}
 
@@ -119,7 +135,8 @@ class Field {
 		}
 
 		if ( (int) $value < (int) $field['config']['limit'] ) {
-			return new \WP_Error( 'error',
+			return new \WP_Error(
+				'error',
 				apply_filters( 'lsx_cf_zoho_form_field_error_limit_message', __( 'Please complete the rest of this field', 'lsx-cf-zoho' ) )
 			);
 		}
@@ -129,6 +146,7 @@ class Field {
 
 	/**
 	 * Adds a caldera form to your list of modals to be outputted.
+	 *
 	 * @param $caldera_id string
 	 * @param $field_id string
 	 * @param $limit integer
@@ -154,11 +172,14 @@ class Field {
 		if ( ! empty( $this->modals ) && is_array( $this->modals ) ) {
 			foreach ( $this->modals as $form_id => $values ) {
 
-				//add filter to alter the passenger form
-				add_filter( 'caldera_forms_get_form-' . $form_id, array(
-					$this,
-					'register_js_callback',
-				) );
+				// add filter to alter the passenger form
+				add_filter(
+					'caldera_forms_get_form-' . $form_id,
+					array(
+						$this,
+						'register_js_callback',
+					)
+				);
 
 				do {
 					include( LSX_CFZ_TEMPLATE_PATH . 'zoho-modal.php' );
@@ -215,7 +236,7 @@ class Field {
 	 */
 	public function field_attrs( $attrs, $field, $form ) {
 		if ( 'zoho_form' === $field['type'] ) {
-			//set the limit
+			// set the limit
 			$limit = 1;
 			if ( ! empty( $field['config']['limit'] ) && '' !== $field['config']['limit'] ) {
 				$limit = $field['config']['limit'];

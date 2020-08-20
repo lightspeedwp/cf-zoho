@@ -19,7 +19,7 @@ class Post extends Connect {
 	 * @param  array   $body      Form post data.
 	 * @param  boolean $new_token Whether this is a second attempt with a new token.
 	 * @param  boolean $has_attachments
-	 * @param  string $method
+	 * @param  string  $method
 	 * @return object|array            WP_Error|Zoho response.
 	 */
 	public function request( $path, $body, $new_token = false, $has_attachments = false, $method = 'POST' ) {
@@ -29,12 +29,13 @@ class Post extends Connect {
 		$base_url = $this->tokens->get_api_domain();
 		$url      = $base_url . $path;
 		$response = wp_remote_post(
-			$url, [
+			$url,
+			array(
 				'timeout' => 45,
 				'headers' => $this->headers( $has_attachments ),
 				'body'    => wp_json_encode( $body ),
 				'method' => $method,
-			]
+			)
 		);
 
 		if ( is_wp_error( $response ) ) {
@@ -90,13 +91,13 @@ class Post extends Connect {
 
 		// multipart body
 		if ( false === $attached_url ) {
-			$body = [
+			$body = array(
 				'file' => $body,
-			];
+			);
 		} else {
-			$body = [
+			$body = array(
 				'attachmentUrl' => $body,
-			];
+			);
 		}
 
 		// set body

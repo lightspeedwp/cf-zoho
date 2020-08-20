@@ -71,7 +71,7 @@ class WP_Logging {
 	 * @since 1.1
 	 * @access private
 	 *
-	 * @param array/obj     $logs     required     The array of logs we want to prune
+	 * @param array/obj $logs     required     The array of logs we want to prune
 	 *
 	 * @uses wp_delete_post()                      Deletes the post from WordPress
 	 *
@@ -132,7 +132,7 @@ class WP_Logging {
 	 * @since       1.0
 	 *
 	 * @return     array
-	*/
+	 */
 
 	private static function log_types() {
 		$terms = array(
@@ -153,7 +153,7 @@ class WP_Logging {
 	 * @uses        register_post_type()
 	 *
 	 * @return     void
-	*/
+	 */
 
 	public function register_post_type() {
 		$log_args = array(
@@ -184,12 +184,15 @@ class WP_Logging {
 	 * @uses        wp_insert_term()
 	 *
 	 * @return     void
-	*/
+	 */
 
 	public function register_taxonomy() {
 
-		register_taxonomy( 'wp_log_type', 'wp_log', array(
-			'public' => defined( 'WP_DEBUG' ) && WP_DEBUG,
+		register_taxonomy(
+			'wp_log_type',
+			'wp_log',
+			array(
+				'public' => defined( 'WP_DEBUG' ) && WP_DEBUG,
 			)
 		);
 
@@ -211,9 +214,8 @@ class WP_Logging {
 	 * @access      private
 	 * @since       1.0
 	 *
-	 *
 	 * @return     array
-	*/
+	 */
 
 	private static function valid_type( $type ) {
 		return in_array( $type, self::log_types() );
@@ -232,7 +234,7 @@ class WP_Logging {
 	 * @uses        self::insert_log()
 	 *
 	 * @return      int The ID of the new log entry
-	*/
+	 */
 
 	public static function add( $title = '', $message = '', $parent = 0, $type = null ) {
 
@@ -261,7 +263,7 @@ class WP_Logging {
 	 * @uses        sanitize_key()
 	 *
 	 * @return      int The ID of the newly created log item
-	*/
+	 */
 
 	public static function insert_log( $log_data = array(), $log_meta = array() ) {
 
@@ -310,7 +312,7 @@ class WP_Logging {
 	 * @uses        update_post_meta()
 	 *
 	 * @return      bool True if successful, false otherwise
-	*/
+	 */
 	public static function update_log( $log_data = array(), $log_meta = array() ) {
 
 		do_action( 'wp_pre_update_log', $log_id );
@@ -348,7 +350,7 @@ class WP_Logging {
 	 * @uses        self::get_connected_logs()
 	 *
 	 * @return      array
-	*/
+	 */
 
 	public static function get_logs( $object_id = 0, $type = null, $paged = null ) {
 		return self::get_connected_logs(
@@ -376,7 +378,7 @@ class WP_Logging {
 	 * @uses    self::valid_type()
 	 *
 	 * @return  array | false
-	*/
+	 */
 
 	public static function get_connected_logs( $args = array() ) {
 
@@ -424,7 +426,7 @@ class WP_Logging {
 	 * @uses    self::valid_type()
 	 *
 	 * @return  int
-	*/
+	 */
 
 	public static function get_log_count( $object_id = 0, $type = null, $meta_query = null ) {
 
@@ -458,6 +460,7 @@ class WP_Logging {
 
 	/**
 	 * Formats the content;
+	 *
 	 * @param $content
 	 *
 	 * @return string

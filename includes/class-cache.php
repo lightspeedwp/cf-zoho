@@ -17,7 +17,7 @@ class Cache {
 	 *
 	 * @var array.
 	 */
-	private $plugin_cache = [];
+	private $plugin_cache = array();
 
 	/**
 	 * Overwrites a specified plugin cache item.

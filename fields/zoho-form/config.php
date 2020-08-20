@@ -8,7 +8,8 @@
 <p class="description" style="text-align:center;">
 	<?php esc_html_e( 'Enter a form ID below which has another Zoho processor enabled.', 'lsx-cf-zoho' ); ?>
 </p>
-<?php /*
+<?php
+/*
 <div class="caldera-config-group">
 	<label for="{{_id}}_form_id">
 		<?php esc_html_e( 'Select your form', 'lsx-cf-zoho' ); ?>
@@ -25,7 +26,8 @@
 		</select>
 	</div>
 </div>
- */ ?>
+ */
+?>
 
 <div class="caldera-config-group">
 	<label for="{{_id}}_form_id">

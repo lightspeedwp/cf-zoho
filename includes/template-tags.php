@@ -22,6 +22,7 @@ function lsx_cf_zoho_redirect_url() {
 
 /**
  * Returns the names and ids of the current available caldera forms.
+ *
  * @return bool
  */
 function lsx_cf_zoho_get_caldera_forms() {
@@ -38,6 +39,7 @@ function lsx_cf_zoho_get_caldera_forms() {
 
 /**
  * Registers a caldera form to output as a modal in the footer
+ *
  * @param $caldera_id string
  * @param $field_id string
  * @param $limit int

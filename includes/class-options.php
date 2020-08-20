@@ -17,7 +17,7 @@ class Options {
 	 *
 	 * @var array.
 	 */
-	private $plugin_options = [];
+	private $plugin_options = array();
 
 	/**
 	 * Get single option if available.

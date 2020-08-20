@@ -21,30 +21,35 @@ final class CF_Zoho {
 
 	/**
 	 * Holds the Fields class
+	 *
 	 * @var \lsx_cf_zoho\admin\Settings()
 	 */
 	var $settings;
 
 	/**
 	 * Holds the Fields class
+	 *
 	 * @var \lsx_cf_zoho\includes\Field()
 	 */
 	var $field;
 
 	/**
 	 * Holds the Templates class
+	 *
 	 * @var \lsx_cf_zoho\includes\Templates()
 	 */
 	var $templates;
 
 	/**
 	 * Holds the Pre Populate class
+	 *
 	 * @var \lsx_cf_zoho\includes\Pre_Populate()
 	 */
 	var $pre_populate;
 
 	/**
 	 * Holds the Error Logging class
+	 *
 	 * @var \lsx_cf_zoho\includes\WP_Logging()
 	 */
 	var $logging;
@@ -72,12 +77,12 @@ final class CF_Zoho {
 		// Admin Settings.
 		$this->settings = new admin\Settings();
 
-		add_action( 'admin_menu', [ $this->settings, 'settings_page' ] );
-		add_action( 'admin_init', [ $this->settings, 'settings_api_init' ] );
+		add_action( 'admin_menu', array( $this->settings, 'settings_page' ) );
+		add_action( 'admin_init', array( $this->settings, 'settings_api_init' ) );
 
 		// Caldera Forms Processors.
 		$cf_processors = new CF_Processors();
-		add_filter( 'caldera_forms_get_form_processors', [ $cf_processors, 'register_processors' ] );
+		add_filter( 'caldera_forms_get_form_processors', array( $cf_processors, 'register_processors' ) );
 
 		// WP Logs.
 		if ( true === (bool) $this->settings->options->get_option( 'lsx_cf_zoho_enable_debug' ) ) {
@@ -86,20 +91,25 @@ final class CF_Zoho {
 
 		// WP Logs template.
 		$this->templates = Templates::init();
-		add_filter( 'template_include', [ $this->templates, 'template_handler' ], 99 );
+		add_filter( 'template_include', array( $this->templates, 'template_handler' ), 99 );
 
-		//Register the new field
+		// Register the new field
 		$this->field = Field::init();
-		add_action( 'init', [ $this->field, 'setup' ] );
+		add_action( 'init', array( $this->field, 'setup' ) );
 
 		$this->pre_populate = Pre_Populate::init();
-		add_filter( 'caldera_forms_render_pre_get_entry', [ $this->pre_populate, 'pre_populate_form' ], 10, 2 );
+		add_filter( 'caldera_forms_render_pre_get_entry', array( $this->pre_populate, 'pre_populate_form' ), 10, 2 );
 
-		add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 5 );
-		add_filter( 'caldera_forms_ajax_return', array(
-			$this,
-			'filter_ajax_return',
-		), 10, 2 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ), 5 );
+		add_filter(
+			'caldera_forms_ajax_return',
+			array(
+				$this,
+				'filter_ajax_return',
+			),
+			10,
+			2
+		);
 	}
 
 	/**
@@ -128,6 +138,7 @@ final class CF_Zoho {
 
 	/**
 	 * Filter the ajax return and maybe add our output
+	 *
 	 * @param $out
 	 * @param $form
 	 *

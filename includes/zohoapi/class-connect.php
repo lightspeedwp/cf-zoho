@@ -53,20 +53,20 @@ class Connect {
 
 		if ( false !== $token ) {
 
-			return [
+			return array(
 				'Authorization' => "Zoho-oauthtoken {$token}",
 				'Content-Type'  => $content_type,
-			];
+			);
 		}
 
 		// Need to refresh token.
 		$request = $this->generate_token( 'refresh_token' );
 		$token   = $this->tokens->get_access_token();
 
-		return [
+		return array(
 			'Authorization' => "Zoho-oauthtoken {$token}",
 			'Content-Type'  => $content_type,
-		];
+		);
 	}
 
 	/**
@@ -90,12 +90,12 @@ class Connect {
 		$url          = $this->options->get_option( 'lsx_cf_zoho_url' ) . '/token';
 		$redirect_uri = lsx_cf_zoho_redirect_url();
 
-		$body = [
+		$body = array(
 			'client_id'     => $this->options->get_option( 'lsx_cf_zoho_client_id' ),
 			'client_secret' => $this->options->get_option( 'lsx_cf_zoho_client_secret' ),
 			'redirect_uri'  => $redirect_uri,
 			'grant_type'    => $grant_type,
-		];
+		);
 
 		if ( 'authorization_code' === $grant_type ) {
 			$body['code'] = filter_input( INPUT_GET, 'code', FILTER_SANITIZE_STRING );
@@ -106,11 +106,12 @@ class Connect {
 		}
 
 		$response = wp_remote_post(
-			$url, [
+			$url,
+			array(
 				'method'  => 'POST',
 				'timeout' => 45,
 				'body'    => $body,
-			]
+			)
 		);
 
 		if ( is_wp_error( $response ) ) {

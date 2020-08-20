@@ -74,7 +74,7 @@ class CF_Processor_Render {
 	 *
 	 * @var array.
 	 */
-	private $module_data = [];
+	private $module_data = array();
 
 	/**
 	 * Setter for $module_data.
@@ -175,7 +175,7 @@ class CF_Processor_Render {
 	 *
 	 * @var array.
 	 */
-	private $users = [];
+	private $users = array();
 
 	/**
 	 * Setter for $users.
@@ -199,10 +199,10 @@ class CF_Processor_Render {
 
 		foreach ( $data['users'] as $user ) {
 
-			$this->users[] = [
+			$this->users[] = array(
 				'label' => $user['full_name'],
 				'value' => $user['id'],
-			];
+			);
 		}
 		$this->cache->set_plugin_cache_item( 'users', $this->users );
 	}
@@ -221,7 +221,7 @@ class CF_Processor_Render {
 	 *
 	 * @var array.
 	 */
-	private $errors = [];
+	private $errors = array();
 
 	/**
 	 * Getter for $errors.
@@ -237,7 +237,7 @@ class CF_Processor_Render {
 	 *
 	 * @var array.
 	 */
-	private $ignore_fields = [
+	private $ignore_fields = array(
 		'Account Name',
 		'Closed Time',
 		'Created By',
@@ -252,7 +252,7 @@ class CF_Processor_Render {
 		'What Id',
 		'Who Id',
 		'Territories',
-	];
+	);
 
 	/**
 	 * Getter for $ignore_fields.
@@ -269,7 +269,7 @@ class CF_Processor_Render {
 	 *
 	 * @var array.
 	 */
-	private $force_text_input = [];
+	private $force_text_input = array();
 
 	/**
 	 * Sets $force_text_input to an array containing any fields specified in options.
@@ -317,7 +317,7 @@ class CF_Processor_Render {
 	 * @return boolean.
 	 */
 	public function has_approval_mode() {
-		return in_array( $this->module, [ 'leads', 'contacts', 'potentials' ], true );
+		return in_array( $this->module, array( 'leads', 'contacts', 'potentials' ), true );
 	}
 
 	/**

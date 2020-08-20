@@ -27,10 +27,11 @@ class Get extends Connect {
 		$url      = $base_url . $path;
 
 		$response = wp_remote_get(
-			$url, [
+			$url,
+			array(
 				'timeout' => 45,
 				'headers' => $this->headers(),
-			]
+			)
 		);
 
 		if ( is_wp_error( $response ) ) {

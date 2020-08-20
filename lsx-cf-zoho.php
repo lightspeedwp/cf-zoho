@@ -50,12 +50,13 @@ register_setting( 'lsx_cf_zoho', LSX_CFZ_OPTION_SLUG );
  */
 function lsx_cf_zoho_run_plugin() {
 	$cf_zoho = \lsx_cf_zoho\includes\CF_Zoho::init();
-	add_action( 'plugins_loaded', [ $cf_zoho, 'setup' ], 2 );
+	add_action( 'plugins_loaded', array( $cf_zoho, 'setup' ), 2 );
 }
 add_action( 'plugins_loaded', __NAMESPACE__ . '\lsx_cf_zoho_run_plugin', 1 );
 
 /**
  * Returns the main instance of the LSX CF Zoho Plugin
+ *
  * @return object \lsx_cf_zoho\includes\CF_Zoho()
  */
 function lsx_cf_zoho() {
