@@ -10,34 +10,37 @@ namespace lsx_cf_zoho\includes;
 /**
  * Templates.
  */
-class Templates {
+class Templates
+{
 
-	/**
-	 * Holds instance of the class
-	 */
-	private static $instance;
+    /**
+     * Holds instance of the class
+     */
+    private static $instance;
 
-	/**
-	 * Return an instance of this class.
-	 *
-	 * @return  object
-	 */
-	public static function init() {
+    /**
+     * Return an instance of this class.
+     *
+     * @return object
+     */
+    public static function init()
+    {
 
-		// If the single instance hasn't been set, set it now.
-		if ( ! isset( self::$instance ) ) {
-			self::$instance = new self();
-		}
+        // If the single instance hasn't been set, set it now.
+        if (! isset(self::$instance) ) {
+            self::$instance = new self();
+        }
 
-		return self::$instance;
-	}
+        return self::$instance;
+    }
 
-	public function template_handler( $template ) {
+    public function template_handler( $template )
+    {
 
-		if ( ! is_singular( 'wp_log' ) ) {
-			return $template;
-		}
+        if (! is_singular('wp_log') ) {
+            return $template;
+        }
 
-		return LSX_CFZ_TEMPLATE_PATH . '/single-wp-log.php';
-	}
+        return LSX_CFZ_TEMPLATE_PATH . '/single-wp-log.php';
+    }
 }

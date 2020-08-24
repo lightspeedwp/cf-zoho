@@ -1,6 +1,6 @@
 <?php
 /**
- * @package           lsx_cf_zoho
+ * @package lsx_cf_zoho
  *
  * @wordpress-plugin
  * Plugin Name:       LSX Zoho CRM Addon for Caldera Forms
@@ -20,47 +20,49 @@ namespace lsx_cf_zoho;
 use lsx_cf_zoho\includes;
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
+if (! defined('WPINC') ) {
+    die;
 }
 /**
  * Currently plugin version.
  */
-define( 'LSX_CFZ_VERSION', '2.0.6' );
-define( 'LSX_CFZ_ABSPATH', dirname( __FILE__ ) . '/' );
+define('LSX_CFZ_VERSION', '2.0.6');
+define('LSX_CFZ_ABSPATH', dirname(__FILE__) . '/');
 
-define( 'LSX_CFZ_TEMPLATE_PATH', LSX_CFZ_ABSPATH . 'templates/' );
-define( 'LSX_CFZ_PROCESSORS_PATH', LSX_CFZ_ABSPATH . 'processors/' );
-define( 'LSX_CFZ_FIELDS_PATH', LSX_CFZ_ABSPATH . 'fields/' );
-define( 'LSX_CFZ_URL', plugin_dir_url( __FILE__ ) . '/' );
-define( 'LSX_CFZ_FIELDS_URL', LSX_CFZ_URL . 'fields/' );
+define('LSX_CFZ_TEMPLATE_PATH', LSX_CFZ_ABSPATH . 'templates/');
+define('LSX_CFZ_PROCESSORS_PATH', LSX_CFZ_ABSPATH . 'processors/');
+define('LSX_CFZ_FIELDS_PATH', LSX_CFZ_ABSPATH . 'fields/');
+define('LSX_CFZ_URL', plugin_dir_url(__FILE__) . '/');
+define('LSX_CFZ_FIELDS_URL', LSX_CFZ_URL . 'fields/');
 
-define( 'LSX_CFZ_OPTION_SLUG', '_uix_lsx-cf-zoho' );
-define( 'LSX_CFZ_TRANSIENT_SLUG', '_uix_lsx-cf-zoho_transient' );
+define('LSX_CFZ_OPTION_SLUG', '_uix_lsx-cf-zoho');
+define('LSX_CFZ_TRANSIENT_SLUG', '_uix_lsx-cf-zoho_transient');
 
 // Autoloader.
 require LSX_CFZ_ABSPATH . 'includes/template-tags.php';
 require LSX_CFZ_ABSPATH . 'lib/autoloader.php';
 
 // Register settings.
-register_setting( 'lsx_cf_zoho', LSX_CFZ_OPTION_SLUG );
+register_setting('lsx_cf_zoho', LSX_CFZ_OPTION_SLUG);
 
 /**
  * Begins execution of the plugin on plugins loaded.
  */
-function lsx_cf_zoho_run_plugin() {
-	$cf_zoho = \lsx_cf_zoho\includes\CF_Zoho::init();
-	add_action( 'plugins_loaded', array( $cf_zoho, 'setup' ), 2 );
+function lsx_cf_zoho_run_plugin()
+{
+    $cf_zoho = \lsx_cf_zoho\includes\CF_Zoho::init();
+    add_action('plugins_loaded', array( $cf_zoho, 'setup' ), 2);
 }
-add_action( 'plugins_loaded', __NAMESPACE__ . '\lsx_cf_zoho_run_plugin', 1 );
+add_action('plugins_loaded', __NAMESPACE__ . '\lsx_cf_zoho_run_plugin', 1);
 
 /**
  * Returns the main instance of the LSX CF Zoho Plugin
  *
  * @return object \lsx_cf_zoho\includes\CF_Zoho()
  */
-function lsx_cf_zoho() {
-	return \lsx_cf_zoho\includes\CF_Zoho::init();
+function lsx_cf_zoho()
+{
+    return \lsx_cf_zoho\includes\CF_Zoho::init();
 }
 
 
