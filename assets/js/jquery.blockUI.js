@@ -292,13 +292,11 @@
 			var lyr1, lyr2, lyr3, s;
 			if (msie || opts.forceIframe)
 				lyr1 = $('<iframe class="blockUI" style="z-index:'+ (z++) +';display:none;border:none;margin:0;padding:0;position:absolute;width:100%;height:100%;top:0;left:0" src="'+opts.iframeSrc+'"></iframe>');
-			else
-				lyr1 = $('<div class="blockUI" style="display:none"></div>');
+			else lyr1 = $('<div class="blockUI" style="display:none"></div>');
 
 			if (opts.theme)
 				lyr2 = $('<div class="blockUI blockOverlay ui-widget-overlay" style="z-index:'+ (z++) +';display:none"></div>');
-			else
-				lyr2 = $('<div class="blockUI blockOverlay" style="z-index:'+ (z++) +';display:none;border:none;margin:0;padding:0;width:100%;height:100%;top:0;left:0"></div>');
+			else lyr2 = $('<div class="blockUI blockOverlay" style="z-index:'+ (z++) +';display:none;border:none;margin:0;padding:0;width:100%;height:100%;top:0;left:0"></div>');
 
 			if (opts.theme && full) {
 				s = '<div class="blockUI ' + opts.blockMsgClass + ' blockPage ui-dialog ui-widget ui-corner-all" style="z-index:'+(z+10)+';display:none;position:fixed">';
@@ -307,19 +305,16 @@
 				}
 				s += '<div class="ui-widget-content ui-dialog-content"></div>';
 				s += '</div>';
-			}
-			else if (opts.theme) {
+			} else if (opts.theme) {
 				s = '<div class="blockUI ' + opts.blockMsgClass + ' blockElement ui-dialog ui-widget ui-corner-all" style="z-index:'+(z+10)+';display:none;position:absolute">';
 				if ( opts.title ) {
 					s += '<div class="ui-widget-header ui-dialog-titlebar ui-corner-all blockTitle">'+(opts.title || '&nbsp;')+'</div>';
 				}
 				s += '<div class="ui-widget-content ui-dialog-content"></div>';
 				s += '</div>';
-			}
-			else if (full) {
+			} else if (full) {
 				s = '<div class="blockUI ' + opts.blockMsgClass + ' blockPage" style="z-index:'+(z+10)+';display:none;position:fixed"></div>';
-			}
-			else {
+			} else {
 				s = '<div class="blockUI ' + opts.blockMsgClass + ' blockElement" style="z-index:'+(z+10)+';display:none;position:absolute"></div>';
 			}
 			lyr3 = $(s);
@@ -329,9 +324,7 @@
 				if (opts.theme) {
 					lyr3.css(themedCSS);
 					lyr3.addClass('ui-widget-content');
-				}
-				else
-					lyr3.css(css);
+				} else lyr3.css(css);
 			}
 
 			// style the overlay
@@ -377,20 +370,16 @@
 					if (i < 2) {
 						if (full)
 							s.setExpression('height','Math.max(document.body.scrollHeight, document.body.offsetHeight) - (jQuery.support.boxModel?0:'+opts.quirksmodeOffsetHack+') + "px"');
-						else
-							s.setExpression('height','this.parentNode.offsetHeight + "px"');
+						else s.setExpression('height','this.parentNode.offsetHeight + "px"');
 						if (full)
 							s.setExpression('width','jQuery.support.boxModel && document.documentElement.clientWidth || document.body.clientWidth + "px"');
-						else
-							s.setExpression('width','this.parentNode.offsetWidth + "px"');
+						else s.setExpression('width','this.parentNode.offsetWidth + "px"');
 						if (fixL) s.setExpression('left', fixL);
 						if (fixT) s.setExpression('top', fixT);
-					}
-					else if (opts.centerY) {
+					} else if (opts.centerY) {
 						if (full) s.setExpression('top','(document.documentElement.clientHeight || document.body.clientHeight) / 2 - (this.offsetHeight / 2) + (blah = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop) + "px"');
 						s.marginTop = 0;
-					}
-					else if (!opts.centerY && full) {
+					} else if (!opts.centerY && full) {
 						var top = (opts.css && opts.css.top) ? parseInt(opts.css.top, 10) : 0;
 						var expression = '((document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop) + '+top+') + "px"';
 						s.setExpression('top',expression);
@@ -402,8 +391,7 @@
 			if (msg) {
 				if (opts.theme)
 					lyr3.find('.ui-widget-content').append(msg);
-				else
-					lyr3.append(msg);
+				else lyr3.append(msg);
 				if (msg.jquery || msg.nodeType)
 					$(msg).show();
 			}
@@ -418,8 +406,7 @@
 					lyr2._fadeIn(opts.fadeIn, cb1);
 				if (msg)
 					lyr3._fadeIn(opts.fadeIn, cb2);
-			}
-			else {
+			} else {
 				if (opts.showOverlay)
 					lyr2.show();
 				if (msg)
@@ -436,17 +423,14 @@
 				pageBlockEls = $(opts.focusableElements,pageBlock);
 				if (opts.focusInput)
 					setTimeout(focus, 20);
-			}
-			else
-				center(lyr3[0], opts.centerX, opts.centerY);
+			} else center(lyr3[0], opts.centerX, opts.centerY);
 
 			if (opts.timeout) {
 				// auto-unblock
 				var to = setTimeout(function() {
 					if (full)
 						$.unblockUI(opts);
-					else
-						$(el).unblock(opts);
+					else $(el).unblock(opts);
 				}, opts.timeout);
 				$(el).data('blockUI.timeout', to);
 			}
@@ -474,8 +458,7 @@
 			var els;
 			if (full) // crazy selector to handle odd field errors in ie6/7
 				els = $(document.body).children().filter('.blockUI').add('body > .blockUI');
-			else
-				els = $el.find('>.blockUI');
+			else els = $el.find('>.blockUI');
 
 			// fix cursor issue
 			if ( opts.cursorReset ) {
@@ -494,9 +477,7 @@
 					if ( --count === 0)
 						reset(els,data,opts,el);
 				});
-			}
-			else
-				reset(els, data, opts, el);
+			} else reset(els, data, opts, el);
 		}
 
 		// move blocking element back into the DOM where it started
@@ -551,8 +532,7 @@
 			var events = 'mousedown mouseup keydown keypress keyup touchstart touchend touchmove';
 			if (b)
 				$(document).bind(events, opts, handler);
-			else
-				$(document).unbind(events, handler);
+			else $(document).unbind(events, handler);
 
 		// former impl...
 		//		var $e = $('a,:input');
