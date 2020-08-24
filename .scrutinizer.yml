@@ -1,7 +1,4 @@
 tools:
-  php_code_sniffer:
-    config:
-      standard: WordPress
   sensiolabs_security_checker: true
 checks:
   php:
@@ -36,7 +33,7 @@ build:
       tests:
         override:
           - php-scrutinizer-run
-          - command: phpcs-run --config ./.phpcs.xml
+          - command: phpcs-run --standard=./.phpcs.xml --extensions=php --ignore=*/wordpress/*
       dependencies:
         before:
           - composer require --dev johnpbloch/wordpress
