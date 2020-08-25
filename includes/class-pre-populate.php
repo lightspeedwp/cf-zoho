@@ -10,8 +10,8 @@ namespace lsx_cf_zoho\includes;
 /**
  * Templates.
  */
-class Pre_Populate
-{
+class Pre_Populate {
+
 
     /**
      * Holds instance of the class
@@ -61,11 +61,9 @@ class Pre_Populate
      *
      * @return object
      */
-    public static function init()
-    {
-
+    public static function init() { 
         // If the single instance hasn't been set, set it now.
-        if (! isset(self::$instance) ) {
+        if ( ! isset(self::$instance) ) {
             self::$instance = new self();
         }
 
@@ -77,13 +75,12 @@ class Pre_Populate
      *
      * @since 1.0.0
      */
-    public function pre_populate_form( $entry, $form )
-    {
-        $this->form = $form;
+    public function pre_populate_form( $entry, $form ) {
+         $this->form = $form;
         $this->entry = $entry;
-        if (false === $this->has_output && is_array($this->entry) ) {
+        if ( false === $this->has_output && is_array($this->entry) ) {
             $params = array_intersect(array_keys($_GET), $this->get_modules());
-            if (! empty($params) ) {
+            if ( ! empty($params) ) {
                 foreach ( $params as $key ) {
                     $this->get_resource($key, $_GET[ $key ]);
                     $this->args[ $key ] = $_GET[ $key ];
@@ -101,15 +98,14 @@ class Pre_Populate
      *
      * @return array
      */
-    public function get_modules()
-    {
-        $this->modules = apply_filters(
+    public function get_modules() {
+         $this->modules = apply_filters(
             'lsx_cf_zoho_pre_populate_get_module_label',
             array(
-            'cid',
-            'tid',
-            'lid',
-            'pid',
+				'cid',
+				'tid',
+				'lid',
+				'pid',
             )
         );
         return $this->modules;
@@ -118,28 +114,27 @@ class Pre_Populate
     /**
      * @return string
      */
-    public function get_module_label( $module_id = '' )
-    {
-        $module_label = '';
+    public function get_module_label( $module_id = '' ) {
+         $module_label = '';
         switch ( $module_id ) {
         case 'cid':
             $module_label = esc_html__('Contacts', 'lsx-cf-zoho');
-            break;
+                break;
 
         case 'tid':
             $module_label = esc_html__('Activities', 'lsx-cf-zoho');
-            break;
+                break;
 
         case 'lid':
             $module_label = esc_html__('Leads', 'lsx-cf-zoho');
-            break;
+                break;
 
         case 'pid':
             $module_label = esc_html__('Deals', 'lsx-cf-zoho');
-            break;
+                break;
 
         default:
-            break;
+                break;
         }
         $module_label = apply_filters('lsx_cf_zoho_pre_populate_get_module_label', $module_label);
         return $module_label;
@@ -151,25 +146,24 @@ class Pre_Populate
      * @param $key   string
      * @param $value string
      */
-    public function get_resource( $key = '', $value = '' )
-    {
-        $get     = new zohoapi\Get();
+    public function get_resource( $key = '', $value = '' ) {
+         $get     = new zohoapi\Get();
         $path   = '/crm/v2/' . $this->get_module_label($key) . '/' . $value;
         $response = $get->request($path);
         $this->response = $response;
 
-        if (! is_wp_error($response) && is_array($response) && isset($response['data']) && ! empty($response['data']) && isset($response['data'][0]) ) {
+        if ( ! is_wp_error($response) && is_array($response) && isset($response['data']) && ! empty($response['data']) && isset($response['data'][0]) ) {
             $this->filter_entry($this->response['data'][0]);
             $this->response = apply_filters('lsx_cf_zoho_pre_populate_filter_entry', $this->response['data'][0], $key, $get);
-            if (! is_wp_error($response) ) {
+            if ( ! is_wp_error($response) ) {
                 $this->filter_entry($this->response['data'][0]);
             } else {
-                if (null === $this->response ) {
+                if ( null === $this->response ) {
                     $this->log('Null Response', $this->response, 'Pre Populate Error', 0, 'error');
                 }
             }
         } else {
-            if (null === $this->response ) {
+            if ( null === $this->response ) {
                 $this->log('Null Response', $this->response, 'Pre Populate Error', 0, 'error');
             }
         }
@@ -179,9 +173,8 @@ class Pre_Populate
      * @param $response
      * @param $form_id
      */
-    public function filter_entry( $data )
-    {
-        if (! empty($this->form) ) {
+    public function filter_entry( $data ) {
+         if ( ! empty($this->form) ) {
 
             foreach ( $data as $item_key => $item_value ) {
                 $keys = array();
@@ -193,19 +186,19 @@ class Pre_Populate
                               $temp_key = str_replace('-', '_', sanitize_title($sub_key));
                               $keys[ 'contact_' . $temp_key ] = $sub_value;
                     }
-                    break;
+                        break;
 
                 default:
                     $temp_key = str_replace('-', '_', sanitize_title($item_key));
                     $keys[ $temp_key ] = $item_value;
-                    break;
+                        break;
                 }
 
                 // Run through each of the keys
-                if (! empty($keys) ) {
+                if ( ! empty($keys) ) {
                     foreach ( $keys as $index => $value ) {
                         $field = \Caldera_Forms_Field_Util::get_field_by_slug($index, $this->form);
-                        if (false !== $field ) {
+                        if ( false !== $field ) {
                                   $this->entry[ $field['ID'] ] = $value;
 
                         }
@@ -224,10 +217,8 @@ class Pre_Populate
      *
      * @return array the altered form object
      */
-    public function enqueue_assets( $form )
-    {
-
-        if (false !== $form ) {
+    public function enqueue_assets( $form ) { 
+        if ( false !== $form ) {
             wp_localize_script(
                 'lsx-cf-zoho-form-fieldjs',
                 'lsx_cf_zoho',
@@ -246,13 +237,11 @@ class Pre_Populate
      * @param integer $id         ID of the form submission.
      * @param string  $type       Either error or event.
      */
-    public function log( $message, $submission, $details, $id, $type )
-    {
-
+    public function log( $message, $submission, $details, $id, $type ) { 
         $submission = array(
-        'response'   => $message,
-        'submission' => $submission,
-        'details'    => $details,
+			'response'   => $message,
+			'submission' => $submission,
+			'details'    => $details,
         );
 
         WP_Logging::add(

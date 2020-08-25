@@ -1,5 +1,5 @@
 <?php
-if ('' === $value || null === $value ) {
+if ( '' === $value || null === $value ) {
     $value = 'https://accounts.zoho.com/oauth/v2';
 }
 ?>

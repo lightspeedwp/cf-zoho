@@ -10,8 +10,8 @@ namespace lsx_cf_zoho\includes;
 /**
  * Cache.
  */
-class Cache
-{
+class Cache {
+
 
     /**
      * Array of cached data for the plugin.
@@ -26,9 +26,8 @@ class Cache
      * @param string                        $item Cache item key.
      * @param array        Cache item value.
      */
-    public function set_plugin_cache_item( $item, $value )
-    {
-        $this->plugin_cache[ $item ] = $value;
+    public function set_plugin_cache_item( $item, $value ) {
+         $this->plugin_cache[ $item ] = $value;
         set_transient(LSX_CFZ_TRANSIENT_SLUG, $this->plugin_cache, MONTH_IN_SECONDS);
     }
 
@@ -38,10 +37,8 @@ class Cache
      * @param  string $item Cache item key.
      * @return boolean|array       False|Cache item array.
      */
-    public function get_plugin_cache_item( $item )
-    {
-
-        if (! isset($this->plugin_cache[ $item ]) ) {
+    public function get_plugin_cache_item( $item ) { 
+        if ( ! isset($this->plugin_cache[ $item ]) ) {
             return false;
         }
 
@@ -51,9 +48,8 @@ class Cache
     /**
      * Deletes plugin transients.
      */
-    public function flush_plugin_cache()
-    {
-        delete_transient(LSX_CFZ_TRANSIENT_SLUG);
+    public function flush_plugin_cache() {
+         delete_transient(LSX_CFZ_TRANSIENT_SLUG);
     }
 
     /**
@@ -61,10 +57,8 @@ class Cache
      *
      * @param boolean $load_cache Whether to load plugin cache in or not.
      */
-    public function __construct( $load_cache = true )
-    {
-
-        if (false === $load_cache ) {
+    public function __construct( $load_cache = true ) { 
+        if ( false === $load_cache ) {
             return;
         }
 

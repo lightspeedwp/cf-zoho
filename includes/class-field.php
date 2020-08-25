@@ -10,8 +10,8 @@ namespace lsx_cf_zoho\includes;
 /**
  * Templates.
  */
-class Field
-{
+class Field {
+
 
     /**
      * Holds the modals that are outputted in the footer of the page
@@ -30,11 +30,9 @@ class Field
      *
      * @return object
      */
-    public static function init()
-    {
-
+    public static function init() { 
         // If the single instance hasn't been set, set it now.
-        if (! isset(self::$instance) ) {
+        if ( ! isset(self::$instance) ) {
             self::$instance = new self();
         }
 
@@ -46,17 +44,15 @@ class Field
      * Add the field actions
      * return void
      */
-    public function setup()
-    {
-
+    public function setup() { 
         // Replace existing recaptcha field
         add_filter('caldera_forms_get_field_types', array( $this, 'add_field' ), 25);
 
         add_filter(
             'caldera_forms_get_field_types',
             array(
-            $this,
-            'add_field',
+				$this,
+				'add_field',
             ),
             25,
             1
@@ -65,8 +61,8 @@ class Field
         add_filter(
             'wp_kses_allowed_html',
             array(
-            $this,
-            'wp_kses_allowed_html',
+				$this,
+				'wp_kses_allowed_html',
             ),
             10,
             2
@@ -75,8 +71,8 @@ class Field
         add_filter(
             'caldera_forms_field_attributes',
             array(
-            $this,
-            'field_attrs',
+				$this,
+				'field_attrs',
             ),
             10,
             3
@@ -90,27 +86,26 @@ class Field
      *
      * @return array
      */
-    public function add_field( $fields )
-    {
-        $fields['zoho_form']      = array(
-        'field'       => __('Zoho Form (experimental)', 'lsx-cf-zoho'),
-        'description' => __('Capture a new contact, lead or task and return CF entry ID.', 'lsx-cf-zoho'),
-        'file'        => LSX_CFZ_FIELDS_PATH . 'zoho-form/field.php',
-        'category'    => __('Special', 'lsx-cf-zoho'),
-        'handler'     => array( $this, 'handler' ),
-        'capture'     => false,
-        'setup'       => array(
-        'template'      => LSX_CFZ_FIELDS_PATH . 'zoho-form/config.php',
-        'preview'       => LSX_CFZ_FIELDS_PATH . 'zoho-form/preview.php',
-        'not_supported' => array(
-        'caption',
-        'required',
-        ),
-        ),
-        'scripts' => array(
-        LSX_CFZ_FIELDS_URL . 'zoho-form/js/zoho-form-field.js',
-        ),
-        );
+    public function add_field( $fields ) {
+         $fields['zoho_form']      = array(
+			 'field'       => __('Zoho Form (experimental)', 'lsx-cf-zoho'),
+			 'description' => __('Capture a new contact, lead or task and return CF entry ID.', 'lsx-cf-zoho'),
+			 'file'        => LSX_CFZ_FIELDS_PATH . 'zoho-form/field.php',
+			 'category'    => __('Special', 'lsx-cf-zoho'),
+			 'handler'     => array( $this, 'handler' ),
+			 'capture'     => false,
+			 'setup'       => array(
+				 'template'      => LSX_CFZ_FIELDS_PATH . 'zoho-form/config.php',
+				 'preview'       => LSX_CFZ_FIELDS_PATH . 'zoho-form/preview.php',
+				 'not_supported' => array(
+					 'caption',
+					 'required',
+				 ),
+			 ),
+			 'scripts' => array(
+				 LSX_CFZ_FIELDS_URL . 'zoho-form/js/zoho-form-field.js',
+			 ),
+		 );
 
         return $fields;
 
@@ -127,19 +122,17 @@ class Field
      *
      * @return \WP_Error|boolean
      */
-    public function handler( $value, $field, $form )
-    {
-
-        if (isset($field['config']['required']) && '' !== $field['config']['required'] && '' === $value ) {
+    public function handler( $value, $field, $form ) { 
+        if ( isset($field['config']['required']) && '' !== $field['config']['required'] && '' === $value ) {
             return new \WP_Error('error', apply_filters('lsx_cf_zoho_form_field_error_empty_message', __('This field is required.', 'lsx-cf-zoho')));
         }
 
         $value = explode(',', $value);
-        if (! is_array($value) ) {
+        if ( ! is_array($value) ) {
             $value = array( $value );
         }
 
-        if ((int) $value < (int) $field['config']['limit'] ) {
+        if ( (int) $value < (int) $field['config']['limit'] ) {
             return new \WP_Error(
                 'error',
                 apply_filters('lsx_cf_zoho_form_field_error_limit_message', __('Please complete the rest of this field', 'lsx-cf-zoho'))
@@ -157,13 +150,12 @@ class Field
      * @param $limit      integer
      * @param $title      string
      */
-    public function add_modal( $caldera_id = '', $field_id = '', $limit = 1, $title = '' )
-    {
-        if ('' !== $caldera_id && '' !== $field_id ) {
+    public function add_modal( $caldera_id = '', $field_id = '', $limit = 1, $title = '' ) {
+         if ( '' !== $caldera_id && '' !== $field_id ) {
             $this->modals[ $caldera_id ] = array(
-            'field' => $field_id,
-            'limit' => $limit,
-            'title' => $title,
+				'field' => $field_id,
+				'limit' => $limit,
+				'title' => $title,
             );
             add_action('wp_footer', array( $this, 'output_modals' ), 1);
         }
@@ -172,19 +164,18 @@ class Field
     /**
      * Outputs the modals in the footer
      */
-    public function output_modals()
-    {
-        $this->modals = apply_filters('lsx_cf_zoho_before_modal_output', $this->modals);
+    public function output_modals() {
+         $this->modals = apply_filters('lsx_cf_zoho_before_modal_output', $this->modals);
 
-        if (! empty($this->modals) && is_array($this->modals) ) {
+        if ( ! empty($this->modals) && is_array($this->modals) ) {
             foreach ( $this->modals as $form_id => $values ) {
 
                 // add filter to alter the passenger form
                 add_filter(
                     'caldera_forms_get_form-' . $form_id,
                     array(
-                    $this,
-                    'register_js_callback',
+						$this,
+						'register_js_callback',
                     )
                 );
 
@@ -199,15 +190,14 @@ class Field
     /**
      * Allow extra tags and attributes to wp_kses_post()
      */
-    public function wp_kses_allowed_html( $allowedtags, $context )
-    {
-        if (! isset($allowedtags['div']) ) {
+    public function wp_kses_allowed_html( $allowedtags, $context ) {
+         if ( ! isset($allowedtags['div']) ) {
             $allowedtags['div'] = array();
         }
         $allowedtags['div']['data-form-id']   = true;
         $allowedtags['div']['data-field-id'] = true;
 
-        if (! isset($allowedtags['input']) ) {
+        if ( ! isset($allowedtags['input']) ) {
             $allowedtags['input'] = array();
         }
         $allowedtags['input']['data-limit'] = true;
@@ -224,9 +214,8 @@ class Field
      *
      * @return array the altered form object
      */
-    public function register_js_callback( $form )
-    {
-        $form['has_ajax_callback'] = true;
+    public function register_js_callback( $form ) {
+         $form['has_ajax_callback'] = true;
         $form['custom_callback']   = 'lsx_cf_zoho_handle_return';
         return $form;
     }
@@ -243,12 +232,11 @@ class Field
      *
      * @return array
      */
-    public function field_attrs( $attrs, $field, $form )
-    {
-        if ('zoho_form' === $field['type'] ) {
+    public function field_attrs( $attrs, $field, $form ) {
+         if ( 'zoho_form' === $field['type'] ) {
             // set the limit
             $limit = 1;
-            if (! empty($field['config']['limit']) && '' !== $field['config']['limit'] ) {
+            if ( ! empty($field['config']['limit']) && '' !== $field['config']['limit'] ) {
                 $limit = $field['config']['limit'];
             }
             $limit = apply_filters('lsx_cf_zoho_form_field_limit', $limit);

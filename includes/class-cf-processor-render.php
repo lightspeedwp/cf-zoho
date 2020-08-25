@@ -12,8 +12,8 @@ use lsx_cf_zoho\includes\zohoapi;
 /**
  * Processor Render Class.
  */
-class CF_Processor_Render
-{
+class CF_Processor_Render {
+
 
     /**
      * Options class.
@@ -34,9 +34,8 @@ class CF_Processor_Render
      *
      * @return object Cache class.
      */
-    public function get_cache()
-    {
-        return $this->cache;
+    public function get_cache() {
+         return $this->cache;
     }
 
     /**
@@ -51,9 +50,8 @@ class CF_Processor_Render
      *
      * @return object Get class.
      */
-    public function get_get()
-    {
-        return $this->get;
+    public function get_get() {
+         return $this->get;
     }
 
     /**
@@ -68,9 +66,8 @@ class CF_Processor_Render
      *
      * @return string Module we are rendering.
      */
-    public function get_module()
-    {
-        return $this->module;
+    public function get_module() {
+         return $this->module;
     }
 
     /**
@@ -85,13 +82,11 @@ class CF_Processor_Render
      *
      * @internal test_that_module_data_is_correctly_built.
      */
-    public function set_module_data()
-    {
-
+    public function set_module_data() { 
         $module = $this->get_module();
         $cache  = $this->get_cache()->get_plugin_cache_item($module);
 
-        if (false !== $cache ) {
+        if ( false !== $cache ) {
             $this->module_data = $cache;
             return;
         }
@@ -101,12 +96,12 @@ class CF_Processor_Render
         $all_modules = $this->get_get()->request('/crm/v2/settings/modules');
         $data = $this->get_get()->request($path);
 
-        if (is_wp_error($data) ) {
+        if ( is_wp_error($data) ) {
             $this->errors[] = $data->get_error_message();
             return;
         }
 
-        if (isset($data['status']) && 'error' === $data['status'] ) {
+        if ( isset($data['status']) && 'error' === $data['status'] ) {
             $this->errors[] = $data['message'];
             return;
         }
@@ -131,25 +126,25 @@ class CF_Processor_Render
                 foreach ( $value['fields'] as $field_key => $fields ) {
 
                     // Remove ignored fields.
-                    if (in_array($fields['field_label'], $ignore_fields, true) ) {
+                    if ( in_array($fields['field_label'], $ignore_fields, true) ) {
                         unset($value['fields'][ $field_key ]);
                         continue;
                     }
 
                     // No data type, carry on.
-                    if (empty($fields['data_type']) ) {
+                    if ( empty($fields['data_type']) ) {
                         continue;
                     }
 
                     // Some other data type, carry on.
-                    if ('ownerlookup' !== $fields['data_type'] ) {
+                    if ( 'ownerlookup' !== $fields['data_type'] ) {
                         continue;
                     }
 
                     $key = sanitize_key($fields['field_label']);
 
                     // If we are forcing text input, carry on.
-                    if (in_array($key, $force_text_input, true) ) {
+                    if ( in_array($key, $force_text_input, true) ) {
                         continue;
                     }
 
@@ -171,9 +166,8 @@ class CF_Processor_Render
      *
      * @return array Module data.
      */
-    public function get_module_data()
-    {
-        return $this->module_data;
+    public function get_module_data() {
+         return $this->module_data;
     }
 
     /**
@@ -186,12 +180,10 @@ class CF_Processor_Render
     /**
      * Setter for $users.
      */
-    public function set_users()
-    {
-
+    public function set_users() { 
         $cache = $this->cache->get_plugin_cache_item('users');
 
-        if (false !== $cache ) {
+        if ( false !== $cache ) {
             $this->users = $cache;
             return;
         }
@@ -199,7 +191,7 @@ class CF_Processor_Render
         $path = '/crm/v2/users';
         $data = $this->get->request($path);
 
-        if (is_wp_error($data) ) {
+        if ( is_wp_error($data) ) {
             $this->errors[] = $data->get_error_message();
             return;
         }
@@ -207,8 +199,8 @@ class CF_Processor_Render
         foreach ( $data['users'] as $user ) {
 
             $this->users[] = array(
-            'label' => $user['full_name'],
-            'value' => $user['id'],
+				'label' => $user['full_name'],
+				'value' => $user['id'],
             );
         }
         $this->cache->set_plugin_cache_item('users', $this->users);
@@ -219,9 +211,8 @@ class CF_Processor_Render
      *
      * @return array Users IDs and Names as stored on Zoho CRM.
      */
-    public function get_users()
-    {
-        return $this->users;
+    public function get_users() {
+         return $this->users;
     }
 
     /**
@@ -236,9 +227,8 @@ class CF_Processor_Render
      *
      * @return array Errors encountered by the processor.
      */
-    public function get_errors()
-    {
-        return $this->errors;
+    public function get_errors() {
+         return $this->errors;
     }
 
     /**
@@ -247,20 +237,20 @@ class CF_Processor_Render
      * @var array.
      */
     private $ignore_fields = array(
-    'Account Name',
-    'Closed Time',
-    'Created By',
-    'Created Time',
-    'Industry',
-    'Modified By',
-    'Modified Time',
-    'Recurring Activity',
-    'Remind At',
-    'Send Notification Email',
-    'Vendor Name',
-    'What Id',
-    'Who Id',
-    'Territories',
+		'Account Name',
+		'Closed Time',
+		'Created By',
+		'Created Time',
+		'Industry',
+		'Modified By',
+		'Modified Time',
+		'Recurring Activity',
+		'Remind At',
+		'Send Notification Email',
+		'Vendor Name',
+		'What Id',
+		'Who Id',
+		'Territories',
     );
 
     /**
@@ -268,9 +258,8 @@ class CF_Processor_Render
      *
      * @return array Zoho fields to ignore when rendering fields to processor.
      */
-    public function get_ignore_fields()
-    {
-        return $this->ignore_fields;
+    public function get_ignore_fields() {
+         return $this->ignore_fields;
     }
 
     /**
@@ -284,14 +273,12 @@ class CF_Processor_Render
     /**
      * Sets $force_text_input to an array containing any fields specified in options.
      */
-    public function set_force_text_input()
-    {
-
+    public function set_force_text_input() { 
         $config_object = $this->options->get_option('fields');
 
         $key = $this->module . '_fields';
 
-        if (empty($config_object[ $key ]) ) {
+        if ( empty($config_object[ $key ]) ) {
             return;
         }
 
@@ -303,17 +290,14 @@ class CF_Processor_Render
      *
      * @return array Fields that should be forced to be text input.
      */
-    public function get_force_text_input()
-    {
-        return $this->force_text_input;
+    public function get_force_text_input() {
+         return $this->force_text_input;
     }
 
     /**
      * Class constructor.
      */
-    public function __construct( $module )
-    {
-
+    public function __construct( $module ) { 
         $this->options = new Options();
         $this->cache   = new Cache();
         $this->get     = new zohoapi\Get();
@@ -329,9 +313,8 @@ class CF_Processor_Render
      *
      * @return boolean.
      */
-    public function has_approval_mode()
-    {
-        return in_array($this->module, array( 'leads', 'contacts', 'potentials' ), true);
+    public function has_approval_mode() {
+         return in_array($this->module, array( 'leads', 'contacts', 'potentials' ), true);
     }
 
     /**
@@ -341,12 +324,10 @@ class CF_Processor_Render
      * @param  array $field Field array.
      * @return string        Field label.
      */
-    public function label( $field )
-    {
-
+    public function label( $field ) { 
         $label = $field['field_label'];
 
-        if (false === (bool) $field['required'] ) {
+        if ( false === (bool) $field['required'] ) {
             return $label;
         }
 
@@ -361,16 +342,14 @@ class CF_Processor_Render
      * @param  array $field Field array.
      * @return string        Field template.
      */
-    public function template( $field )
-    {
-
+    public function template( $field ) { 
         switch ( $field['data_type'] ) {
 
         case 'textarea':
-            return 'zoho-textarea.php';
+                return 'zoho-textarea.php';
 
         default:
-            return 'zoho-input.php';
+                return 'zoho-input.php';
         }
     }
 }

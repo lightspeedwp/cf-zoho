@@ -10,8 +10,8 @@ namespace lsx_cf_zoho\includes\zohoapi;
 /**
  * Tokens.
  */
-class Tokens
-{
+class Tokens {
+
 
     /**
      * Access token.
@@ -25,9 +25,8 @@ class Tokens
      *
      * @return string Access token.
      */
-    public function get_access_token()
-    {
-        return $this->access_token;
+    public function get_access_token() {
+         return $this->access_token;
     }
 
     /**
@@ -42,9 +41,8 @@ class Tokens
      *
      * @return string Refresh token.
      */
-    public function get_refresh_token()
-    {
-        return $this->refresh_token;
+    public function get_refresh_token() {
+         return $this->refresh_token;
     }
 
     /**
@@ -66,17 +64,14 @@ class Tokens
      *
      * @return string API Domain
      */
-    public function get_api_domain()
-    {
-        return $this->api_domain;
+    public function get_api_domain() {
+         return $this->api_domain;
     }
 
     /**
      * Loads in token data and sets properties.
      */
-    public function load_token_data()
-    {
-
+    public function load_token_data() { 
         $this->access_token  = get_transient(LSX_CFZ_TRANSIENT_SLUG . '_access_token');
         $this->refresh_token = get_option(LSX_CFZ_OPTION_SLUG . '_refresh_token', false);
         $this->api_domain    = get_option(LSX_CFZ_OPTION_SLUG . '_api_domain', false);
@@ -87,9 +82,8 @@ class Tokens
      *
      * @return boolean.
      */
-    public function has_refresh_token()
-    {
-        return false !== get_option(LSX_CFZ_OPTION_SLUG . '_refresh_token', false);
+    public function has_refresh_token() {
+         return false !== get_option(LSX_CFZ_OPTION_SLUG . '_refresh_token', false);
     }
 
     /**
@@ -99,16 +93,14 @@ class Tokens
      *
      * @param array $token_response Response from an API token request.
      */
-    public function save_tokens( $token_response )
-    {
-
+    public function save_tokens( $token_response ) { 
         // Set the access token to a transient that expires when the Zoho API expires it.
         set_transient(LSX_CFZ_TRANSIENT_SLUG . '_access_token', $token_response['access_token'], $token_response['expires_in_sec']);
 
         $this->access_token = $token_response['access_token'];
 
         // No refresh token included, exit.
-        if (empty($token_response['refresh_token']) ) {
+        if ( empty($token_response['refresh_token']) ) {
             return;
         }
 

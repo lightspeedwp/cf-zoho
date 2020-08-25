@@ -14,8 +14,8 @@ use lsx_cf_zoho\includes\zohoapi;
 /**
  * Settings API.
  */
-class Settings
-{
+class Settings {
+
 
     /**
      * Options class.
@@ -34,18 +34,15 @@ class Settings
     /**
      * LSX_Search constructor
      */
-    public function __construct()
-    {
-        $this->options = new includes\Options();
+    public function __construct() {
+         $this->options = new includes\Options();
         $this->tokens  = new zohoapi\Tokens();
     }
 
     /**
      * Register a LSX CF Zoho Settings page.
      */
-    public function settings_page()
-    {
-
+    public function settings_page() { 
         add_options_page(
             'LSX CF Zoho Options',
             'LSX CF Zoho',
@@ -58,16 +55,14 @@ class Settings
     /**
      *  Settings page.
      */
-    public function lsx_cf_zoho_settings_page_html()
-    {
-
+    public function lsx_cf_zoho_settings_page_html() { 
         // Check user capabilities.
-        if (! current_user_can('manage_options') ) {
+        if ( ! current_user_can('manage_options') ) {
             return;
         }
 
         // Test for transient flush.
-        if (true === (bool) $this->options->get_option('flush_transients') ) {
+        if ( true === (bool) $this->options->get_option('flush_transients') ) {
             $this->flush_transients();
         }
 
@@ -81,11 +76,9 @@ class Settings
     /**
      * Inits the WP Settings API.
      */
-    public function settings_api_init()
-    {
-
+    public function settings_api_init() { 
         // Test for redirect after tokens.
-        if (isset($_GET['state']) ) {
+        if ( isset($_GET['state']) ) {
             $this->request_token();
         }
 
@@ -113,9 +106,9 @@ class Settings
             'lsx_cf_zoho',
             'lsx_cf_zoho_section_api_keys',
             array(
-            'label_for'          => 'lsx_cf_zoho_url',
-            'class'              => 'lsx_cf_zoho_row',
-            'lsx_cf_zoho_custom_data' => 'custom',
+				'label_for'          => 'lsx_cf_zoho_url',
+				'class'              => 'lsx_cf_zoho_row',
+				'lsx_cf_zoho_custom_data' => 'custom',
             )
         );
 
@@ -127,9 +120,9 @@ class Settings
             'lsx_cf_zoho',
             'lsx_cf_zoho_section_api_keys',
             array(
-            'label_for'          => 'lsx_cf_zoho_client_id',
-            'class'              => 'lsx_cf_zoho_row',
-            'lsx_cf_zoho_custom_data' => 'custom',
+				'label_for'          => 'lsx_cf_zoho_client_id',
+				'class'              => 'lsx_cf_zoho_row',
+				'lsx_cf_zoho_custom_data' => 'custom',
             )
         );
 
@@ -141,9 +134,9 @@ class Settings
             'lsx_cf_zoho',
             'lsx_cf_zoho_section_api_keys',
             array(
-            'label_for'          => 'lsx_cf_zoho_client_secret',
-            'class'              => 'lsx_cf_zoho_row',
-            'lsx_cf_zoho_custom_data' => 'custom',
+				'label_for'          => 'lsx_cf_zoho_client_secret',
+				'class'              => 'lsx_cf_zoho_row',
+				'lsx_cf_zoho_custom_data' => 'custom',
             )
         );
 
@@ -155,9 +148,9 @@ class Settings
             'lsx_cf_zoho',
             'lsx_cf_zoho_section_api_keys',
             array(
-            'label_for'          => 'lsx_cf_zoho_tokens',
-            'class'              => 'lsx_cf_zoho_row',
-            'lsx_cf_zoho_custom_data' => 'custom',
+				'label_for'          => 'lsx_cf_zoho_tokens',
+				'class'              => 'lsx_cf_zoho_row',
+				'lsx_cf_zoho_custom_data' => 'custom',
             )
         );
 
@@ -190,14 +183,14 @@ class Settings
      * Section templates.
      */
     private $templates = array(
-    'lsx_cf_zoho_section_developers'  => 'settings-section.php',
-    'lsx_cf_zoho_section_api_keys'    => 'settings-api.php',
-    'lsx_cf_zoho_url'                 => 'settings-url.php',
-    'lsx_cf_zoho_client_id'           => 'settings-client-id.php',
-    'lsx_cf_zoho_client_secret'       => 'settings-client-secret.php',
-    'flush_transients'                => 'settings-flush-transients.php',
-    'lsx_cf_zoho_enable_debug'        => 'settings-enable-debug.php',
-    'lsx_cf_zoho_enable_form_blocker' => 'settings-enable-block-form.php',
+		'lsx_cf_zoho_section_developers'  => 'settings-section.php',
+		'lsx_cf_zoho_section_api_keys'    => 'settings-api.php',
+		'lsx_cf_zoho_url'                 => 'settings-url.php',
+		'lsx_cf_zoho_client_id'           => 'settings-client-id.php',
+		'lsx_cf_zoho_client_secret'       => 'settings-client-secret.php',
+		'flush_transients'                => 'settings-flush-transients.php',
+		'lsx_cf_zoho_enable_debug'        => 'settings-enable-debug.php',
+		'lsx_cf_zoho_enable_form_blocker' => 'settings-enable-block-form.php',
     );
 
     /**
@@ -205,9 +198,7 @@ class Settings
      *
      * @param array $args Settings arguments.
      */
-    public function lsx_cf_zoho_settings_field_cb( $args )
-    {
-
+    public function lsx_cf_zoho_settings_field_cb( $args ) { 
         $id       = isset($args['id']) ? esc_attr($args['id']) : esc_attr($args['label_for']);
         $name     = LSX_CFZ_OPTION_SLUG . '[' . $id . ']';
         $value    = $this->options->get_option($id);
@@ -221,9 +212,7 @@ class Settings
      *
      * @param array $args Settings arguments.
      */
-    public function lsx_cf_zoho_tokens_cb()
-    {
-
+    public function lsx_cf_zoho_tokens_cb() { 
         $url       = $this->options->get_option('lsx_cf_zoho_url') . '/auth';
         $url_text  = false === $this->tokens->has_refresh_token() ? 'Generate ' : 'Re-generate ';
         $url_text .= 'Access and Refresh Tokens';
@@ -233,12 +222,12 @@ class Settings
          * however the response to this does not appear to include a refresh token.
          */
         $params = array(
-        'scope'         => 'ZohoCRM.settings.all,ZohoCRM.users.all,ZohoCRM.modules.all',
-        'client_id'     => $this->options->get_option('lsx_cf_zoho_client_id'),
-        'state'         => wp_create_nonce('zohotoken'),
-        'response_type' => 'code',
-        'redirect_uri'  => lsx_cf_zoho_redirect_url(),
-        'access_type'   => 'offline',
+			'scope'         => 'ZohoCRM.settings.all,ZohoCRM.users.all,ZohoCRM.modules.all',
+			'client_id'     => $this->options->get_option('lsx_cf_zoho_client_id'),
+			'state'         => wp_create_nonce('zohotoken'),
+			'response_type' => 'code',
+			'redirect_uri'  => lsx_cf_zoho_redirect_url(),
+			'access_type'   => 'offline',
         );
 
         foreach ( $params as $key => $value ) {
@@ -251,12 +240,10 @@ class Settings
     /**
      * Called when a temporary oauth token has been generated.
      */
-    public function request_token()
-    {
-
+    public function request_token() { 
         $nonce = filter_input(INPUT_GET, 'state', FILTER_SANITIZE_STRING);
 
-        if (! wp_verify_nonce($nonce, 'zohotoken') ) {
+        if ( ! wp_verify_nonce($nonce, 'zohotoken') ) {
             add_settings_error('lsx_cf_zoho_messages', 'lsx_cf_zoho_message', 'The token request is invalid.', 'error');
             return;
         }
@@ -264,7 +251,7 @@ class Settings
         $connect  = new zohoapi\Connect();
         $response = $connect->generate_token('authorization_code');
 
-        if (true !== $response ) {
+        if ( true !== $response ) {
             add_settings_error('lsx_cf_zoho_messages', 'lsx_cf_zoho_message', $response, 'error');
             return;
         }
@@ -278,9 +265,7 @@ class Settings
     /**
      * Flushes any stored module data.
      */
-    public function flush_transients()
-    {
-
+    public function flush_transients() { 
         $cache = new includes\Cache();
         $cache->flush_plugin_cache();
 

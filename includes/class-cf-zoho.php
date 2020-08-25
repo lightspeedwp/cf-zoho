@@ -12,8 +12,8 @@ use lsx_cf_zoho\admin;
 /**
  * Main CF_Zoho Class.
  */
-final class CF_Zoho
-{
+final class CF_Zoho {
+
 
     /**
      * Holds instance of the class
@@ -60,11 +60,9 @@ final class CF_Zoho
      *
      * @return object
      */
-    public static function init()
-    {
-
+    public static function init() { 
         // If the single instance hasn't been set, set it now.
-        if (! isset(self::$instance) ) {
+        if ( ! isset(self::$instance) ) {
             self::$instance = new self();
         }
 
@@ -74,9 +72,7 @@ final class CF_Zoho
     /**
      * setup the plugin.
      */
-    public function setup()
-    {
-
+    public function setup() { 
         // Admin Settings.
         $this->settings = new admin\Settings();
 
@@ -88,7 +84,7 @@ final class CF_Zoho
         add_filter('caldera_forms_get_form_processors', array( $cf_processors, 'register_processors' ));
 
         // WP Logs.
-        if (true === (bool) $this->settings->options->get_option('lsx_cf_zoho_enable_debug') ) {
+        if ( true === (bool) $this->settings->options->get_option('lsx_cf_zoho_enable_debug') ) {
             $this->logging = new WP_Logging();
         }
 
@@ -107,8 +103,8 @@ final class CF_Zoho
         add_filter(
             'caldera_forms_ajax_return',
             array(
-            $this,
-            'filter_ajax_return',
+				$this,
+				'filter_ajax_return',
             ),
             10,
             2
@@ -121,15 +117,14 @@ final class CF_Zoho
      * @package    giltedgeafrica-lsx-child
      * @subpackage setup
      */
-    public function scripts()
-    {
-        if (true === (bool) $this->settings->options->get_option('lsx_cf_zoho_enable_form_blocker') ) {
+    public function scripts() {
+         if ( true === (bool) $this->settings->options->get_option('lsx_cf_zoho_enable_form_blocker') ) {
             wp_enqueue_script('blockUI', LSX_CFZ_URL . '/assets/js/jquery.blockUI.js', array( 'jquery' ), LSX_CFZ_VERSION, true);
             wp_enqueue_script('lsx-cf-zoho-js', LSX_CFZ_URL . '/assets/js/lsx-cf-zoho.js', array( 'blockUI' ), LSX_CFZ_VERSION, true);
             $zoho_args =
             array(
-            'blockMessage' => __('Please wait while we capture your details', 'lsx-cf-zoho'),
-            'headerSelector'   => '.header-wrap',
+				'blockMessage' => __('Please wait while we capture your details', 'lsx-cf-zoho'),
+				'headerSelector'   => '.header-wrap',
             );
             $zoho_args = apply_filters('lsx_cf_zoho_js_args', $zoho_args);
             wp_localize_script(
@@ -148,9 +143,8 @@ final class CF_Zoho
      *
      * @return mixed
      */
-    public function filter_ajax_return( $out, $form )
-    {
-        if (true === (bool) $this->settings->options->get_option('lsx_cf_zoho_enable_form_blocker') ) {
+    public function filter_ajax_return( $out, $form ) {
+         if ( true === (bool) $this->settings->options->get_option('lsx_cf_zoho_enable_form_blocker') ) {
             $out['html'] .= '<script>lsx_cf_zoho.unblockForms();</script>';
         }
         return $out;

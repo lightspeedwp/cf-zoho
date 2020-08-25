@@ -24,7 +24,7 @@ spl_autoload_register(
         $file_path = explode('\\', $filename);
 
         // Not part of our namespace, then return.
-        if ($plugin_namespace !== $file_path[0] ) {
+        if ( $plugin_namespace !== $file_path[0] ) {
             return;
         }
 
@@ -33,7 +33,7 @@ spl_autoload_register(
          * - All but the last index will be the path to the file.
          */
         // Get the last index of the array. This is the class we're loading.
-        if (isset($file_path[ count($file_path) - 1 ]) ) {
+        if ( isset($file_path[ count($file_path) - 1 ]) ) {
             $file_name = strtolower(
                 $file_path[ count($file_path) - 1 ]
             );
@@ -62,7 +62,7 @@ spl_autoload_register(
         $fully_qualified_path .= $final_file_name;
 
         // No file, then exit.
-        if (! file_exists($fully_qualified_path) ) {
+        if ( ! file_exists($fully_qualified_path) ) {
             return;
         }
 

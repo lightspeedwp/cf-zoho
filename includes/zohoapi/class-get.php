@@ -10,8 +10,8 @@ namespace lsx_cf_zoho\includes\zohoapi;
 /**
  * CF_Zoho API GET Class.
  */
-class Get extends Connect
-{
+class Get extends Connect {
+
 
     /**
      * Performs a GET request to the specified URL path.
@@ -20,9 +20,7 @@ class Get extends Connect
      * @param  boolean $new_token Whether this is a second attempt with a new token.
      * @return object|array            WP_Error|Zoho response.
      */
-    public function request( $path, $new_token = false )
-    {
-
+    public function request( $path, $new_token = false ) { 
         $this->tokens->load_token_data();
 
         $base_url = $this->tokens->get_api_domain();
@@ -31,24 +29,24 @@ class Get extends Connect
         $response = wp_remote_get(
             $url,
             array(
-            'timeout' => 45,
-            'headers' => $this->headers(),
+				'timeout' => 45,
+				'headers' => $this->headers(),
             )
         );
 
-        if (is_wp_error($response) ) {
+        if ( is_wp_error($response) ) {
             return $response;
         }
 
         $decoded_response = json_decode($response['body'], true);
 
         // Expired token should be caught prior to request, but this fallback will catch any exceptions.
-        if (true === $this->has_expired_token($decoded_response) && false === $new_token ) {
+        if ( true === $this->has_expired_token($decoded_response) && false === $new_token ) {
 
             // Generate new token.
             $request = $this->generate_token('refresh_token');
 
-            if (is_wp_error($request) ) {
+            if ( is_wp_error($request) ) {
                 return $request;
             }
 

@@ -10,8 +10,8 @@ namespace lsx_cf_zoho\includes\zohoapi;
 /**
  * CF_Zoho API Post Class.
  */
-class Post extends Connect
-{
+class Post extends Connect {
+
 
     /**
      * Performs a POST request to the specified URL path.
@@ -23,9 +23,7 @@ class Post extends Connect
      * @param  string  $method
      * @return object|array            WP_Error|Zoho response.
      */
-    public function request( $path, $body, $new_token = false, $has_attachments = false, $method = 'POST' )
-    {
-
+    public function request( $path, $body, $new_token = false, $has_attachments = false, $method = 'POST' ) { 
         $this->tokens->load_token_data();
 
         $base_url = $this->tokens->get_api_domain();
@@ -33,14 +31,14 @@ class Post extends Connect
         $response = wp_remote_post(
             $url,
             array(
-            'timeout' => 45,
-            'headers' => $this->headers($has_attachments),
-            'body'    => wp_json_encode($body),
-            'method' => $method,
+				'timeout' => 45,
+				'headers' => $this->headers($has_attachments),
+				'body'    => wp_json_encode($body),
+				'method' => $method,
             )
         );
 
-        if (is_wp_error($response) ) {
+        if ( is_wp_error($response) ) {
             return $response;
         }
 
@@ -48,12 +46,12 @@ class Post extends Connect
         $decoded_response = json_decode($body, true);
 
         // If this is first attempt and token has expired?
-        if (true === $this->has_expired_token($decoded_response) && false === $new_token ) {
+        if ( true === $this->has_expired_token($decoded_response) && false === $new_token ) {
 
             // Generate new token.
             $request = $this->generate_token('refresh_token');
 
-            if (is_wp_error($request) ) {
+            if ( is_wp_error($request) ) {
                 return $request;
             }
 
@@ -70,9 +68,7 @@ class Post extends Connect
      * @param  $attached_url
      * @return mixed
      */
-    public function send_file( $path, $body, $attached_url = false )
-    {
-
+    public function send_file( $path, $body, $attached_url = false ) { 
         $this->tokens->load_token_data();
         $base_url = $this->tokens->get_api_domain();
         $url = $base_url . $path;
@@ -93,13 +89,13 @@ class Post extends Connect
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
         // multipart body
-        if (false === $attached_url ) {
+        if ( false === $attached_url ) {
             $body = array(
-            'file' => $body,
+				'file' => $body,
             );
         } else {
             $body = array(
-            'attachmentUrl' => $body,
+				'attachmentUrl' => $body,
             );
         }
 

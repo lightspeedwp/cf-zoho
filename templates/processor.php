@@ -1,4 +1,4 @@
-<?php if ($module->has_approval_mode() ) : ?>
+<?php if ( $module->has_approval_mode() ) : ?>
 
 <div class="caldera-config-group">
 
@@ -51,7 +51,7 @@
 
             <?php $key = sanitize_key($field['field_label']); ?>
 
-            <?php if (! empty($field['val']) ) : ?>
+            <?php if ( ! empty($field['val']) ) : ?>
 
                 <?php include LSX_CFZ_TEMPLATE_PATH . 'zoho-user-select.php'; ?>
 

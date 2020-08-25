@@ -10,8 +10,8 @@ namespace lsx_cf_zoho\includes;
 /**
  * Templates.
  */
-class Templates
-{
+class Templates {
+
 
     /**
      * Holds instance of the class
@@ -23,21 +23,17 @@ class Templates
      *
      * @return object
      */
-    public static function init()
-    {
-
+    public static function init() { 
         // If the single instance hasn't been set, set it now.
-        if (! isset(self::$instance) ) {
+        if ( ! isset(self::$instance) ) {
             self::$instance = new self();
         }
 
         return self::$instance;
     }
 
-    public function template_handler( $template )
-    {
-
-        if (! is_singular('wp_log') ) {
+    public function template_handler( $template ) { 
+        if ( ! is_singular('wp_log') ) {
             return $template;
         }
 

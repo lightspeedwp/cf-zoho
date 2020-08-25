@@ -8,12 +8,12 @@
 
         <select id="{{_id}}<?php echo esc_attr($field_num); ?>"
                 class="field-config block-input"
-                <?php if (true === (bool) $field['required'] ) { ?>
+                <?php if ( true === (bool) $field['required'] ) { ?>
                     required
                 <?php } ?>
                 name="{{_name}}[<?php echo esc_attr($key); ?>]">
 
-            <?php if (false === $field['required'] && 'ownerlookup' === $field['data_type'] ) { ?>
+            <?php if ( false === $field['required'] && 'ownerlookup' === $field['data_type'] ) { ?>
                 <option value=""><?php esc_html_e('--None--', 'lsx-cf-zoho'); ?></option>
             <?php } ?>
 
@@ -23,9 +23,9 @@
                 $label = $value_value;
                 $value = $label;
 
-                if (is_array($value_value) ) {
+                if ( is_array($value_value) ) {
 
-                    if (isset($value_value['content']) ) {
+                    if ( isset($value_value['content']) ) {
 
                         $label = $value_value['content'];
                         $value = $label;
