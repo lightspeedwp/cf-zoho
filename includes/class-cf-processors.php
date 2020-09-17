@@ -480,17 +480,8 @@ class CF_Processors {
 				if ( '-None-' === $value || '--None--' === $value || false === $value ) {
 					continue;
 				}
-				$label = str_replace( ' ', '_', $field['field_label'] );
 
-				/**
-				 * TODO: Change this to a preg_match
-				 */
-				if ( 'Lead_Owner' === $label || 'Task_Owner' === $label || 'Contact_Owner' === $label ) {
-					$label = 'Owner';
-				}
-
-				$label = str_replace( '.', '', $label );
-				$object[ $label ] = $this->get_form_value( $field );
+				$object[ $field[ 'api_name' ] ] = $this->get_form_value( $field );
 			}
 		}
 
