@@ -1,6 +1,7 @@
 === LSX Zoho CRM Addon for Caldera Forms ===
 Contributors: feedmymedia, lightspeedwp, eleshar, krugazul, jacquesvdh, ignusvermaak
-Tags: Caldera Forms, zoho, crm, zoho-crm
+Donate link: https://lsdev.biz/lsx/donate/
+Tags: Caldera Forms, Zoho, CRM, Zoho CRM, forms
 Requires at least: 5.0
 Tested up to: 5.5.1
 Requires PHP: 7.0
@@ -8,7 +9,7 @@ Stable tag: 2.0.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
 
-Integrate Caldera Forms with Zoho CRM on your WordPress website.
+The LSX Zoho CRM addon for Caldera Forms allows you capturing leads via form  on your WordPress website, then it posts that data to Zoho CRM.
 
 == Description ==
 
@@ -32,13 +33,13 @@ Go to `https://accounts.zoho.eu/developerconsole` or `https://accounts.zoho.com/
 
 = I have added a new field to my Zoho CRM and its not showing up the Caldera Forms processor, how do I resolve this?
 
-In order for this plugin to work at efficient speeds, Zoho CRM fields and users data are cached. If you have added new users or fields to your Zoho CRM, go to the LSX CF Zoho Options page, check the "Flush Cache" checkbox and click the "Save Settings" button. This will flush all cached settings. Next time you edit a processor, new fields and/or users will be displayed.
+In order for this plugin to work at efficient speeds, Zoho CRM fields and users data are cached. If you have added new users or fields to your Zoho CRM, go to the options page for the LSX Zoho CRM Caldera Forms addon, check the "Flush Cache" checkbox and click the "Save Settings" button. This will flush all cached settings. Next time you edit a processor, new fields and/or users will be displayed.
 
-== Field Formatting ==
+= What field formatting is supported? =
 
 * Date fields need to be set in the format yyyy-mm-dd otherwise they will fail.
 * The date magic tag can be used in the following format "{date:Y-m-d}"
 
-== Processor Configuration ==
+= How to configure the processor? =
 
 * When setting a "Layout" you will need to include the name and the ID separated by a | symbol.  The name goes first, and then the ID. e.g "Direct|11111111111"
