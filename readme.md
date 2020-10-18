@@ -26,17 +26,17 @@ Have you updated to the new WordPress Gutenberg editor? We've got you covered! T
 ## It's free, and always will be.
 We’re firm believers in open source - that’s why the [LSX Zoho CRM Addon for Caldera Forms plugin](https://www.lsdev.biz/lsx/extensions/caldera-forms-zoho-crm-add-on/) is free, and that won't change. We are constantly maintaining and updating our extension so you have the latest and greatest abilities on your LSX Theme powered site.
 
-## LSX Zoho CRM Addon for Caldera Forms Documentation
+## Documentation
 
 We have created extensive documentation on all of the LSX Zoho CRM Addon for Caldera Forms Plugin functionality. This means a hassle free installation and setup with no code requirements. Go to the [LSX Zoho CRM Addon for Caldera Forms Documentation](https://www.lsdev.biz/lsx/documentation/lsx-extensions/lsx-zoho-crm-addon-for-caldera-forms/).
 
-## LSX Zoho CRM Addon for Caldera Forms Help & Support
+## Support
 
-We offer premium support for this plugin. Premium support that can be purchased [via our website](https://www.lsdev.biz/services/support/).
+Contact the [LightSpeed](https://lsdev.biz/) for assistance via the [LSX support form](https://www.lsdev.biz/lsx/support/).
 
 If you are experiencing issues with the LSX Zoho CRM Addon for Caldera Forms Plugin & have experience with Github, please log any bug issues you are having on the [LSX Zoho CRM Addon for Caldera Forms Github Issues](https://github.com/lightspeeddevelopment/cf-zoho/issues) page.
 
-## Contributing to the LSX Zoho CRM Addon for Caldera Forms Plugin
+## Contributing
 
 If you're a developer who's spotted a bug issue and have a fix, or simply have functionality you think would extend our core theme, we are always happy to accept your contribution! Visit the [LSX Zoho CRM Addon for Caldera Forms Plugin on Github](https://github.com/lightspeeddevelopment/cf-zoho) and submit a Pull Request with your updates.
 
