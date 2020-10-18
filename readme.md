@@ -1,12 +1,17 @@
-<p align="center"><a target="_blank" href="https://lsx.lsdev.biz/"><img width="100px;" src="https://lsx.lsdev.biz/wp-content/uploads/2019/03/caldera-forms-zoho-crm-integration.png" alt="LSX Zoho CRM Addon for Caldera Forms Extension"></a>
+<p align="center"><a target="_blank" href="https://lsx.lsdev.biz/"><img src="https://www.lsdev.biz/lsx/wp-content/uploads/2020/09/lsx-zoho-crm-addon-for-caldera-forms-banner-1544x500-1.jpg" alt="LSX Zoho CRM Addon for Caldera Forms Extension"></a>
 </p>
 <h1 align="center">LSX Zoho CRM Addon for Caldera Forms</h1>
 
 <p align="center">
 	<a href="https://www.gnu.org/licenses/gpl-3.0.en.html"><img src="https://poser.pugx.org/woocommerce/woocommerce/license" alt="license"></a>
-    <a href="http://gulpjs.com/"><img src="https://img.shields.io/badge/built%20with-gulp.js-green.svg" alt="Built with gulp.js"></a>
-  	<a href="https://travis-ci.org/github/lightspeeddevelopment/cf-zoho/"><img src="https://travis-ci.org/lightspeeddevelopment/cf-zoho.svg?branch=master" alt="Build Status"></a>
+	<a href="http://gulpjs.com/"><img src="https://img.shields.io/badge/built%20with-gulp.js-green.svg" alt="Built with gulp.js"></a>
 </p>
+<p align="center">
+	<a href="https://codeclimate.com/github/lightspeeddevelopment/cf-zoho/"><img src="https://codeclimate.com/github/lightspeeddevelopment/cf-zoho/badges/gpa.svg" alt="Code Climate"></a>
+	<a href="https://scrutinizer-ci.com/g/lightspeeddevelopment/cf-zoho/?branch=master"><img src="https://scrutinizer-ci.com/g/lightspeeddevelopment/cf-zoho/badges/quality-score.png?b=master" alt="Scrutinizer"></a>
+	<a href="https://travis-ci.org/github/lightspeeddevelopment/cf-zoho/"><img src="https://travis-ci.org/lightspeeddevelopment/cf-zoho.svg?branch=master" alt="Build Status"></a>
+</p>
+
 
 Welcome to the [LSX Zoho CRM Addon for Caldera Forms](https://www.lsdev.biz/lsx/extensions/caldera-forms-zoho-crm-add-on/).
 
