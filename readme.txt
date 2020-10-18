@@ -1,22 +1,25 @@
 === LSX Zoho CRM Addon for Caldera Forms ===
-Contributors: feedmymedia, lightspeedwp, eleshar, krugazul, virginialsdev, deon80, jaab1985, jacquesvdh, ignusvermaak, garthlsdev, matttrustmytravel
-Tags: Caldera Forms, zoho, crm
-Requires at least: 5.3
-Tested up to: 5.5
-Requires PHP: 7.2
+Contributors: feedmymedia, lightspeedwp, eleshar, krugazul, jacquesvdh, ignusvermaak
+Tags: Caldera Forms, zoho, crm, zoho-crm
+Requires at least: 5.0
+Tested up to: 5.5.1
+Requires PHP: 7.0
 Stable tag: 2.0.6
-License: GPLv3.0+
-License URI: http://www.gnu.org/licenses/gpl-3.0.html
+License: GPLv3 or later
+License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
 
 Integrate Caldera Forms with Zoho CRM on your WordPress website.
 
 == Description ==
-Caldera Forms is one of a kind WordPress form builder. With its user friendly drag and drop interface, it’s simple to create forms for your WordPress site that look awesome on any device. Caldera also comes with a range of add-ons, like integration with the Zoho CRM platform, which allows users to automate their day-to-day business activities allowing them to focus on selling without having to worry about digging through data. Use the extension to track your sales activities and gain complete understanding of your sales cycle.
+
+[Caldera Forms](https://wordpress.org/plugins/caldera-forms/) is a different kind of WordPress form builder. Developed to be responsive, intuitive and meet the needs of the modern WordPress site builder. Caldera Forms is the free WordPress form builder plugin that does more.
+
+The LSX Zoho CRM Addon for Caldera Forms allows users to automate their day-to-day business activities by allowing them to focus on selling without having to worry about digging through data. Use this free extension to track your sales activities and gain complete understanding of your sales cycle. Easily create or update a lead, contact or any other object in Zoho CRM when an entry is created in Caldera Forms.
 
 == Installation ==
 
 1. Ensure you have the Caldera Forms plugin installed 
-2. Upload the LSX CF Zoho plugin to the `/wp-content/plugins/` directory
+2. Upload the LSX Zoho CRM Caldera Forms Add-on to the `/wp-content/plugins/` directory
 3. Activate the plugin through the 'Plugins' menu in WordPress
 4. Go the the plugin options page `/wp-admin/options-general.php?page=lsx_cf_zoho` and follow instructions on configuring your Zoho CRM to allow access.
 5. Create a Caldera Form and click the `Processors` tab to select the relevant Zoho processor(s) you wish to apply to the form
