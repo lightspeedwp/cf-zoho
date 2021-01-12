@@ -160,11 +160,13 @@ class Pre_Populate {
 			} else {
 				if ( null === $this->response ) {
 					$this->log( 'Null Response', $this->response, 'Pre Populate Error', 0, 'error' );
+					add_action( 'caldera_forms_render_start', array( $this, 'display_message' ) );
 				}
 			}
 		} else {
 			if ( null === $this->response ) {
 				$this->log( 'Null Response', $this->response, 'Pre Populate Error', 0, 'error' );
+				add_action( 'caldera_forms_render_start', array( $this, 'display_message' ) );
 			}
 		}
 	}
@@ -249,5 +251,11 @@ class Pre_Populate {
 			$id,
 			$type
 		);
+	}
+
+	public function display_message( $form ) {
+		if ( null === $this->response  ) {
+			echo wp_kses_post( 'The form has encountered an error, please reload the page.', 'lsx-cf-zoho' );
+		}
 	}
 }
