@@ -362,17 +362,17 @@ class CF_Processors {
 		);
 
 		// Filter hook.
-		$body = apply_filters( 'process_zoho_submission', $body, $this->config, $this->form );
+		$body       = apply_filters( 'process_zoho_submission', $body, $this->config, $this->form );
 		$this->body = $body;
 
 		if ( isset( $this->config['_return_information'] ) && ( true === $this->config['_return_information'] || 'true' === $this->config['_return_information'] || 1 === $this->config['_return_information'] ) ) {
 			$object_id = $this->capture_info( $this->module, $body, $object );
 		} else {
 			if ( false === apply_filters( 'lsx_cf_zoho_skip_do_request', false, $this->form ) ) {
-				$object_id = $this->do_request( $path, $body, $object );
+				$object_id     = $this->do_request( $path, $body, $object );
 				$this->zoho_id = $object_id;
 			} else {
-				$object_id = false;
+				$object_id     = false;
 				$this->zoho_id = $object_id;
 				$this->log( 'Zoho Skipped', 'Zoho Skipped', 'Zoho Skipped', 0, 'zoho-skipped' );
 			}
@@ -413,7 +413,7 @@ class CF_Processors {
 	 * @return array
 	 */
 	public function do_request( $path, $body, $object, $has_attachments = false, $method = 'POST' ) {
-		$post     = new zohoapi\Post();
+		$post       = new zohoapi\Post();
 		$this->post = $post;
 		$this->log( $path, $body, $path, 0, 'do-request-data' );
 
@@ -433,8 +433,8 @@ class CF_Processors {
 		if ( ! isset( $response['data'][0]['code'] ) || ( 'SUCCESS' !== $response['data'][0]['code'] && 'DUPLICATE_DATA' !== $response['data'][0]['code'] ) ) {
 
 			$error_response = array(
-				'path' => $path,
-				'body' => $body,
+				'path'     => $path,
+				'body'     => $body,
 				'response' => $response,
 			);
 			$this->log( $response['data'][0]['message'], $error_response, 'Zoho Error', 0, 'error' );
@@ -489,7 +489,7 @@ class CF_Processors {
 					$label = 'Owner';
 				}
 
-				$label = str_replace( '.', '', $label );
+				$label            = str_replace( '.', '', $label );
 				$object[ $label ] = $this->get_form_value( $field );
 			}
 		}
@@ -501,7 +501,7 @@ class CF_Processors {
 			if ( is_array( $layout ) && 2 <= count( $layout ) ) {
 				$object['Layout'] = array(
 					'name' => $layout[0],
-					'id' => $layout[1],
+					'id'   => $layout[1],
 				);
 			}
 		}
@@ -513,7 +513,7 @@ class CF_Processors {
 			if ( is_array( $layout ) && 2 <= count( $layout ) ) {
 				$object['Owner'] = array(
 					'name' => $layout[0],
-					'id' => $layout[1],
+					'id'   => $layout[1],
 				);
 			}
 		}
@@ -639,7 +639,7 @@ class CF_Processors {
 					if ( ! in_array( $entryid, $this->requests_completed ) ) {
 						$return = $this->do_side_request( $entryid );
 						$this->update_entry( $entryid, $return );
-						$new_values[] = $return;
+						$new_values[]               = $return;
 						$this->requests_completed[] = $entryid;
 					}
 				}
@@ -647,7 +647,7 @@ class CF_Processors {
 
 			if ( ! empty( $new_values ) ) {
 				$new_values = implode( ',', $new_values );
-				$value = $new_values;
+				$value      = $new_values;
 			}
 			$value = apply_filters( 'lsx_cf_zoho_object_build_value', $new_values, $key, $field );
 		}
@@ -670,7 +670,7 @@ class CF_Processors {
 	 */
 	public function do_side_request( $value ) {
 		$return = $value;
-		$entry = $this->get_entry_meta( $value );
+		$entry  = $this->get_entry_meta( $value );
 
 		$this->log( 'Entry Meta Unserialized', print_r( $entry, true ), 'Do Side Request Meta', 0, 'side-request-meta' );
 		$entry = maybe_unserialize( $entry );
@@ -679,8 +679,8 @@ class CF_Processors {
 			foreach ( $entry as $module => $data ) {
 				if ( in_array( $module, array( 'task', 'lead', 'contacts' ) ) ) {
 
-					$path   = '/crm/v2/' . ucfirst( $module );
-					$path                            .= '/upsert';
+					$path                                      = '/crm/v2/' . ucfirst( $module );
+					$path                                     .= '/upsert';
 					$data['data'][0]['duplicate_check_fields'] = 'Email';
 
 					$object_id = $this->do_request( $path, $data, $data );
@@ -743,7 +743,7 @@ class CF_Processors {
 
 	public function update_entry( $entry_id, $object_id ) {
 		global $wpdb;
-		$entry_obj = new \Caldera_Forms_Entry( $this->form, $entry_id );
+		$entry_obj       = new \Caldera_Forms_Entry( $this->form, $entry_id );
 		$entry_meta_data = $wpdb->get_results(
 			$wpdb->prepare(
 				"UPDATE `{$wpdb->prefix}cf_form_entry_meta` SET
@@ -778,7 +778,7 @@ class CF_Processors {
 	 * @return boolean
 	 */
 	public function is_zoho_form_field( $magic_tag = '' ) {
-		$is_zoho = false;
+		$is_zoho       = false;
 		$current_field = false;
 		foreach ( $this->form['fields'] as $field ) {
 			if ( '%' . $field['slug'] . '%' === $magic_tag ) {
@@ -800,7 +800,7 @@ class CF_Processors {
 	 */
 	public function maybe_register_mailer( $entryid, $zoho_id, $module ) {
 		$form_id = $this->get_entry_form_id( $entryid );
-		$form = \Caldera_Forms::get_form( $form_id );
+		$form    = \Caldera_Forms::get_form( $form_id );
 
 		if ( ! isset( $form['mailer']['enable_mailer'] ) ) {
 			$this->additional_mails[ $entryid ] = array(
@@ -826,7 +826,7 @@ class CF_Processors {
 
 			if ( isset( $this->body['data'] ) && isset( $this->body['data'][0] ) ) {
 				foreach ( $this->body['data'][0] as $field_key => $field_value ) {
-					$search = '[' . strtolower( $field_key ) . ']';
+					$search         = '[' . strtolower( $field_key ) . ']';
 					$return_message = str_replace( $search, $field_value, $return_message );
 				}
 			}
@@ -898,8 +898,8 @@ class CF_Processors {
 				$url_paths = explode( '/wp-content/', $data[ $field['ID'] ] );
 				if ( is_array( $url_paths ) && isset( $url_paths[1] ) ) {
 					$file_path .= $url_paths[1];
-					$module_id = false;
-					$module_id = apply_filters( 'lsx_cf_zoho_file_upload_module_id', $module_id, $form );
+					$module_id  = false;
+					$module_id  = apply_filters( 'lsx_cf_zoho_file_upload_module_id', $module_id, $form );
 
 					$module_name = false;
 					$module_name = apply_filters( 'lsx_cf_zoho_file_upload_module_name', $module_name, $form );
@@ -936,8 +936,8 @@ class CF_Processors {
 			return;
 		}
 
-		$path   = '/crm/v2/' . ucfirst( $module ) . '/' . $zoho_id . '/Attachments';
-		$post     = new zohoapi\Post();
+		$path       = '/crm/v2/' . ucfirst( $module ) . '/' . $zoho_id . '/Attachments';
+		$post       = new zohoapi\Post();
 		$attach_url = false;
 
 		if ( false === $attach_url ) {
@@ -949,7 +949,7 @@ class CF_Processors {
 			$response = $post->send_file( $path, $body );
 		} else {
 			$file_url = str_replace( '/httpdocs', '', $file_path );
-			$body = $file_url;
+			$body     = $file_url;
 			$response = $post->send_file( $path, $body, true );
 		}
 
@@ -990,7 +990,7 @@ class CF_Processors {
 		if ( ! empty( $this->additional_mails ) ) {
 			global $form;
 			$saved_form = $form;
-			$saved_id = $this->zoho_id;
+			$saved_id   = $this->zoho_id;
 
 			remove_filter(
 				'caldera_forms_send_email',
@@ -1015,14 +1015,14 @@ class CF_Processors {
 			);
 
 			foreach ( $this->additional_mails as $entry_id => $values ) {
-				$form = $values['form'];
+				$form          = $values['form'];
 				$this->zoho_id = $values['zoho_id'];
 
 				\Caldera_Forms_Save_Final::do_mailer( $values['form'], $entry_id );
 				do_action( 'lsx_cf_zoho_additional_mail_check', $entry_id, $values );
 				$this->log( $entry_id . ' Email Sent', $values, 'Email Sent', 0, 'email' );
 			}
-			$form = $saved_form;
+			$form          = $saved_form;
 			$this->zoho_id = $saved_id;
 		}
 

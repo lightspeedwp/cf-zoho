@@ -76,7 +76,7 @@ class Pre_Populate {
 	 * @since 1.0.0
 	 */
 	public function pre_populate_form( $entry, $form ) {
-		$this->form = $form;
+		$this->form  = $form;
 		$this->entry = $entry;
 		if ( false === $this->has_output && is_array( $this->entry ) ) {
 			$params = array_intersect( array_keys( $_GET ), $this->get_modules() );
@@ -147,7 +147,7 @@ class Pre_Populate {
 	 * @param $value string
 	 */
 	public function get_resource( $key = '', $value = '' ) {
-		$get           = new zohoapi\Get();
+		$get            = new zohoapi\Get();
 		$path           = '/crm/v2/' . $this->get_module_label( $key ) . '/' . $value;
 		$response       = $get->request( $path );
 		$this->response = $response;
