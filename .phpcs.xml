@@ -40,9 +40,6 @@
 		<exclude name="WordPress.WP.GlobalVariablesOverride.Prohibited" />
 		<exclude name="Generic.ControlStructures.InlineControlStructure.NotAllowed" />
 
-		<!-- We will not fix these (WordPress VIP) -->
-		<exclude name="WordPress.VIP" />
-
 		<!-- Fix on next LSX release (PHP Comments) -->
 		<exclude name="Generic.Commenting" />
 		<exclude name="Squiz.Commenting" />
