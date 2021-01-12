@@ -57,15 +57,14 @@
 	<rule ref="PHPCompatibilityWP"/>
 
 	<!-- Not interested in whitespace issues in JS and CSS files at the moment -->
-	<rule ref="Squiz.WhiteSpace">
+	<!-- <rule ref="Squiz.WhiteSpace">
 		<exclude-pattern>*\.css</exclude-pattern>
 		<exclude-pattern>*\.js</exclude-pattern>
 	</rule>
 	<rule ref="WordPress.WhiteSpace">
 		<exclude-pattern>*\.css</exclude-pattern>
 		<exclude-pattern>*\.js</exclude-pattern>
-	</rule>	
-
+	</rule> -->
 	<rule ref="Generic.Files.EndFileNewline">
 		<exclude-pattern>*\.css</exclude-pattern>
 		<exclude-pattern>*\.js</exclude-pattern>
