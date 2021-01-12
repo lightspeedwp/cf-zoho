@@ -39,9 +39,25 @@
 	<rule ref="WordPress">
 		<exclude name="WordPress.WP.GlobalVariablesOverride.Prohibited" />
 		<exclude name="Generic.ControlStructures.InlineControlStructure.NotAllowed" />
+
+		<!-- We will not fix these (WordPress VIP) -->
+		<exclude name="WordPress.VIP" />
+
+		<!-- Fix on next LSX release (PHP Comments) -->
+		<exclude name="Generic.Commenting" />
+		<exclude name="Squiz.Commenting" />
+
+		<!-- Fix on next release -->
+		<exclude name="WordPress.Functions.DontExtract.extract_extract" />
 	</rule>
 		
 	<rule ref="WordPress-Extra" />
+	
+    <rule ref="Generic.PHP.Syntax"/>
+	
+    <rule ref="WordPress.WP.DeprecatedFunctions"/>
+	
+	<rule ref="PHPCompatibilityWP"/>
 
 	<!-- Not interested in whitespace issues in JS and CSS files at the moment -->
 	<rule ref="Squiz.WhiteSpace">
@@ -57,10 +73,4 @@
 		<exclude-pattern>*\.css</exclude-pattern>
 		<exclude-pattern>*\.js</exclude-pattern>
 	</rule>
-	
-    <rule ref="Generic.PHP.Syntax"/>
-	
-    <rule ref="WordPress.WP.DeprecatedFunctions"/>
-	
-	<rule ref="PHPCompatibilityWP"/>
 </ruleset>
