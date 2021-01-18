@@ -258,7 +258,18 @@ class Pre_Populate {
 	 * @return void
 	 */
 	public function display_message( $out, $form ) {
-		$message = '<div class="error">' . __( 'The form has encountered an error, please reload the page.', 'lsx-cf-zoho' ) . '</div>';
+		$style   = 'style="-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+		box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+		color: #B94A48;
+		background-color: #F2DEDE;
+		width: 100%;
+		padding: 7.5px;
+		border-radius: 2px;
+		border: 1px solid #a94442;
+		margin: 2.5em 0;
+		font-weight:600;
+		"';
+		$message = '<div class="row"><div class="col-sm-12 single"><div class="error" ' . $style . '>' . __( 'The form has encountered a loading error, please refresh the page.', 'lsx-cf-zoho' ) . '</div></div></div>';
 		$out     = str_replace( '<form', $message . '<form', $out );
 		return $out;
 	}
