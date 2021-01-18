@@ -269,7 +269,7 @@ class Pre_Populate {
 		margin: 2.5em 0;
 		font-weight:600;
 		"';
-		$message = '<div class="row"><div class="col-sm-12 single"><div class="error" ' . $style . '>' . __( 'The form has encountered a loading error, please refresh the page.', 'lsx-cf-zoho' ) . '</div></div></div>';
+		$message = '<div class="row"><div class="col-sm-12 single"><div class="error" ' . $style . '>' . __( 'The form has encountered a loading error, please refresh the page. If the problem persists, please use the contact form to get in touch.', 'lsx-cf-zoho' ) . '</div></div></div>';
 		$out     = str_replace( '<form', $message . '<form', $out );
 		return $out;
 	}
