@@ -66,7 +66,6 @@ class Pre_Populate {
 		if ( ! isset( self::$instance ) ) {
 			self::$instance = new self();
 		}
-
 		return self::$instance;
 	}
 
@@ -78,6 +77,7 @@ class Pre_Populate {
 	public function pre_populate_form( $entry, $form ) {
 		$this->form  = $form;
 		$this->entry = $entry;
+
 		if ( false === $this->has_output && is_array( $this->entry ) ) {
 			$params = array_intersect( array_keys( $_GET ), $this->get_modules() );
 			if ( ! empty( $params ) ) {
@@ -160,14 +160,12 @@ class Pre_Populate {
 			} else {
 				if ( null === $this->response ) {
 					$this->log( 'Null Response', $this->response, 'Pre Populate Error', 0, 'error' );
-					add_action( 'caldera_forms_render_start', array( $this, 'display_message' ) );
+					add_filter( 'caldera_forms_render_form', array( $this, 'display_message' ), 10, 2 );
 				}
 			}
 		} else {
-			if ( null === $this->response ) {
-				$this->log( 'Null Response', $this->response, 'Pre Populate Error', 0, 'error' );
-				add_action( 'caldera_forms_render_start', array( $this, 'display_message' ) );
-			}
+			$this->log( 'WordPress', $this->response, 'Pre Populate Error', 0, 'wordpress-request-error' );
+			add_filter( 'caldera_forms_render_form', array( $this, 'display_message' ), 10, 2 );
 		}
 	}
 
@@ -253,9 +251,15 @@ class Pre_Populate {
 		);
 	}
 
-	public function display_message( $form ) {
-		if ( null === $this->response  ) {
-			echo wp_kses_post( 'The form has encountered an error, please reload the page.', 'lsx-cf-zoho' );
-		}
+	/**
+	 * Outputs the error response message above the form.
+	 *
+	 * @param [type] $form
+	 * @return void
+	 */
+	public function display_message( $out, $form ) {
+		$message = '<div class="error">' . __( 'The form has encountered an error, please reload the page.', 'lsx-cf-zoho' ) . '</div>';
+		$out     = str_replace( '<form', $message . '<form', $out );
+		return $out;
 	}
 }
