@@ -1,7 +1,7 @@
 === LSX Zoho CRM Addon for Caldera Forms ===
 Contributors: feedmymedia, lightspeedwp, eleshar, krugazul, jacquesvdh, ignusvermaak
 Donate link: https://lsdev.biz/lsx/donate/
-Tags: Caldera Forms, Zoho, CRM, Zoho CRM, forms
+Tags: lsx, Caldera Forms, Zoho, Zoho CRM, forms
 Requires at least: 5.0
 Tested up to: 5.6
 Requires PHP: 7.2

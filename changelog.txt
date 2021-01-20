@@ -3,14 +3,14 @@
 ## [[2.0.7]](https://github.com/lightspeeddevelopment/cf-zoho/releases/tag/2.0.6) - 2021-01-?
 
 ### Added
+- An error message which displays if the request to Zoho returns a timeout error.  The user will be notified to refresh the page.
 
 ### Removed
 - Removed the unused LSX Search UIX templates.
-- 
 
 ### Security
 - General testing to ensure compatibility with latest WordPress version (5.6).
-
+- General testing to ensure compatibility with latest Caldera Forms (1.9.3).
 
 ## [[2.0.6]](https://github.com/lightspeeddevelopment/cf-zoho/releases/tag/2.0.6) - 2020-08-14
 
