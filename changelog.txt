@@ -1,6 +1,6 @@
 # Change log
 
-## [[2.0.7]](https://github.com/lightspeeddevelopment/cf-zoho/releases/tag/2.0.6) - 2021-01-?
+## [[2.0.7]](https://github.com/lightspeeddevelopment/cf-zoho/releases/tag/2.0.7) - 2021-01-?
 
 ### Added
 - An error message which displays if the request to Zoho returns a timeout error.  The user will be notified to refresh the page.
