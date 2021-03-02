@@ -2130,15 +2130,15 @@
         },
         {
             "name": "wpackagist-plugin/caldera-forms",
-            "version": "1.9.3",
+            "version": "1.9.4",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/caldera-forms/",
-                "reference": "tags/1.9.3"
+                "reference": "tags/1.9.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/caldera-forms.1.9.3.zip"
+                "url": "https://downloads.wordpress.org/plugin/caldera-forms.1.9.4.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
