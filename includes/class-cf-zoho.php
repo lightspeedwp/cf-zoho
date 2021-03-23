@@ -86,8 +86,8 @@ final class CF_Zoho {
 		// WP Logs.
 		if ( true === (bool) $this->settings->options->get_option( 'lsx_cf_zoho_enable_debug' ) ) {
 			$this->logging = new WP_Logging();
-			add_action( 'wp_ajax_cf_zoho_error_log', array( $this, 'log_js_error' ) );
-			add_action( 'wp_ajax_nopriv_cf_zoho_error_log', array( $this, 'log_js_error' ) );
+			add_action( 'wp_ajax_cf_zoho_error_log', 'cf_zoho_ajax_log_js_error' );
+			add_action( 'wp_ajax_nopriv_cf_zoho_error_log', 'cf_zoho_ajax_log_js_error' );
 		}
 
 		// WP Logs template.
@@ -152,17 +152,5 @@ final class CF_Zoho {
 			$out['html'] .= '<script>lsx_cf_zoho.unblockForms();</script>';
 		}
 		return $out;
-	}
-
-
-	public function log_js_error() {
-		if ( isset( $_POST['details'] ) && '' !== $_POST['details'] ) {
-			WP_Logging::add(
-				'Submission for Add Traveller JS Error: ',
-				$_POST['details'],
-				0,
-				''
-			);
-		}
 	}
 }

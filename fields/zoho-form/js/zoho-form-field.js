@@ -227,7 +227,7 @@ var CF_ZOHO_FIELD = {
 	},
 
 	log_error: function ( data ) {
-		$.ajax({
+		jQuery.ajax({
 			dataType: "json",
 			url: lsxCfZohoArgs.ajaxurl,
 
@@ -236,7 +236,7 @@ var CF_ZOHO_FIELD = {
 				details: data,
 			},
 			complete: function(xhr, text_status) {
-				$info_message.hide();
+				console.log('logging complete');
 			}
 		});
 	}

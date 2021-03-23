@@ -63,3 +63,14 @@ function lsx_cf_zoho_get_form_title( $caldera_id = '' ) {
 	}
 	return $title;
 }
+
+function cf_zoho_ajax_log_js_error() {
+	if ( isset( $_POST['details'] ) && '' !== $_POST['details'] ) {
+		WP_Logging::add(
+			'Submission for Add Traveller JS Error: ',
+			$_POST['details'],
+			0,
+			''
+		);
+	}
+}
