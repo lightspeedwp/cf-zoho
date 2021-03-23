@@ -86,6 +86,8 @@ final class CF_Zoho {
 		// WP Logs.
 		if ( true === (bool) $this->settings->options->get_option( 'lsx_cf_zoho_enable_debug' ) ) {
 			$this->logging = new WP_Logging();
+			add_action( 'wp_ajax_cf_zoho_error_log', array( $this, 'log_js_error' ) );
+			add_action( 'wp_ajax_nopriv_cf_zoho_error_log', array( $this, 'log_js_error' ) );
 		}
 
 		// WP Logs template.
@@ -100,6 +102,7 @@ final class CF_Zoho {
 		add_filter( 'caldera_forms_render_pre_get_entry', array( $this->pre_populate, 'pre_populate_form' ), 10, 2 );
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ), 5 );
+
 		add_filter(
 			'caldera_forms_ajax_return',
 			array(
@@ -125,6 +128,7 @@ final class CF_Zoho {
 			array(
 				'blockMessage'   => __( 'Please wait while we capture your details', 'lsx-cf-zoho' ),
 				'headerSelector' => '.header-wrap',
+				'ajaxurl' => admin_url( 'admin-ajax.php' ),
 			);
 			$zoho_args = apply_filters( 'lsx_cf_zoho_js_args', $zoho_args );
 			wp_localize_script(
@@ -148,5 +152,17 @@ final class CF_Zoho {
 			$out['html'] .= '<script>lsx_cf_zoho.unblockForms();</script>';
 		}
 		return $out;
+	}
+
+
+	public function log_js_error() {
+		if ( isset( $_POST['details'] ) && '' !== $_POST['details'] ) {
+			WP_Logging::add(
+				'Submission for Add Traveller JS Error: ',
+				$_POST['details'],
+				0,
+				''
+			);
+		}
 	}
 }

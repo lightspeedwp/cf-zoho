@@ -17,26 +17,31 @@ var CF_ZOHO_FIELD = {
 			if ( undefined !== obj.data.cf_id ) {
 				var form_id      = obj.form_id;
 				var parent_field = jQuery( '.remodal[data-form-id="' + form_id + '"]' ).attr( 'data-parent-field' );
+				console.log(obj.data.cf_id );
+				if ( 1 === obj.data.cf_id || '1' === obj.data.cf_id ) {
+					jQuery( '#' + parent_field ).parent( 'div' ).find( '.alert-wrapper' ).append( 'There was a problem submitting this entry, please try again.' );
+					this.log_error( form_id );
+				} else {
+					// Check for previous values
+					var current_value = jQuery( '#' + parent_field ).val();
+					var to_save       = '';
+					if ( '' !== current_value ) {
+						to_save = current_value + ',';
+					}
+					to_save += obj.data.cf_id;
+					jQuery( '#' + parent_field ).val( to_save );
+	
+					// jQuery( '.caldera-forms-modal.modal-open' ).removeClass('modal-open').addClass('hidden').addClass('submitted');
+					//console.log( obj.return_message );
+					if ( undefined !== obj.return_message && null !== obj.return_message && '' !== obj.return_message ) {
+						jQuery( '#' + parent_field ).parent( 'div' ).find( '.alert-wrapper' ).append( obj.return_message );
+					}
+	
+					this.close_modal();
+					this.increase_limit();
+					this.check_limit();
 
-				// Check for previous values
-				var current_value = jQuery( '#' + parent_field ).val();
-				var to_save       = '';
-				if ( '' !== current_value ) {
-					to_save = current_value + ',';
 				}
-				to_save += obj.data.cf_id;
-				jQuery( '#' + parent_field ).val( to_save );
-
-				// jQuery( '.caldera-forms-modal.modal-open' ).removeClass('modal-open').addClass('hidden').addClass('submitted');
-
-				console.log( obj.return_message );
-				if ( undefined !== obj.return_message && null !== obj.return_message && '' !== obj.return_message ) {
-					jQuery( '#' + parent_field ).parent( 'div' ).find( '.alert-wrapper' ).append( obj.return_message );
-				}
-
-				this.close_modal();
-				this.increase_limit();
-				this.check_limit();
 			}
 		} else if ( obj.status === 'error' ) {
 			jQuery( 'body' ).unblock();
@@ -219,6 +224,21 @@ var CF_ZOHO_FIELD = {
 
 	close_modal: function () {
 		jQuery( '.remodal-wrapper.remodal-is-opened' ).find( '.remodal-close' ).click();
+	},
+
+	log_error: function ( data ) {
+		$.ajax({
+			dataType: "json",
+			url: lsxCfZohoArgs.ajaxurl,
+
+			data: {
+				action: 'cf_zoho_error_log',
+				details: data,
+			},
+			complete: function(xhr, text_status) {
+				$info_message.hide();
+			}
+		});
 	}
 };
 
