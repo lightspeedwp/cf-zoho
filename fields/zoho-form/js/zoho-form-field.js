@@ -17,11 +17,16 @@ var CF_ZOHO_FIELD = {
 			if ( undefined !== obj.data.cf_id ) {
 				var form_id      = obj.form_id;
 				var parent_field = jQuery( '.remodal[data-form-id="' + form_id + '"]' ).attr( 'data-parent-field' );
-				console.log(obj.data.cf_id );
 				if ( 1 === obj.data.cf_id || '1' === obj.data.cf_id ) {
 					jQuery( '#' + parent_field ).parent( 'div' ).find( '.alert-wrapper' ).append( 'There was a problem submitting this entry, please try again.' );
-					this.log_error( form_id );
+
+					if ( undefined !== window.navigator && undefined !== window.navigator.userAgent ) {
+						this.log_error( [ window.navigator.userAgent, obj.data ] );
+					}
 				} else {
+					if ( undefined !== window.navigator && undefined !== window.navigator.userAgent ) {
+						this.log_error( [ window.navigator.userAgent, obj.data ] );
+					}
 					// Check for previous values
 					var current_value = jQuery( '#' + parent_field ).val();
 					var to_save       = '';
@@ -227,9 +232,11 @@ var CF_ZOHO_FIELD = {
 	},
 
 	log_error: function ( data ) {
+		console.log(lsxCfZohoArgs.ajaxurl);
 		jQuery.ajax({
 			dataType: "json",
 			url: lsxCfZohoArgs.ajaxurl,
+			method: 'POST',
 
 			data: {
 				action: 'cf_zoho_error_log',
