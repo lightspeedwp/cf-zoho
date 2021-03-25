@@ -24,9 +24,7 @@ var CF_ZOHO_FIELD = {
 						this.log_error( [ window.navigator.userAgent, obj.data ] );
 					}
 				} else {
-					if ( undefined !== window.navigator && undefined !== window.navigator.userAgent ) {
-						this.log_error( [ window.navigator.userAgent, obj.data ] );
-					}
+
 					// Check for previous values
 					var current_value = jQuery( '#' + parent_field ).val();
 					var to_save       = '';
