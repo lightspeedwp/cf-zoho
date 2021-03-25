@@ -156,12 +156,18 @@ final class CF_Zoho {
 
 	function cf_zoho_ajax_log_js_error() {
 		if ( isset( $_POST['details'] ) && '' !== $_POST['details'] ) {
-			$this->logging::add(
-				'Submission for Add Traveller JS Error: ',
-				$_POST['details'],
-				0,
-				''
+
+			$pid = '';
+			if ( is_array( $_POST['details'] ) && isset( $_POST['details'][1] ) && isset( $_POST['details'][1]['pid'] ) ) {
+				$pid = $_POST['details'][1]['pid'];
+			}
+			$post_array = array(
+				'post_type' => 'wp_log',
+				'post_status' => 'publish',
+				'post_title' => 'Submission JS Error: ' . $pid,
+				'post_content' => json_encode( $_POST['details'] ),
 			);
+			wp_insert_post( $post_array );
 		}
 	}
 }
