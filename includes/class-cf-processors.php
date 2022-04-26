@@ -827,7 +827,7 @@ class CF_Processors {
 			if ( isset( $this->body['data'] ) && isset( $this->body['data'][0] ) ) {
 				foreach ( $this->body['data'][0] as $field_key => $field_value ) {
 					$search         = '[' . strtolower( $field_key ) . ']';
-					$return_message = str_replace( $search, $field_value, $return_message );
+					$return_message = str_replace( $search, (string) $field_value, $return_message );
 				}
 			}
 			$out['return_message'] = '<div data-entry-id="' . $out['data']['cf_id'] . '" class="alert alert-success fade in">' . $return_message . '<a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a></div>';
