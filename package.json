@@ -22,7 +22,7 @@
     "gulp-wp-pot": "^2.4.3",
     "kind-of": "^6.0.3",
     "lodash": "^4.17.20",
-    "minimatch": "^6.0.3",
+    "minimatch": "^7.0.0",
     "minimist": "^1.2.5"
   }
 }
